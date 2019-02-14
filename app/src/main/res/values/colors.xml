@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="color_primary">#FF3F51B5</color>
+    <color name="color_primary_light">#FF757DE8</color>
+    <color name="color_primary_dark">#FF303F9F</color>
+    <color name="color_accent">#FF009688</color>
+
+    <color name="bg_white">#FFFAFAFA</color>
+    <color name="bg_black">#ff424242</color>
+    <color name="colorBlack">#212121</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+    <color name="txt_white">#FFFFFF</color>
+    <color name="txt_black">#de000000</color>
+    <color name="txt_disable">#39000000</color>
+    <color name="txt_hint">#992f333d</color>
+    <color name="txt_not_focus">#cfd8dc</color>
+
+    <color name="btn_pressed">#992f333d</color>
+
+    <color name="gradient_end">#FF303F9F</color>
+    <color name="gradient_start">#FF009688</color>
+
 </resources>
