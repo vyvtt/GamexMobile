@@ -16,7 +16,7 @@
         android:textSize="64sp"
         android:textColor="@color/color_primary"
         android:fontFamily="@font/leckerli_one_regular"
-        android:layout_marginVertical="70dp"/>
+        android:layout_marginVertical="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,6 +38,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:theme="@style/MyEditText"
+            android:textColor="@color/txt_black"
             />
 
         <EditText
@@ -51,6 +52,7 @@
             android:drawablePadding="24dp"
             android:maxLines="1"
             android:theme="@style/MyEditText"
+            android:textColor="@color/txt_black"
             />
 
         <Button
@@ -58,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/btn_margin_top"
             android:text="@string/sign_in"
-            android:background="@drawable/ripple_effect" />
+            android:background="@drawable/effect_ripple" />
 
         <TextView
             android:layout_width="match_parent"
@@ -72,17 +74,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
-        android:layout_marginBottom="60dp">
+        android:layout_marginBottom="30dp">
 
-        <Button
-            android:layout_width="match_parent"
+        <TextView
+            android:gravity="end"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/create_new_account"
-            android:background="@drawable/ripple_effect" />
+            android:layout_weight="1"
+            android:text="No account yet? "
+            android:textColor="@color/txt_hint"/>
+
+        <TextView
+            android:id="@+id/textViewSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Create one!"
+            android:textStyle="bold"
+            android:textColor="@color/color_primary" />
+
     </LinearLayout>
 
 </RelativeLayout>

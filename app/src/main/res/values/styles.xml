@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <!--Style for Splash Screen-->
@@ -29,6 +30,10 @@
         <item name="android:colorBackground">@color/bg_white</item>
         <item name="android:textColor">@color/txt_black</item>
         <item name="android:textColorHint">@color/txt_hint</item>
+    </style>
+
+    <style name="MyTextLabel" parent="TextAppearance.AppCompat">
+        <item name="colorAccent">@color/color_primary</item>
     </style>
 
 </resources>

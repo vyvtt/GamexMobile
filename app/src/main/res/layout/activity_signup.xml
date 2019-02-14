@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.NoActionBar"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="20dp"
+        android:fontFamily="@font/leckerli_one_regular"
+        android:text="@string/app_name"
+        android:textColor="@color/color_primary"
+        android:textSize="64sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingLeft="50dp"
+        android:paddingTop="20dp"
+        android:paddingRight="50dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_account"
+            android:drawablePadding="24dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/txt_black"
+            android:theme="@style/MyEditText"
+            android:padding="15dp"
+            android:hint="Username"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_password"
+            android:drawablePadding="24dp"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@color/txt_black"
+            android:theme="@style/MyEditText"
+            android:padding="15dp"
+            android:hint="Password"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_password"
+            android:drawablePadding="24dp"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@color/txt_black"
+            android:theme="@style/MyEditText"
+            android:padding="15dp"
+            android:hint="Re-Password"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/id_fullname"
+            android:drawablePadding="24dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/txt_black"
+            android:theme="@style/MyEditText"
+            android:padding="15dp"
+            android:hint="Fullname"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_email"
+            android:drawablePadding="24dp"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="@color/txt_black"
+            android:theme="@style/MyEditText"
+            android:padding="15dp"
+            android:hint="Email"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/btn_margin_top"
+            android:background="@drawable/effect_ripple"
+            android:text="Create account" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="Already have an account? "
+            android:textColor="@color/txt_hint" />
+
+        <TextView
+            android:id="@+id/textViewLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sign In!"
+            android:textColor="@color/color_primary"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>
