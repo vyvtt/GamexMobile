@@ -13,9 +13,9 @@
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
             <gradient
+                android:endColor="@color/color_primary_dark"
+                android:startColor="@color/color_secondary_dark"
                 android:angle="135"
-                android:endColor="@color/color_accent"
-                android:startColor="@color/color_primary_dark"
                 android:type="linear" />
             <corners android:radius="50dp" />
         </shape>

@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SignupActivity"></activity>
+        <activity
+            android:name=".SignupActivity"
+            android:theme="@style/CusFullScreenStyle" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashStyle">
@@ -21,7 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/CusFullScreenStyle" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/CusFullScreenStyle" />
