@@ -9,6 +9,7 @@
         android:orderInCategory="300"
         android:title="QR_Code"
         android:icon="@drawable/ic_qr"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom"
+        android:onClick="clickToScan"></item>
 
 </menu>

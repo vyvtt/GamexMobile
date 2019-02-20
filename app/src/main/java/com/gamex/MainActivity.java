@@ -1,5 +1,6 @@
 package com.gamex;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -177,14 +178,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // icon scan QR onClick
-        int id = item.getItemId();
-        if (id == R.id.action_scan_qr) {
-            Toast.makeText(MainActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+
+    public void clickToScan(MenuItem item) {
+        Intent intent = new Intent(this, ScanQRActivity.class);
+        startActivity(intent);
     }
 }
