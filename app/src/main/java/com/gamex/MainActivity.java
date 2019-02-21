@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         primaryColor = R.color.color_primary;
         secondaryColor = R.color.color_secondary;
         toolbar = findViewById(R.id.home_toolbar);
-        toolbar.setBackground(getResources().getDrawable(R.color.color_secondary));
+        toolbar.setBackground(getResources().getDrawable(R.color.bg_white));
         setSupportActionBar(toolbar);
         createDrawer();
     }

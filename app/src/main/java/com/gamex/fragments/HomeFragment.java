@@ -1,21 +1,24 @@
 package com.gamex.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.gamex.MainActivity;
 import com.gamex.R;
+import com.gamex.adapters.ExhibitionListRecycleViewAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
+    RecyclerView rvOngoing;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -25,10 +28,40 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Home");
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
 
+        View view =  inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Test data only
+        ArrayList<String> exImg = new ArrayList<>();
+        ArrayList<String> exName = new ArrayList<>();
+        ArrayList<String> exDate = new ArrayList<>();
+        ArrayList<String> exAddr = new ArrayList<>();
+
+        exName.add("AUTOMECHANIKA HO CHI MINH CITY 2019");
+        exName.add("TELEFILM 2019 / ICTCOMM 2019");
+        exName.add("VIFA GOOD URBAN 2019 – VIFAG.U. 2019");
+        exName.add("VIETBUILD HOME 2019");
+        exName.add("VIETWATER 2019");
+        exDate.add("February 28th to March 2nd");
+        exDate.add("February 28th to March 2nd");
+        exDate.add("February 28th to March 2nd");
+        exDate.add("February 28th to March 2nd");
+        exDate.add("February 28th to March 2nd");
+        exDate.add("February 28th to March 2nd");
+        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
+        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
+        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
+        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
+        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
+        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rvOngoing = view.findViewById(R.id.fg_home_rv_ongoing);
+        rvOngoing.setLayoutManager(layoutManager);
+        ExhibitionListRecycleViewAdapter adapter = new ExhibitionListRecycleViewAdapter(getContext(), exImg, exName, exDate, exAddr);
+        rvOngoing.setAdapter(adapter);
+
+        return view;
     }
 
 

@@ -32,14 +32,16 @@ public class ScanQRActivity extends AppCompatActivity {
             //PERMISSION_GRANTED
             initScan();
         }
+
+//        initScan();
     }
 
     private void requestCameraPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.CAMERA)) {
 
-            new AlertDialog.Builder(this)
-                    .setTitle("Permission Needed")
+            new AlertDialog.Builder(this, R.style.Theme_MaterialComponents_Light_Dialog_Alert)
+                    .setTitle("Permission Needed -----")
                     .setMessage("Please allow Camera Permission to scan QR code!")
                     .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
                         @Override
@@ -52,6 +54,7 @@ public class ScanQRActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            permissionDenied();
                         }
                     })
                     .create().show();
@@ -72,16 +75,20 @@ public class ScanQRActivity extends AppCompatActivity {
         integrator.initiateScan();
     }
 
+    private void permissionDenied() {
+        Toast.makeText(this, "Camera Permission DENIED", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CAMERA_PERMISSION_CODE)  {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initScan();
             } else {
-                Toast.makeText(this, "Camera Permission DENIED", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                permissionDenied();
             }
         }
     }

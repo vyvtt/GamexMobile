@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbarSize="0dp"
     tools:context=".fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="home" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/fg_home_tv_ongoing"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="12dp"
+                android:text="On-going Exhibition"
+                android:textColor="@color/txt_black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignBottom="@id/fg_home_tv_ongoing"
+                android:layout_alignParentRight="true"
+                android:drawableRight="@drawable/ic_arrow_right"
+                android:drawablePadding="5dp"
+                android:layout_marginHorizontal="12dp"
+                android:gravity="center_vertical"
+                android:text="View all"
+                android:textColor="@color/txt_link" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fg_home_rv_ongoing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fg_home_tv_ongoing" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

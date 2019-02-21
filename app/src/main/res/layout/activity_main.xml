@@ -13,7 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/home_toolbar"
-            app:title="Home"></android.support.v7.widget.Toolbar>
+            app:title="Home"
+            android:elevation="4dp"></android.support.v7.widget.Toolbar>
 
         <FrameLayout
             android:layout_width="match_parent"
