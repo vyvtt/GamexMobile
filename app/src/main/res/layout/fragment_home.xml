@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbarSize="0dp"
+    android:overScrollMode="ifContentScrolls"
     tools:context=".fragments.HomeFragment">
 
     <LinearLayout
@@ -47,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/fg_home_tv_your_event"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="8dp"
+                android:overScrollMode="ifContentScrolls"/>
         </RelativeLayout>
 
         <RelativeLayout

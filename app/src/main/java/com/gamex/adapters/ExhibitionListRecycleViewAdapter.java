@@ -74,14 +74,14 @@ public class ExhibitionListRecycleViewAdapter extends RecyclerView.Adapter<Exhib
         return exName.size();
     }
 
-    public class ExhibitionViewHolder extends RecyclerView.ViewHolder {
+    class ExhibitionViewHolder extends RecyclerView.ViewHolder {
         ImageView imgBanner;
         TextView txtName;
         TextView txtDate;
         TextView txtAddress;
         CardView item;
 
-        public ExhibitionViewHolder(@NonNull View itemView) {
+        ExhibitionViewHolder(@NonNull View itemView) {
             super(itemView);
             imgBanner = itemView.findViewById(R.id.fg_home_rv_img);
             txtName = itemView.findViewById(R.id.fg_home_rv_txt_name);
