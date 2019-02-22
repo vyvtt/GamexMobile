@@ -33,7 +33,9 @@ dependencies {
     }
 
     // ZXing lib (QR code)
-    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+//    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
 
     // Glide lib (load img from url)
     implementation 'com.github.bumptech.glide:glide:4.9.0'

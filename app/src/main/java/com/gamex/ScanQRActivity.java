@@ -1,91 +1,57 @@
 package com.gamex;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Result;
+
+import java.util.ArrayList;
+
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
-public class ScanQRActivity extends AppCompatActivity {
+public class ScanQRActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private int CAMERA_PERMISSION_CODE = 1;
-    IntentIntegrator integrator;
+    private ZXingScannerView zXingScannerView;
+    ArrayList<BarcodeFormat> scanFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan_qr);
+
+        scanFormat = new ArrayList<>();
+        scanFormat.add(BarcodeFormat.QR_CODE);
+        zXingScannerView = new ZXingScannerView(this);
 
         if (ContextCompat.checkSelfPermission(ScanQRActivity.this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestCameraPermission();
+            // request camera permission ----> onRequestPermissionsResult()
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         } else {
             //PERMISSION_GRANTED
             initScan();
         }
-
-//        initScan();
-    }
-
-    private void requestCameraPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.CAMERA)) {
-
-            new AlertDialog.Builder(this, R.style.Theme_MaterialComponents_Light_Dialog_Alert)
-                    .setTitle("Permission Needed -----")
-                    .setMessage("Please allow Camera Permission to scan QR code!")
-                    .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(ScanQRActivity.this,
-                                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-                        }
-                    })
-                    .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            permissionDenied();
-                        }
-                    })
-                    .create().show();
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-        }
     }
 
     private void initScan() {
-        integrator = new IntentIntegrator(this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-        integrator.setPrompt("Scan");
-        integrator.setCameraId(0);  // Use a specific camera of the device
-        integrator.setBeepEnabled(true);
-        integrator.setBarcodeImageEnabled(true);
-        integrator.setOrientationLocked(false);
-        integrator.initiateScan();
-    }
-
-    private void permissionDenied() {
-        Toast.makeText(this, "Camera Permission DENIED", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        zXingScannerView.setFormats(scanFormat);
+        setContentView(zXingScannerView);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_PERMISSION_CODE)  {
+        if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //PERMISSION_GRANTED
                 initScan();
             } else {
                 permissionDenied();
@@ -93,19 +59,37 @@ public class ScanQRActivity extends AppCompatActivity {
         }
     }
 
-    // Get the results:
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+    private void permissionDenied() {
+        Toast.makeText(this, "Camera Permission DENIED", Toast.LENGTH_SHORT).show();
+        onBackPressed();
+        finish();
     }
 
+    @Override
+    public void handleResult(Result rawResult) {
+        zXingScannerView.stopCamera();
+        setContentView(R.layout.activity_scan_qr);
+        Toast.makeText(this, "Scanned: " + rawResult.getText(), Toast.LENGTH_LONG).show();
+        // TODO: Scan result handler here
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        zXingScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
+        zXingScannerView.startCamera();          // Start camera on resume
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        zXingScannerView.stopCamera();           // Stop camera on pause
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

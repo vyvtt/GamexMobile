@@ -14,10 +14,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".EventDetailActivity"></activity>
-        <activity
-            android:name=".ScanQRActivity"
-            android:screenOrientation="portrait"
-            tools:replace="screenOrientation"></activity>
+        <activity android:name=".ScanQRActivity"></activity>
         <activity
             android:name=".SignupActivity"
             android:theme="@style/CusFullScreenStyle" />

@@ -35,7 +35,6 @@ public class HomeFragment extends Fragment {
         ArrayList<String> exImg = new ArrayList<>();
         ArrayList<String> exName = new ArrayList<>();
         ArrayList<String> exDate = new ArrayList<>();
-        ArrayList<String> exAddr = new ArrayList<>();
         exName.add("AUTOMECHANIKA HO CHI MINH CITY 2019");
         exName.add("TELEFILM 2019 / ICTCOMM 2019");
         exName.add("VIFA GOOD URBAN 2019 – VIFAG.U. 2019");
@@ -47,12 +46,6 @@ public class HomeFragment extends Fragment {
         exDate.add("February 28th to March 2nd");
         exDate.add("February 28th to March 2nd");
         exDate.add("February 28th to March 2nd");
-        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
-        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
-        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
-        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
-        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
-        exAddr.add("Floor 11, Indochina Park Tower Building, 4 Nguyen Dinh Chieu, Da Kao Ward, District 1, HCM City. Vietnam");
 
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvOngoing = view.findViewById(R.id.fg_home_rv_ongoing);
@@ -62,7 +55,7 @@ public class HomeFragment extends Fragment {
         rvYourEvent = view.findViewById(R.id.fg_home_rv_your_event);
         rvYourEvent.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        ExhibitionListRecycleViewAdapter adapter = new ExhibitionListRecycleViewAdapter(getContext(), exImg, exName, exDate, exAddr);
+        ExhibitionListRecycleViewAdapter adapter = new ExhibitionListRecycleViewAdapter(getContext(), exImg, exName, exDate);
         rvOngoing.setAdapter(adapter);
         rvNear.setAdapter(adapter);
         rvYourEvent.setAdapter(adapter);

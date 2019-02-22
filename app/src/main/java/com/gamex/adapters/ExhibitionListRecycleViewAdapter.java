@@ -25,14 +25,12 @@ public class ExhibitionListRecycleViewAdapter extends RecyclerView.Adapter<Exhib
     private ArrayList<String> exImg = new ArrayList<>();
     private ArrayList<String> exName = new ArrayList<>();
     private ArrayList<String> exDate = new ArrayList<>();
-    private ArrayList<String> exAddr = new ArrayList<>();
 
-    public ExhibitionListRecycleViewAdapter(Context context, ArrayList<String> exImg, ArrayList<String> exName, ArrayList<String> exDate, ArrayList<String> exAddr) {
+    public ExhibitionListRecycleViewAdapter(Context context, ArrayList<String> exImg, ArrayList<String> exName, ArrayList<String> exDate) {
         this.context = context;
         this.exImg = exImg;
         this.exName = exName;
         this.exDate = exDate;
-        this.exAddr = exAddr;
     }
 
     @NonNull
@@ -53,7 +51,7 @@ public class ExhibitionListRecycleViewAdapter extends RecyclerView.Adapter<Exhib
 
         exhibitionViewHolder.txtName.setText(exName.get(i));
         exhibitionViewHolder.txtDate.setText(exDate.get(i));
-        exhibitionViewHolder.txtAddress.setText(exAddr.get(i));
+//        exhibitionViewHolder.txtAddress.setText(exAddr.get(i));
 
         exhibitionViewHolder.item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +76,6 @@ public class ExhibitionListRecycleViewAdapter extends RecyclerView.Adapter<Exhib
         ImageView imgBanner;
         TextView txtName;
         TextView txtDate;
-        TextView txtAddress;
         CardView item;
 
         ExhibitionViewHolder(@NonNull View itemView) {
@@ -86,7 +83,6 @@ public class ExhibitionListRecycleViewAdapter extends RecyclerView.Adapter<Exhib
             imgBanner = itemView.findViewById(R.id.fg_home_rv_img);
             txtName = itemView.findViewById(R.id.fg_home_rv_txt_name);
             txtDate = itemView.findViewById(R.id.fg_home_rv_txt_date);
-            txtAddress = itemView.findViewById(R.id.fg_home_rv_txt_addr);
             item = itemView.findViewById(R.id.fg_home_rv_card);
         }
     }
