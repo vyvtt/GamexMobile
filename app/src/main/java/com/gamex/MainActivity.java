@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
                                 .withName("Thuy Vy")
                                 .withEmail("thuyvyv2tv@gmail.com")
                                 .withIcon(getResources().getDrawable(R.drawable.ic_default_ava))
+                        .withTextColorRes(R.color.txt_white)
+                        .withTextColor(getResources().getColor(R.color.txt_white))
                 )
                 .withSelectionListEnabledForSingleProfile(false)
                 .build();
@@ -177,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu_qr, menu);
         return true;
     }
-
 
     public void clickToScan(MenuItem item) {
         Intent intent = new Intent(this, ScanQRActivity.class);

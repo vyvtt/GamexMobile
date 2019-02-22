@@ -17,6 +17,45 @@
             android:paddingBottom="8dp">
 
             <TextView
+                android:id="@+id/fg_home_tv_your_event"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="12dp"
+                android:text="Your Exhibitions"
+                android:textColor="@color/txt_black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignBottom="@id/fg_home_tv_your_event"
+                android:layout_alignParentRight="true"
+                android:drawableRight="@drawable/ic_arrow_right"
+                android:drawablePadding="5dp"
+                android:layout_marginHorizontal="12dp"
+                android:gravity="center_vertical"
+                android:text="View all"
+                android:textColor="@color/txt_link" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fg_home_rv_your_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fg_home_tv_your_event"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
+
+            <TextView
                 android:id="@+id/fg_home_tv_ongoing"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -24,7 +63,7 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:layout_marginHorizontal="12dp"
-                android:text="On-going Exhibition"
+                android:text="On-going Exhibitions"
                 android:textColor="@color/txt_black"
                 android:textSize="16dp"
                 android:textStyle="bold" />
@@ -45,8 +84,50 @@
                 android:id="@+id/fg_home_rv_ongoing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fg_home_tv_ongoing" />
+                android:layout_below="@id/fg_home_tv_ongoing"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/fg_home_tv_near"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="12dp"
+                android:text="Exhibitions Near You"
+                android:textColor="@color/txt_black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignBottom="@id/fg_home_tv_near"
+                android:layout_alignParentRight="true"
+                android:drawableRight="@drawable/ic_arrow_right"
+                android:drawablePadding="5dp"
+                android:layout_marginHorizontal="12dp"
+                android:gravity="center_vertical"
+                android:text="View all"
+                android:textColor="@color/txt_link" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fg_home_rv_near"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fg_home_tv_near"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+        </RelativeLayout>
+
     </LinearLayout>
 
 </ScrollView>
