@@ -3,7 +3,7 @@
     <color name="color_primary">#FF3F51B5</color>
     <color name="color_primary_light">#FF757DE8</color>
     <color name="color_primary_dark">#FF303F9F</color>
-    <color name="color_accent">#EF5350</color>
+    <color name="colorAccent">#EF5350</color>
 
     <color name="color_secondary">#42a5f5</color>
     <color name="color_secondary_light">#80d6ff</color>
@@ -11,6 +11,8 @@
 
     <color name="bg_white">#FFFAFAFA</color>
     <color name="bg_black">#ff424242</color>
+    <color name="bg_grey">#bdbdbd</color>
+
     <color name="colorBlack">#212121</color>
     <color name="colorWhite">#FFFFFF</color>
 
@@ -31,13 +33,14 @@
     <color name="material_drawer_primary">@color/color_primary</color>
     <color name="material_drawer_primary_dark">@color/color_primary_dark</color>
     <color name="material_drawer_primary_light">@color/primary_light</color>
-    <color name="material_drawer_accent">@color/color_accent</color>
+    <color name="material_drawer_accent">@color/colorAccent</color>
     <!-- MaterialDrawer DEFAULT colors -->
     <color name="material_drawer_background">#F9F9F9</color>
     <!-- Material DEFAULT text / items colors -->
     <color name="material_drawer_primary_text">#DE000000</color>
     <color name="material_drawer_primary_icon">#8A000000</color>
-    <color name="material_drawer_secondary_text">#8A000000</color>
+    <!--<color name="material_drawer_secondary_text">#8A000000</color>-->
+    <color name="material_drawer_secondary_text">@color/txt_white</color>
     <color name="material_drawer_hint_text">#42000000</color>
     <color name="material_drawer_divider">#1F000000</color>
     <!-- Material DEFAULT drawer colors -->

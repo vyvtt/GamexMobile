@@ -47,7 +47,11 @@ public class ExhibitionListRecycleViewAdapter extends RecyclerView.Adapter<Exhib
 //                .asBitmap()
 //                .load(exImg.get(i))
 //                .into(exhibitionViewHolder.imgBanner);
-        exhibitionViewHolder.imgBanner.setImageResource(R.drawable.color_gradient_light);
+//        exhibitionViewHolder.imgBanner.setImageResource(R.drawable.color_gradient_light);
+        exhibitionViewHolder.imgBanner.setImageResource(R.color.bg_grey
+
+
+        );
 
         exhibitionViewHolder.txtName.setText(exName.get(i));
         exhibitionViewHolder.txtDate.setText(exDate.get(i));

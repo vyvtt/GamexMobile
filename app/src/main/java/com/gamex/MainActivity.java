@@ -3,8 +3,10 @@ package com.gamex;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     int primaryColor, secondaryColor;
     Toolbar toolbar;
     Drawer drawerMenu;
+    ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         primaryColor = R.color.color_primary;
         secondaryColor = R.color.color_secondary;
         toolbar = findViewById(R.id.home_toolbar);
-        toolbar.setBackground(getResources().getDrawable(R.color.bg_white));
+//        toolbar.setBackground(getResources().getDrawable(R.color.bg_white));
         setSupportActionBar(toolbar);
         createDrawer();
     }

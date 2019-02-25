@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/color_gradient_blue">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +15,10 @@
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/home_toolbar"
             app:title="Home"
-            android:elevation="4dp"></android.support.v7.widget.Toolbar>
+            app:titleTextColor="@color/txt_white"
+            android:elevation="4dp"
+            android:background="@android:color/transparent"
+            android:theme="@style/ToolBarStyle"></android.support.v7.widget.Toolbar>
 
         <FrameLayout
             android:layout_width="match_parent"
