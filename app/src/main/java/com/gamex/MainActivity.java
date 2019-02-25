@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.gamex.fragments.BookmarkFragment;
 import com.gamex.fragments.HomeFragment;
+import com.gamex.fragments.YourExhibitionFragment;
 import com.gamex.utils.Constant;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     int primaryColor, secondaryColor;
     Toolbar toolbar;
     Drawer drawerMenu;
-    ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
         switch (itemId) {
             case Constant.ITEM_HOME:
                 fragmentClass = HomeFragment.class;
+                break;
+            case Constant.ITEM_EVENT:
+                fragmentClass = YourExhibitionFragment.class;
                 break;
             case Constant.ITEM_BOOKMARK:
                 fragmentClass = BookmarkFragment.class;

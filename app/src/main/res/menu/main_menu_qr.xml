@@ -5,7 +5,7 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_scan_qr"
+        android:id="@+id/mn_item_qr"
         android:orderInCategory="300"
         android:title="QR_Code"
         android:icon="@drawable/ic_qr"

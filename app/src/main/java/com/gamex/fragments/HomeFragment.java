@@ -62,4 +62,36 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setHasOptionsMenu(true);
+//    }
+//
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        // TODO Add your menu entries here
+//        super.onCreateOptionsMenu(menu, inflater);
+////        inflater.inflate(R.menu.main_menu_qr, menu);
+//    }
+//
+////    @Override
+////    public boolean onCreateOptionsMenu(Menu menu) {
+////        // Add QR icon to the right side of Toolbar
+////        getMenuInflater().inflate(R.menu.main_menu_qr, menu);
+////        return true;
+////    }
+//
+//    public void clickToScan(MenuItem item) {
+//        Intent intent = new Intent(getContext(), ScanQRActivity.class);
+//        startActivity(intent);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        Intent intent = new Intent(getContext(), ScanQRActivity.class);
+//        startActivity(intent);
+//        return true;
+//    }
 }
