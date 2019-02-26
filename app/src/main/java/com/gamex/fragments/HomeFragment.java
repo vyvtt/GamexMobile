@@ -1,6 +1,8 @@
 package com.gamex.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,12 +29,18 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
     RecyclerView rvOngoing, rvNear, rvYourEvent;
     TextView txtToolBarTitle;
+    Call<List<Exhibition>> call;
 
     public HomeFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -61,7 +69,7 @@ public class HomeFragment extends Fragment {
 
         /*Create handle for the RetrofitInstance interface*/
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<Exhibition>> call = service.getAllExhibition();
+        call = service.getAllExhibition();
         call.enqueue(new Callback<List<Exhibition>>() {
             @Override
             public void onResponse(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
@@ -73,8 +81,12 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Exhibition>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
+                if (call.isCanceled()) {
+                    Toast.makeText(mActivity, "Call canceled", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mActivity, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
             }
         });
 
@@ -104,7 +116,24 @@ public class HomeFragment extends Fragment {
         rvNear.setAdapter(adapter);
         rvYourEvent.setAdapter(adapter);
     }
-//
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (call != null ) {
+            call.cancel();
+            if (call.isCanceled()) {
+                Toast.makeText(mActivity, "Call canceled", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    //
 //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);

@@ -1,17 +1,14 @@
 package com.gamex;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.gamex.fragments.BookmarkFragment;
 import com.gamex.fragments.HomeFragment;
@@ -31,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     int primaryColor, secondaryColor;
     Toolbar toolbar;
     Drawer drawerMenu;
+    boolean isInit = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private void createDrawer() {
         // Create the Menu header
         AccountHeader headerResult = new AccountHeaderBuilder()
-                .withHeaderBackground(getResources().getDrawable(R.drawable.color_gradient_light))
+                .withHeaderBackground(getResources().getDrawable(R.drawable.color_gradient_blue))
                 .withActivity(this)
                 .addProfiles(
                         new ProfileDrawerItem()
@@ -154,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.activity_main_container, fragment)
-                                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
                                 .commit();
                     }
 
@@ -197,6 +195,16 @@ public class MainActivity extends AppCompatActivity {
 //                .replace(R.id.activity_main_container, fragment)
 //                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
 //                .commit();
+
+        // 1st time open app: Home Fragment show first
+        if (isInit) {
+            isInit = false;
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.activity_main_container, fragment)
+                    .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
+                    .commit();
+        }
         drawerMenu.closeDrawer();
     }
 
