@@ -12,12 +12,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="fixed"
-            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+            app:tabTextAppearance="@style/MyTabLayoutStyle"
+            android:elevation="1dp"
+            android:visibility="visible"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/bg_white"
+            app:tabSelectedTextColor="@color/txt_white"
+            app:tabTextColor="@color/txt_not_focus"
+            app:tabIndicatorHeight="4dp"
             />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/fg_yourEx_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:paddingTop="25dp"/>
 
 </LinearLayout>

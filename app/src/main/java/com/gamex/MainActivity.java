@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withAccountHeader(headerResult)
+                .withDelayOnDrawerClose(100)
                 .addDrawerItems(
                         headerActivity,
                         menuItemHome,
@@ -144,14 +145,31 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 })
+                .withOnDrawerListener(new Drawer.OnDrawerListener() {
+                    @Override
+                    public void onDrawerOpened(View drawerView) { }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.activity_main_container, fragment)
+                                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                .commit();
+                    }
+
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) { }
+                })
                 .build();
         drawerMenu.setSelection(Constant.ITEM_HOME);
     }
 
+    Fragment fragment = null;
+    Class fragmentClass = null;
     private void selectDrawerItem(IDrawerItem drawerItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass = null;
+
         int itemId = (int) drawerItem.getIdentifier();
 
         switch (itemId) {
@@ -174,8 +192,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.activity_main_container, fragment).commit();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.activity_main_container, fragment)
+//                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+//                .commit();
         drawerMenu.closeDrawer();
     }
 

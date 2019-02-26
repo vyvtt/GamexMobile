@@ -9,4 +9,8 @@ public final class Constant {
     public static final int ITEM_EDIT_PROFILE = 6;
     public static final int ITEM_CHANGE_PASSWORD = 7;
     public static final int ITEM_LOGOUT = 8;
+
+    public static final String BASE_URL = "http://192.168.100.79/GamexApi/";
+    public static final String API_EXHIBITON = "api/Exhibition";
+
 }

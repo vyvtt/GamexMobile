@@ -14,11 +14,20 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/home_toolbar"
-            app:title="Home"
-            app:titleTextColor="@color/txt_white"
             android:elevation="4dp"
             android:background="@android:color/transparent"
-            android:theme="@style/ToolBarStyle"></android.support.v7.widget.Toolbar>
+            android:theme="@style/ToolBarStyle"
+            app:title=" ">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/txt_white"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:id="@+id/toolbar_title" />
+        </android.support.v7.widget.Toolbar>
 
         <FrameLayout
             android:layout_width="match_parent"
