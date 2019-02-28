@@ -10,7 +10,12 @@ public final class Constant {
     public static final int ITEM_CHANGE_PASSWORD = 7;
     public static final int ITEM_LOGOUT = 8;
 
-    public static final String BASE_URL = "http://192.168.100.79/GamexApi/";
-    public static final String API_EXHIBITON = "api/Exhibition";
+    // API
+    public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
+    public static final String API_EXHIBITION = "api/Exhibition";
+    public static final String API_LOGIN = "api/account/login";
+
+    // Validate error messages
+    public static final String ERR_REQUIRED = "Required";
 
 }

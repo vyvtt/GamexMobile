@@ -1,11 +1,12 @@
-package com.gamex;
+package com.gamex.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import com.gamex.R;
 
 public class SignupActivity extends AppCompatActivity {
     TextView textViewLogin;
@@ -15,7 +16,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        textViewLogin = findViewById(R.id.textViewLogin);
+        textViewLogin = findViewById(R.id.txtToLogin);
         textViewLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

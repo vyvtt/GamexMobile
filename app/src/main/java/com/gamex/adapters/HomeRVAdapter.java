@@ -14,46 +14,55 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gamex.EventDetailActivity;
+import com.gamex.activity.EventDetailActivity;
 import com.gamex.R;
+import com.gamex.models.Exhibition;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class YourExCurrentAdapter extends RecyclerView.Adapter<YourExCurrentAdapter.ViewHolder> {
+public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.ViewHolder> {
+
     private Context context;
-    private ArrayList<String> exImg = new ArrayList<>();
-    private ArrayList<String> exName = new ArrayList<>();
-    private ArrayList<String> exDate = new ArrayList<>();
-    private ArrayList<String> exAddr = new ArrayList<>();
+    private List<Exhibition> dataList;
 
-    public YourExCurrentAdapter(Context context, ArrayList<String> exImg, ArrayList<String> exName, ArrayList<String> exDate, ArrayList<String> exAddr) {
+    public HomeRVAdapter(Context context, List<Exhibition> dataList) {
         this.context = context;
-        this.exImg = exImg;
-        this.exName = exName;
-        this.exDate = exDate;
-        this.exAddr = exAddr;
+        this.dataList = dataList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_yourexhibition_list, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_home_list_exhibition, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-// use when have img url online
+        // use when have img url online
 //        Glide.with(context)
 //                .asBitmap()
 //                .load(exImg.get(i))
 //                .into(viewHolder.imgBanner);
 //        viewHolder.imgBanner.setImageResource(R.drawable.color_gradient_light);
-        viewHolder.imgBanner.setImageResource(R.color.bg_grey);
 
-        viewHolder.txtName.setText(exName.get(i));
-        viewHolder.txtDate.setText(exDate.get(i));
-        viewHolder.txtAddr.setText(exAddr.get(i));
+        Picasso.Builder builder = new Picasso.Builder(context);
+        builder.downloader(new OkHttp3Downloader(context));
+        builder.build().load(dataList.get(i).getLogo())
+                .placeholder((R.drawable.ic_launcher_background))
+                .error(R.color.bg_grey)
+                .into(viewHolder.imgBanner);
+
+        viewHolder.imgBanner.setImageResource(R.color.bg_grey);
+        viewHolder.txtName.setText(dataList.get(i).getName());
+        String exDate = dataList.get(i).getStartDate() + dataList.get(i).getEndDate();
+        viewHolder.txtDate.setText(exDate);
+
+//        viewHolder.txtName.setText(exName.get(i));
+//        viewHolder.txtDate.setText(exDate.get(i));
+//        viewHolder.txtAddress.setText(exAddr.get(i));
 
         viewHolder.item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,23 +80,21 @@ public class YourExCurrentAdapter extends RecyclerView.Adapter<YourExCurrentAdap
 
     @Override
     public int getItemCount() {
-        return exName.size();
+        return dataList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgBanner;
         TextView txtName;
         TextView txtDate;
-        TextView txtAddr;
         CardView item;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgBanner = itemView.findViewById(R.id.fg_yourEx_rv_img);
-            txtName = itemView.findViewById(R.id.fg_yourEx_rv_name);
-            txtDate = itemView.findViewById(R.id.fg_yourEx_rv_date);
-            txtAddr = itemView.findViewById(R.id.fg_yourEx_rv_address);
-            item = itemView.findViewById(R.id.fg_yourEx_rv_card);
+            imgBanner = itemView.findViewById(R.id.fg_home_rv_img);
+            txtName = itemView.findViewById(R.id.fg_home_rv_txt_name);
+            txtDate = itemView.findViewById(R.id.fg_home_rv_txt_date);
+            item = itemView.findViewById(R.id.fg_home_rv_card);
         }
     }
 }

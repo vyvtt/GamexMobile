@@ -4,24 +4,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gamex.MainActivity;
 import com.gamex.R;
-import com.gamex.adapters.YourExhibitionAdapter;
+import com.gamex.adapters.YourExhibitionTabAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class YourExhibitionFragment extends Fragment {
-    private FragmentActivity mContext;
+public class YourExhibitionFragment extends BaseFragment {
     TextView txtToolBarTitle;
 
     public YourExhibitionFragment() {
@@ -51,7 +47,7 @@ public class YourExhibitionFragment extends Fragment {
 
         // Create an adapter that knows which fragment should be shown on each page
         // using getFragmentManager() will work too
-        YourExhibitionAdapter adapter = new YourExhibitionAdapter(getChildFragmentManager());
+        YourExhibitionTabAdapter adapter = new YourExhibitionTabAdapter(getChildFragmentManager());
 
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);

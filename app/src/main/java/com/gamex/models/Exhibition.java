@@ -1,7 +1,5 @@
 package com.gamex.models;
 
-import android.support.annotation.Nullable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +7,7 @@ public class Exhibition {
 
     @SerializedName("exhibitionId")
     @Expose
-    private Integer exhibitionId;
+    private String exhibitionId;
     @SerializedName("name")
     @Expose
     private String name;
@@ -28,15 +26,15 @@ public class Exhibition {
     @SerializedName("endDate")
     @Expose
     private String endDate;
-    @SerializedName("location")
-    @Expose
-    private String location;
     @SerializedName("logo")
     @Expose
     private String logo;
-    @SerializedName("qr")
+    @SerializedName("lat")
     @Expose
-    private String qr;
+    private String lat;
+    @SerializedName("lng")
+    @Expose
+    private String lng;
 
     /**
      * No args constructor for use in serialization
@@ -49,16 +47,16 @@ public class Exhibition {
      *
      * @param logo
      * @param startDate
-     * @param location
      * @param address
      * @param description
      * @param name
+     * @param lng
      * @param endDate
      * @param exhibitionId
      * @param organizerId
-     * @param qr
+     * @param lat
      */
-    public Exhibition(Integer exhibitionId, String name, String description, String address, String organizerId, String startDate, String endDate, String location, String logo, String qr) {
+    public Exhibition(String exhibitionId, String name, String description, String address, String organizerId, String startDate, String endDate, String logo, String lat, String lng) {
         super();
         this.exhibitionId = exhibitionId;
         this.name = name;
@@ -67,16 +65,16 @@ public class Exhibition {
         this.organizerId = organizerId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.location = location;
         this.logo = logo;
-        this.qr = qr;
+        this.lat = lat;
+        this.lng = lng;
     }
 
-    public Integer getExhibitionId() {
+    public String getExhibitionId() {
         return exhibitionId;
     }
 
-    public void setExhibitionId(Integer exhibitionId) {
+    public void setExhibitionId(String exhibitionId) {
         this.exhibitionId = exhibitionId;
     }
 
@@ -128,14 +126,6 @@ public class Exhibition {
         this.endDate = endDate;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getLogo() {
         return logo;
     }
@@ -144,12 +134,20 @@ public class Exhibition {
         this.logo = logo;
     }
 
-    public Object getQr() {
-        return qr;
+    public String getLat() {
+        return lat;
     }
 
-    public void setQr(String qr) {
-        this.qr = qr;
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
 }

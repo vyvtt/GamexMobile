@@ -29,6 +29,39 @@
                 android:id="@+id/toolbar_title" />
         </android.support.v7.widget.Toolbar>
 
+        <ProgressBar
+            android:id="@+id/main_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
+            android:visibility="gone"
+            android:indeterminateTint="@color/txt_white"
+            android:indeterminateTintMode="src_in"
+            />
+
+        <TextView
+            android:id="@+id/main_txt_no_internet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Internet Connection. Please try again later."
+            android:gravity="center_vertical|center_horizontal"
+            android:background="@color/bg_red"
+            android:padding="5dp"
+            android:textColor="@color/txt_white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/main_txt_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Loading. Please wait . . . "
+            android:gravity="center_vertical|center_horizontal"
+            android:background="@android:color/transparent"
+            android:padding="5dp"
+            android:textColor="@color/txt_white"
+            android:visibility="gone" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

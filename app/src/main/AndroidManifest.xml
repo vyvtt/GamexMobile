@@ -14,14 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EventDetailActivity"></activity>
-        <activity android:name=".ScanQRActivity"></activity>
+        <activity android:name=".activity.EventDetailActivity"></activity>
+        <activity android:name=".activity.ScanQRActivity"></activity>
         <activity
-            android:name=".SignupActivity"
-            android:theme="@style/CusFullScreenStyle" />
+            android:name=".activity.SignupActivity"
+            android:theme="@style/MyTheme.CusFullScreenStyle" />
         <activity
-            android:name=".SplashActivity"
-            android:theme="@style/SplashStyle">
+            android:name=".activity.SplashActivity"
+            android:theme="@style/MyTheme.SplashStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,11 +29,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/CusFullScreenStyle" />
+            android:name=".activity.MainActivity"
+            android:theme="@style/MyTheme.CusFullScreenStyle" />
         <activity
-            android:name=".LoginActivity"
-            android:theme="@style/CusFullScreenStyle" />
+            android:name=".activity.LoginActivity"
+            android:theme="@style/MyTheme.CusFullScreenStyle" />
     </application>
 
 </manifest>

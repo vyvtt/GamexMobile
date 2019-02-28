@@ -1,4 +1,4 @@
-package com.gamex;
+package com.gamex.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.gamex.R;
 import com.gamex.fragments.BookmarkFragment;
 import com.gamex.fragments.HomeFragment;
 import com.gamex.fragments.YourExhibitionFragment;

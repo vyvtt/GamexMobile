@@ -1,7 +1,6 @@
-package com.gamex;
+package com.gamex.activity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.gamex.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 

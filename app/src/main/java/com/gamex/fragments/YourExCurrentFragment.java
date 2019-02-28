@@ -10,15 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gamex.R;
-import com.gamex.adapters.ExhibitionListRecycleViewAdapter;
-import com.gamex.adapters.YourExCurrentAdapter;
+import com.gamex.adapters.YourExhibitionDataAdapter;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class YourExCurrentFragment extends Fragment {
+public class YourExCurrentFragment extends BaseFragment {
     RecyclerView rvYourExCurrent;
 
     public YourExCurrentFragment() {
@@ -62,7 +61,7 @@ public class YourExCurrentFragment extends Fragment {
         rvYourExCurrent = view.findViewById(R.id.fg_yourEx_rv_current);
         rvYourExCurrent.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        YourExCurrentAdapter adapter = new YourExCurrentAdapter(getContext(), exImg, exName, exDate, exAddr);
+        YourExhibitionDataAdapter adapter = new YourExhibitionDataAdapter(getContext(), exImg, exName, exDate, exAddr);
         rvYourExCurrent.setAdapter(adapter);
         return view;
     }

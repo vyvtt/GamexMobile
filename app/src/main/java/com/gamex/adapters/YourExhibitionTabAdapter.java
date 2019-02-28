@@ -8,10 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.gamex.fragments.YourExCurrentFragment;
 import com.gamex.fragments.YourExPastFragment;
 
-public class YourExhibitionAdapter extends FragmentPagerAdapter {
+public class YourExhibitionTabAdapter extends FragmentPagerAdapter {
     private String title[] = {"On-going", "Past"};
 
-    public YourExhibitionAdapter(FragmentManager fm) {
+    public YourExhibitionTabAdapter(FragmentManager fm) {
         super(fm);
     }
 

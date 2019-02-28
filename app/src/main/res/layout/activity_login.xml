@@ -4,66 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
-    android:theme="@style/Theme.AppCompat.NoActionBar">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:layout_centerHorizontal="true"
-        android:textSize="64sp"
-        android:textColor="@color/color_primary"
-        android:fontFamily="@font/leckerli_one_regular"
-        android:layout_marginVertical="20dp"/>
+    tools:context=".activity.LoginActivity"
+    android:theme="@style/MyTheme.CusFullScreenStyle"
+    android:background="@drawable/color_gradient_blue"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
-        android:paddingTop="20dp"
+        android:orientation="horizontal"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
+        android:layout_marginBottom="30dp"
+        android:layout_above="@+id/login_layout">
+
+        <TextView
+            android:gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="GamEx "
+            android:fontFamily="@font/leckerli_one_regular"
+            android:textColor="@color/txt_white"
+            android:textSize="28sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="| LOGIN"
+            android:textColor="@color/txt_white"
+            android:textSize="28sp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:padding="30dp"
+        android:layout_marginHorizontal="55dp"
+        android:background="@drawable/bg_corner_radius"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         >
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:hint="@string/username"
-            android:drawableStart="@drawable/ic_account"
-            android:drawablePadding="24dp"
-            android:inputType="text"
-            android:maxLines="1"
-            android:theme="@style/MyEditText"
-            android:textColor="@color/txt_black"
-            android:textSize="16sp"
-            />
+            app:errorEnabled="true"
+            android:layout_marginHorizontal="30dp"
+            android:hint="Username"
+            style="@style/MyStyle.InputLayout">
 
-        <EditText
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/MyTheme.EditText"
+                android:inputType="text"
+                android:maxLines="1" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:layout_marginTop="@dimen/btn_margin_top"
-            android:drawableStart="@drawable/ic_password"
-            android:drawablePadding="24dp"
-            android:maxLines="1"
-            android:theme="@style/MyEditText"
-            android:textColor="@color/txt_black"
-            android:textSize="16sp"
-            />
+            app:errorEnabled="true"
+            android:layout_marginHorizontal="30dp"
+            android:hint="Password"
+            style="@style/MyStyle.InputLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/MyTheme.EditText"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/btn_margin_top"
-            android:text="@string/sign_in"
+            android:text="Login"
             android:background="@drawable/effect_ripple"
-            android:textColor="@color/txt_white"/>
+            android:textColor="@color/txt_white"
+            android:layout_marginHorizontal="30dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -89,16 +122,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="No account yet? "
-            android:textColor="@color/txt_hint"/>
+            android:textColor="@color/txt_white"/>
 
         <TextView
-            android:id="@+id/textViewSignUp"
+            android:id="@+id/txtToRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Create one!"
             android:textStyle="bold"
-            android:textColor="@color/color_primary" />
+            android:textColor="@color/color_primary_dark" />
 
     </LinearLayout>
 
