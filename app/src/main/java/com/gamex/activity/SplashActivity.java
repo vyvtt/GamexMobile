@@ -15,38 +15,13 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 //        getWindow().setExitTransition(null);
 
-        final Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+        final Intent intent = new Intent(SplashActivity.this, RegisterActivity.class);
 
-//        Thread splashThread = new Thread()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                try {
-//                    sleep(2000);
-//                } catch (InterruptedException e)
-//                {
-//                    // do nothing
-//                } finally
-//                {
+        new Handler().postDelayed(() -> {
 //                    ActivityOptions options = ActivityOptions
 //                            .makeSceneTransitionAnimation(SplashActivity.this, findViewById(R.id.txtAppName), "app_logo");
-//                    startActivity(intent, options.toBundle());
-//                    finish();
-//                }
-//            }
-//        };
-//
-//        splashThread.start();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                    ActivityOptions options = ActivityOptions
-//                            .makeSceneTransitionAnimation(SplashActivity.this, findViewById(R.id.txtAppName), "app_logo");
-                    startActivity(intent);
-                    finish();
-            }
+                startActivity(intent);
+                finish();
         },2000);
     }
 }

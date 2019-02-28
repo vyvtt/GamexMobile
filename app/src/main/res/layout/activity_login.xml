@@ -120,8 +120,8 @@
             android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="No account yet? "
+            android:layout_weight="1"
             android:textColor="@color/txt_white"/>
 
         <TextView
@@ -131,7 +131,8 @@
             android:layout_weight="1"
             android:text="Create one!"
             android:textStyle="bold"
-            android:textColor="@color/color_primary_dark" />
+            android:textColor="@color/color_primary_dark"
+            android:background="?attr/selectableItemBackground"/>
 
     </LinearLayout>
 

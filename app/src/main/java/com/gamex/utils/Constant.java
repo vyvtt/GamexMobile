@@ -17,5 +17,7 @@ public final class Constant {
 
     // Validate error messages
     public static final String ERR_REQUIRED = "Required";
+    public static final String ERR_LENGTH_6_12 = "Required 6-12 characters";
+    public static final String ERR_AZ_CHARACTERS = "Contain alphabetic characters only";
 
 }

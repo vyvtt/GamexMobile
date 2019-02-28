@@ -46,8 +46,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         btnLogin.setOnClickListener(v -> validator.validate());
 
         txtToRegister.setOnClickListener(v -> {
-            txtToRegister.setTextColor(getResources().getColor(R.color.btn_pressed));
-            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+//            txtToRegister.setTextColor(getResources().getColor(R.color.btn_pressed));
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
     }
@@ -62,7 +62,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             if (view instanceof TextInputLayout) {
                 ((TextInputLayout) view).setError("");
                 ((TextInputLayout) view).setErrorEnabled(false);
-
             }
         });
     }
@@ -75,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
-        errors.get(0).getView().requestFocus();
+//        errors.get(0).getView().requestFocus();
         for (ValidationError error : errors) {
             View view = error.getView();
             String message = error.getCollatedErrorMessage(this);

@@ -17,7 +17,7 @@
         <activity android:name=".activity.EventDetailActivity"></activity>
         <activity android:name=".activity.ScanQRActivity"></activity>
         <activity
-            android:name=".activity.SignupActivity"
+            android:name=".activity.RegisterActivity"
             android:theme="@style/MyTheme.CusFullScreenStyle" />
         <activity
             android:name=".activity.SplashActivity"

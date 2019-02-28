@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/MyTheme.CusFullScreenStyle"
-    tools:context=".activity.SignupActivity"
-    android:background="@drawable/color_gradient_blue">
+    tools:context=".activity.RegisterActivity"
+    android:background="@drawable/color_gradient_blue"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -164,6 +165,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
+            android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/btn_margin_top"
@@ -197,7 +199,8 @@
             android:layout_weight="1"
             android:text="Login!"
             android:textColor="@color/color_primary_dark"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:background="?attr/selectableItemBackground"/>
 
     </LinearLayout>
 
