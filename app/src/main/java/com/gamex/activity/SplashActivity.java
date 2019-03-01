@@ -15,13 +15,13 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 //        getWindow().setExitTransition(null);
 
-        final Intent intent = new Intent(SplashActivity.this, RegisterActivity.class);
+        final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 
         new Handler().postDelayed(() -> {
 //                    ActivityOptions options = ActivityOptions
 //                            .makeSceneTransitionAnimation(SplashActivity.this, findViewById(R.id.txtAppName), "app_logo");
                 startActivity(intent);
                 finish();
-        },2000);
+        },100); // TODO 100ms is for open app faster -> change to 2000ms later
     }
 }

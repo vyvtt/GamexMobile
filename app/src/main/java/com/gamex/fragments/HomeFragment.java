@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gamex.R;
+import com.gamex.activity.MainActivity;
 import com.gamex.adapters.HomeRVAdapter;
 import com.gamex.models.Exhibition;
 import com.gamex.network.GetDataService;
@@ -51,6 +52,10 @@ public class HomeFragment extends BaseFragment {
         txtToolBarTitle.setText("Home");
         progressBar.setVisibility(View.VISIBLE);
         txtLoading.setVisibility(View.VISIBLE);
+
+//        //set the back arrow in the toolbar
+//        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        ((MainActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
@@ -64,16 +69,13 @@ public class HomeFragment extends BaseFragment {
         rvNear = view.findViewById(R.id.fg_home_rv_near);
         rvYourEvent = view.findViewById(R.id.fg_home_rv_your_event);
 
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // TODO refresh
-                progressBar.setVisibility(View.VISIBLE);
-                txtLoading.setVisibility(View.VISIBLE);
-                getExhibitionData();
-                // Complete refresh
-                refreshLayout.setRefreshing(false);
-            }
+        refreshLayout.setOnRefreshListener(() -> {
+            // TODO refresh
+            progressBar.setVisibility(View.VISIBLE);
+            txtLoading.setVisibility(View.VISIBLE);
+            getExhibitionData();
+            // Complete refresh
+            refreshLayout.setRefreshing(false);
         });
 
         getExhibitionData();

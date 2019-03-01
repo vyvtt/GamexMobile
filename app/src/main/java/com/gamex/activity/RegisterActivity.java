@@ -68,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
             txtToLogin.setTextColor(getResources().getColor(R.color.btn_pressed));
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         });
 
         btnRegister.setOnClickListener(v -> validator.validate());

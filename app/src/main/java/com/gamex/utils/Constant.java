@@ -1,6 +1,7 @@
 package com.gamex.utils;
 
 public final class Constant {
+    // drawer menu identify
     public static final int ITEM_HOME = 1;
     public static final int ITEM_EVENT = 2;
     public static final int ITEM_BOOKMARK = 3;
@@ -19,5 +20,8 @@ public final class Constant {
     public static final String ERR_REQUIRED = "Required";
     public static final String ERR_LENGTH_6_12 = "Required 6-12 characters";
     public static final String ERR_AZ_CHARACTERS = "Contain alphabetic characters only";
+
+    //
+    public final static String FG_HOME_TAG = "[HomeFragmentTransactionTag]";
 
 }

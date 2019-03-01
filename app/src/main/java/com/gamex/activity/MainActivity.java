@@ -26,10 +26,11 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 public class MainActivity extends AppCompatActivity {
-    int primaryColor, secondaryColor;
+    int primaryColor, secondaryColor, preClickPosition;
     Toolbar toolbar;
     Drawer drawerMenu;
     boolean isInit = true;
+    boolean isCloseMenuOnBackButton = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +40,18 @@ public class MainActivity extends AppCompatActivity {
         primaryColor = R.color.color_primary;
         secondaryColor = R.color.color_secondary;
         toolbar = findViewById(R.id.home_toolbar);
-//        toolbar.setBackground(getResources().getDrawable(R.color.bg_white));
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar); // for getSupportActionBar in Fragment of this activity
         createDrawer();
     }
 
     private void createDrawer() {
-        // Create the Menu header
+        // Create the Drawer header
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withHeaderBackground(getResources().getDrawable(R.drawable.color_gradient_blue))
                 .withActivity(this)
                 .addProfiles(
                         new ProfileDrawerItem()
-                                .withName("Thuy Vy")
+                                .withName("Thuy Vy") // TODO add name + email from shared pref
                                 .withEmail("thuyvyv2tv@gmail.com")
                                 .withIcon(getResources().getDrawable(R.drawable.ic_default_ava))
                         .withTextColorRes(R.color.txt_white)
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withAccountHeader(headerResult)
-                .withDelayOnDrawerClose(100)
+                .withDelayOnDrawerClose(200)
                 .addDrawerItems(
                         headerActivity,
                         menuItemHome,
@@ -136,13 +136,10 @@ public class MainActivity extends AppCompatActivity {
                         new DividerDrawerItem(),
                         menuLogout
                 )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        // do something with the clicked item :D
-                        selectDrawerItem(drawerItem);
-                        return true;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    // event select an menu item in drawer
+                    selectDrawerItem(drawerItem);
+                    return true;
                 })
                 .withOnDrawerListener(new Drawer.OnDrawerListener() {
                     @Override
@@ -150,16 +147,34 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onDrawerClosed(View drawerView) {
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.activity_main_container, fragment)
-                                .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
-                                .commit();
+                        /*
+                         * Drawer will be closed by 2 ways
+                         * 1. User choose an drawer item -> drawer close -> change fragment -> prevent menu lag
+                         * 2. User press back button when drawer is open -> close drawer and DO NOTHING
+                         * */
+                        if (!isCloseMenuOnBackButton) {
+                            // 1. change fragment
+                            FragmentManager fragmentManager = getSupportFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.activity_main_container, fragment)
+                                    .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
+                                    .commit();
+                        } else {
+                            // 2. do nothing ^^
+                            isCloseMenuOnBackButton = false; // reset status
+                        }
                     }
 
                     @Override
                     public void onDrawerSlide(View drawerView, float slideOffset) { }
                 })
+//                .withOnDrawerNavigationListener(clickedView -> {
+//                    //this method is only called if the Arrow icon is shown. The hamburger is automatically managed by the MaterialDrawer
+//                    //if the back arrow is shown. close the activity
+//                    MainActivity.this.finish();
+//                    //return true if we have consumed the event
+//                    return true;
+//                })
                 .build();
         drawerMenu.setSelection(Constant.ITEM_HOME);
     }
@@ -167,9 +182,23 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment = null;
     Class fragmentClass = null;
     private void selectDrawerItem(IDrawerItem drawerItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-
+        // itemId == current position in drawer
         int itemId = (int) drawerItem.getIdentifier();
+
+        // 1st time open app: Home Fragment show first
+        if (isInit) {
+            isInit = false;
+            preClickPosition = itemId;
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.activity_main_container, new HomeFragment())
+                    .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
+                    .commit();
+            return;
+        } else if (preClickPosition == itemId) {
+            // Select the same option again -> do nothing
+            return;
+        }
 
         switch (itemId) {
             case Constant.ITEM_HOME:
@@ -190,23 +219,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Insert the fragment by replacing any existing fragment
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.activity_main_container, fragment)
-//                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-//                .commit();
-
-        // 1st time open app: Home Fragment show first
-        if (isInit) {
-            isInit = false;
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.activity_main_container, fragment)
-                    .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
-                    .commit();
-        }
         drawerMenu.closeDrawer();
+        preClickPosition = itemId; //update position
     }
 
     @Override
@@ -220,4 +234,81 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ScanQRActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = this.getSupportFragmentManager().findFragmentById(R.id.activity_main_container);
+
+        if (drawerMenu != null && drawerMenu.isDrawerOpen()) {
+            // Close drawer if it is open
+            isCloseMenuOnBackButton = true;
+            drawerMenu.closeDrawer();
+        } else {
+            // drawer is closed and currently at Home Fragment -> exit app
+            if (fragment instanceof HomeFragment) {
+                finish();
+            } else { // drawer is closed, press back button wil bring user back to Home Fragment
+                drawerMenu.setSelection(Constant.ITEM_HOME);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.activity_main_container, new HomeFragment())
+                        .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
+                        .commit();
+
+//                if (getFragmentManager().getBackStackEntryCount() > 0 ){
+//                    getFragmentManager().popBackStack(Constant.FG_HOME_TAG, 0);
+//                } else {
+//                    FragmentManager fragmentManager = getSupportFragmentManager();
+//                    fragmentManager.beginTransaction()
+//                        .replace(R.id.activity_main_container, new HomeFragment())
+//                        .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
+//                        .commit();
+//                }
+
+
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.activity_main_container, new HomeFragment())
+//                        .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
+//                        .commit();
+            }
+        }
+    }
+
+    //    @Override
+//    public void onBackPressed() {
+//        // Get FrameLayout that contain the fragment inside
+//        FrameLayout layoutContainer = findViewById(R.id.activity_main_container);
+//
+//        if (layoutContainer.getChildCount() == 1) {
+//            super.onBackPressed();
+//            if (layoutContainer.getChildCount() == 0) {
+//                new AlertDialog.Builder(this)
+//                        .setTitle("Close App?")
+//                        .setMessage("Close this app?")
+//                        .setPositiveButton("YES",
+//                                (dialog, which) -> finish())
+//                        .setNegativeButton("NO",
+//                                (dialog, which) -> {
+//                                }).show();
+//                // load your first Fragment here
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.activity_main_container, new HomeFragment())
+//                        .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
+//                        .addToBackStack(null)
+//                        .commit();
+//            }
+//        } else if (layoutContainer.getChildCount() == 0) {
+//            // load your first Fragment here
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.activity_main_container, new HomeFragment())
+//                    .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
+//                    .addToBackStack(null)
+//                    .commit();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 }

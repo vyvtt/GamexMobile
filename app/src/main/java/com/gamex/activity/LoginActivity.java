@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 //            txtToRegister.setTextColor(getResources().getColor(R.color.btn_pressed));
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 
