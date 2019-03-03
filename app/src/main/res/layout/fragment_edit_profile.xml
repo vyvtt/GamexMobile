@@ -13,7 +13,8 @@
         android:background="@drawable/bg_corner_radius"
         android:scrollbarSize="0dp"
         android:overScrollMode="ifContentScrolls"
-        android:layout_margin="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         >
 
         <LinearLayout
@@ -21,7 +22,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_corner_radius"
             android:orientation="vertical"
-            android:layout_margin="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:padding="15dp">
 
             <LinearLayout

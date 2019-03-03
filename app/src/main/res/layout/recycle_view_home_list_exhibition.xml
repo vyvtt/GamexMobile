@@ -25,7 +25,8 @@
                 android:id="@+id/fg_home_rv_img"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="140dp" />
+                android:layout_height="140dp"
+                android:foreground="@drawable/scrim"/>
 
             <TextView
                 android:id="@+id/fg_home_rv_txt_name"

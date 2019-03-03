@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.gamex.R;
+import com.gamex.adapters.EventDetailTabAdapter;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -15,7 +16,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 //        getWindow().setExitTransition(null);
 
-        final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        final Intent intent = new Intent(SplashActivity.this, EventDetailActivity.class);
 
         new Handler().postDelayed(() -> {
 //                    ActivityOptions options = ActivityOptions

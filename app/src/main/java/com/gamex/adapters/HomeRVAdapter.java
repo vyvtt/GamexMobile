@@ -80,7 +80,10 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        if (dataList != null) {
+            return dataList.size();
+        }
+        return 0;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -55,17 +55,14 @@ public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibiti
         viewHolder.txtDate.setText(exDate.get(i));
         viewHolder.txtAddr.setText(exAddr.get(i));
 
-        viewHolder.item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, EventDetailActivity.class);
-                Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
-                        viewHolder.item, 0, 0,
-                        viewHolder.item.getWidth(),
-                        viewHolder.item.getHeight())
-                        .toBundle();
-                ActivityCompat.startActivity(context, intent, options);
-            }
+        viewHolder.item.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EventDetailActivity.class);
+            Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
+                    viewHolder.item, 0, 0,
+                    viewHolder.item.getWidth(),
+                    viewHolder.item.getHeight())
+                    .toBundle();
+            ActivityCompat.startActivity(context, intent, options);
         });
     }
 
