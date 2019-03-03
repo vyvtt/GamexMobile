@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.gamex.fragments.ExDetailFragment;
 import com.gamex.fragments.YourExCurrentFragment;
 import com.gamex.fragments.YourExPastFragment;
 
@@ -19,7 +20,7 @@ public class EventDetailTabAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i){
             case 0:
-                return new YourExCurrentFragment();
+                return new ExDetailFragment();
             case 1:
                 return new YourExPastFragment();
         }

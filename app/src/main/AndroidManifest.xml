@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.EventDetailActivity"></activity>
+        <activity android:name=".activity.ExhibitionDetailActivity"></activity>
         <activity android:name=".activity.ScanQRActivity"></activity>
         <activity
             android:name=".activity.RegisterActivity"

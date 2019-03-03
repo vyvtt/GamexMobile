@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gamex.activity.EventDetailActivity;
+import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.R;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibiti
         viewHolder.txtAddr.setText(exAddr.get(i));
 
         viewHolder.item.setOnClickListener(v -> {
-            Intent intent = new Intent(context, EventDetailActivity.class);
+            Intent intent = new Intent(context, ExhibitionDetailActivity.class);
             Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                     viewHolder.item, 0, 0,
                     viewHolder.item.getWidth(),

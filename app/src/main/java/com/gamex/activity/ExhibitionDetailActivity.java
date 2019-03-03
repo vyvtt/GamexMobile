@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.gamex.R;
 import com.gamex.adapters.EventDetailTabAdapter;
 
-public class EventDetailActivity extends AppCompatActivity {
+public class ExhibitionDetailActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbar;
     AppBarLayout appBarLayout;
     TextView txtExName;
@@ -34,7 +34,7 @@ public class EventDetailActivity extends AppCompatActivity {
         }
 
         txtExName = findViewById(R.id.txtExName);
-        txtExName.setText("VIFA GOOD URBAN AUTOMECHANIKA 2019 – VIFAG.U. 2019");
+        txtExName.setText("VIFA GOOD URBAN 2019 – VIFAG.U. 2019");
 
         appBarLayout = findViewById(R.id.event_detail_appbar);
         collapsingToolbar = findViewById(R.id.event_detail_collapse_toolbar);
@@ -49,7 +49,7 @@ public class EventDetailActivity extends AppCompatActivity {
 
         // Scroll event animation
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-            Log.d(EventDetailActivity.class.getSimpleName(), "onOffsetChanged: verticalOffset: " + verticalOffset);
+            Log.d(ExhibitionDetailActivity.class.getSimpleName(), "onOffsetChanged: verticalOffset: " + verticalOffset);
             //  Vertical offset == 0 indicates appBar is fully expanded.
             if (Math.abs(verticalOffset) > 200) {
                 appBarExpanded = false;

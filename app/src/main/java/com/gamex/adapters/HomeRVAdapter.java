@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gamex.activity.EventDetailActivity;
+import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.R;
 import com.gamex.models.Exhibition;
 import com.jakewharton.picasso.OkHttp3Downloader;
@@ -67,7 +67,7 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.ViewHolder
         viewHolder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, EventDetailActivity.class);
+                Intent intent = new Intent(context, ExhibitionDetailActivity.class);
                 Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                         viewHolder.item, 0, 0,
                         viewHolder.item.getWidth(),
