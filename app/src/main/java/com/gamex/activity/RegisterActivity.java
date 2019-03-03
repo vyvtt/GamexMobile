@@ -53,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         //Bind view
-        btnRegister = findViewById(R.id.btnRegister);
+        btnRegister = findViewById(R.id.btnUpdateProfile);
         txtToLogin = findViewById(R.id.txtToLogin);
         tilFirstname = findViewById(R.id.tilFirstName);
         tilLastname = findViewById(R.id.tilLastName);

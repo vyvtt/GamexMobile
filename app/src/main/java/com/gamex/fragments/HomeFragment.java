@@ -7,9 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +21,10 @@ import com.gamex.R;
 import com.gamex.activity.MainActivity;
 import com.gamex.adapters.HomeRVAdapter;
 import com.gamex.models.Exhibition;
+import com.gamex.network.CheckInternetTask;
 import com.gamex.network.GetDataService;
 import com.gamex.network.APIClient;
+import com.gamex.utils.Constant;
 
 import java.util.List;
 
@@ -50,12 +55,6 @@ public class HomeFragment extends BaseFragment {
         txtLoading = getActivity().findViewById(R.id.main_txt_loading);
 
         txtToolBarTitle.setText("Home");
-        progressBar.setVisibility(View.VISIBLE);
-        txtLoading.setVisibility(View.VISIBLE);
-
-//        //set the back arrow in the toolbar
-//        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        ((MainActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
@@ -83,15 +82,19 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void getExhibitionData() {
-        if (APIClient.isOnline()) {
-            Toast.makeText(mActivity, "Has Internet Connection", Toast.LENGTH_SHORT).show();
-            callAPI();
-        } else {
-            Toast.makeText(mActivity, "No Internet Connection", Toast.LENGTH_SHORT).show();
-            txtNoInternet.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
-            txtLoading.setVisibility(View.GONE);
-        }
+        new CheckInternetTask(internet -> {
+            if (internet) {
+                Log.i(Constant.TAG_HOME, "Has Internet Connection");
+                progressBar.setVisibility(View.VISIBLE);
+                txtLoading.setVisibility(View.VISIBLE);
+                callAPI();
+            } else {
+                Log.i(Constant.TAG_HOME, "No Internet Connection");
+                txtNoInternet.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void callAPI() {
@@ -109,10 +112,10 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onFailure(Call<List<Exhibition>> call, Throwable t) {
                 if (call.isCanceled()) {
-                    Toast.makeText(mActivity, "Call canceled", Toast.LENGTH_SHORT).show();
+                    Log.i(Constant.TAG_HOME, "Cancel HTTP request on onFailure()");
                 } else {
                     Toast.makeText(mActivity, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
+                    Log.e(Constant.TAG_HOME, t.getMessage());
                 }
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
@@ -140,12 +143,9 @@ public class HomeFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         // Cancel retrofit call when change fragment
-        if (call != null ) {
+        if (call != null) {
             call.cancel();
-            // TODO: delete this, this Toast for test only
-            if (call.isCanceled()) {
-                Toast.makeText(mActivity, "Call canceled", Toast.LENGTH_SHORT).show();
-            }
+            Log.i(Constant.TAG_HOME, "Cancel retrofit request on Fragment stop");
         }
     }
 }

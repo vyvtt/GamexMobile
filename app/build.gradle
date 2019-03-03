@@ -44,10 +44,10 @@ dependencies {
     implementation 'me.dm7.barcodescanner:zxing:1.9.13'
 
     // Call Http (api)
-    implementation  'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation  'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     // Load img from url
-    implementation  'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
     // Validate
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'

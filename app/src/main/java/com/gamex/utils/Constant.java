@@ -14,14 +14,18 @@ public final class Constant {
     // API
     public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
     public static final String API_EXHIBITION = "api/Exhibition";
-    public static final String API_LOGIN = "api/account/login";
+    public static final String API_ACCOUNT_LOGIN = "api/account/login";
+    public static final String API_ACCOUNT_GET_INFO = "api/account/{username}";
 
     // Validate error messages
     public static final String ERR_REQUIRED = "Required";
     public static final String ERR_LENGTH_6_12 = "Required 6-12 characters";
     public static final String ERR_AZ_CHARACTERS = "Contain alphabetic characters only";
+    public static final String ERR_LENGTH_MIN_6 = "At least 6 characters";
 
     //
-    public final static String FG_HOME_TAG = "[HomeFragmentTransactionTag]";
-
+    public final static String TAG_MAIN = "[MainActivity] ***";
+    public final static String TAG_LOGIN = "[LoginActivity] ***";
+    public final static String TAG_REGISTER = "[RegisterActivity] ***";
+    public final static String TAG_HOME = "[HomeFragment] ***";
 }

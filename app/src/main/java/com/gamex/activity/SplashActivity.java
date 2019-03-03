@@ -22,6 +22,6 @@ public class SplashActivity extends AppCompatActivity {
 //                            .makeSceneTransitionAnimation(SplashActivity.this, findViewById(R.id.txtAppName), "app_logo");
                 startActivity(intent);
                 finish();
-        },100); // TODO 100ms is for open app faster -> change to 2000ms later
+        },2000); // TODO 100ms is for open app faster -> change to 2000ms later
     }
 }

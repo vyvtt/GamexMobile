@@ -24,7 +24,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/txt_white"
-                android:textStyle="bold"
                 android:textSize="20dp"
                 android:id="@+id/toolbar_title" />
         </android.support.v7.widget.Toolbar>
@@ -44,7 +43,7 @@
             android:id="@+id/main_txt_no_internet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No Internet Connection. Please try again later."
+            android:text="No Internet Connection."
             android:gravity="center_vertical|center_horizontal"
             android:background="@color/bg_red"
             android:padding="5dp"
