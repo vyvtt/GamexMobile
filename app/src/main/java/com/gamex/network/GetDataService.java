@@ -1,6 +1,7 @@
 package com.gamex.network;
 
 import com.gamex.models.Exhibition;
+import com.gamex.models.ExhibitionDetails;
 import com.gamex.utils.Constant;
 
 import java.util.List;
@@ -15,14 +16,20 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface GetDataService {
-    @GET(Constant.API_EXHIBITION)
+    @GET("api/Exhibition")
     Call<List<Exhibition>> getAllExhibition();
 
+    // login
     @FormUrlEncoded
-    @POST(Constant.API_ACCOUNT_LOGIN)
+    @POST("api/account/login")
     Call<ResponseBody> loginAccount(@Field("username") String username, @Field("password") String password);
 
-    @PUT(Constant.API_ACCOUNT_GET_INFO)
+    // account info
+    @PUT("api/account/{username}")
     Call<ResponseBody> getAccountInfo(@Path("username")String username);
+
+    // exhibition details
+    @GET("api/exhibition/{exhibitionId}")
+    Call<ExhibitionDetails> getEXhibitionDetails(@Path("exhibitionId") String exhibitionId);
 
 }

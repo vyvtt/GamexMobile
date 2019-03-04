@@ -22,12 +22,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private Context context;
     private List<Exhibition> dataList;
 
-    public HomeRVAdapter(Context context, List<Exhibition> dataList) {
+    public HomeAdapter(Context context, List<Exhibition> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
@@ -41,12 +41,6 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        // use when have img url online
-//        Glide.with(context)
-//                .asBitmap()
-//                .load(exImg.get(i))
-//                .into(viewHolder.imgBanner);
-//        viewHolder.imgBanner.setImageResource(R.drawable.color_gradient_light);
 
         Picasso.Builder builder = new Picasso.Builder(context);
         builder.downloader(new OkHttp3Downloader(context));
@@ -55,14 +49,9 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.ViewHolder
                 .error(R.color.bg_grey)
                 .into(viewHolder.imgBanner);
 
-        viewHolder.imgBanner.setImageResource(R.color.bg_grey);
         viewHolder.txtName.setText(dataList.get(i).getName());
         String exDate = dataList.get(i).getStartDate() + dataList.get(i).getEndDate();
         viewHolder.txtDate.setText(exDate);
-
-//        viewHolder.txtName.setText(exName.get(i));
-//        viewHolder.txtDate.setText(exDate.get(i));
-//        viewHolder.txtAddress.setText(exAddr.get(i));
 
         viewHolder.item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +62,10 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.ViewHolder
                         viewHolder.item.getWidth(),
                         viewHolder.item.getHeight())
                         .toBundle();
+                // TODO put data hereeeeeeeeeeeeeeee
+                intent.putExtra("EXTRA_EX_NAME", "DATAAAAAAAAAAA");
+                intent.putExtra("EXTRA_EX_ID", "DATAAAAAAAAAAA");
+                intent.putExtra("EXTRA_EX_IMG", "DATAAAAAAAAAAA");
                 ActivityCompat.startActivity(context, intent, options);
             }
         });

@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context=".activity.ExhibitionDetailActivity"
     android:theme="@style/MyTheme.CusFullScreenStyle"
+    android:background="@drawable/color_gradient_blue"
     >
 
     <android.support.design.widget.AppBarLayout
@@ -68,6 +69,7 @@
                     android:textColor="@color/txt_white"
                     android:textStyle="bold"
                     android:paddingTop="10dp"
+                    android:textSize="15sp"
                     />
             </android.support.v7.widget.Toolbar>
 
@@ -88,6 +90,39 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
+
+    <ProgressBar
+        android:id="@+id/event_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
+        android:visibility="gone"
+        android:indeterminateTint="@color/txt_white"
+        android:indeterminateTintMode="src_in"
+        />
+
+    <TextView
+        android:id="@+id/event_txt_no_internet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Internet Connection."
+        android:gravity="center_vertical|center_horizontal"
+        android:background="@color/bg_red"
+        android:padding="5dp"
+        android:textColor="@color/txt_white"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/event_txt_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loading. Please wait . . . "
+        android:gravity="center_vertical|center_horizontal"
+        android:background="@android:color/transparent"
+        android:padding="5dp"
+        android:textColor="@color/txt_white"
+        android:visibility="gone" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/event_detail_viewpager"

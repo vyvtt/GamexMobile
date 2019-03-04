@@ -43,12 +43,6 @@ public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibiti
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-// use when have img url online
-//        Glide.with(context)
-//                .asBitmap()
-//                .load(exImg.get(i))
-//                .into(viewHolder.imgBanner);
-//        viewHolder.imgBanner.setImageResource(R.drawable.color_gradient_light);
         viewHolder.imgBanner.setImageResource(R.color.bg_grey);
 
         viewHolder.txtName.setText(exName.get(i));

@@ -11,15 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gamex.R;
-import com.gamex.activity.MainActivity;
-import com.gamex.adapters.HomeRVAdapter;
+import com.gamex.adapters.HomeAdapter;
 import com.gamex.models.Exhibition;
 import com.gamex.network.CheckInternetTask;
 import com.gamex.network.GetDataService;
@@ -104,7 +101,11 @@ public class HomeFragment extends BaseFragment {
         call.enqueue(new Callback<List<Exhibition>>() {
             @Override
             public void onResponse(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
-                setDataAdapter(response.body());
+                if (response.code() == 200) {
+                    setDataAdapter(response.body());
+                } else {
+                    Log.i(Constant.TAG_HOME, response.toString());
+                }
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
             }
@@ -128,7 +129,7 @@ public class HomeFragment extends BaseFragment {
         rvNear.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rvYourEvent.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        HomeRVAdapter adapter = new HomeRVAdapter(getContext(), listExhibition);
+        HomeAdapter adapter = new HomeAdapter(getContext(), listExhibition);
         rvOngoing.setAdapter(adapter);
         rvNear.setAdapter(adapter);
         rvYourEvent.setAdapter(adapter);

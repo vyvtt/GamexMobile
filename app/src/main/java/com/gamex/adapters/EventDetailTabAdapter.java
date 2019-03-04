@@ -1,28 +1,36 @@
 package com.gamex.adapters;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.gamex.fragments.ExDetailFragment;
-import com.gamex.fragments.YourExCurrentFragment;
-import com.gamex.fragments.YourExPastFragment;
+import com.gamex.fragments.ExDetailListCompanyFragment;
 
 public class EventDetailTabAdapter extends FragmentPagerAdapter {
     private String title[] = {"Details", "List Company"};
+    private String exhibitionId;
 
-    public EventDetailTabAdapter(FragmentManager fm) {
+    public EventDetailTabAdapter(FragmentManager fm, String exhibitionId) {
         super(fm);
+        this.exhibitionId = exhibitionId;
     }
 
     @Override
     public Fragment getItem(int i) {
+        Bundle bundle = new Bundle();
+        bundle.putString("exhibitionId", exhibitionId);
         switch (i){
             case 0:
-                return new ExDetailFragment();
+                ExDetailFragment detailFragment = new ExDetailFragment();
+                detailFragment.setArguments(bundle);
+                return detailFragment;
             case 1:
-                return new YourExPastFragment();
+                ExDetailListCompanyFragment listCompanyFragment = new ExDetailListCompanyFragment();
+                listCompanyFragment.setArguments(bundle);
+                return listCompanyFragment;
         }
         return null;
     }

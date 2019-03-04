@@ -28,4 +28,5 @@ public final class Constant {
     public final static String TAG_LOGIN = "[LoginActivity] ***";
     public final static String TAG_REGISTER = "[RegisterActivity] ***";
     public final static String TAG_HOME = "[HomeFragment] ***";
+    public final static String TAG_FG_EX_DETAIL = "[ExDetailFragment] ***";
 }
