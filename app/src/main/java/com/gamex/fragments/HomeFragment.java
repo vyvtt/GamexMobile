@@ -1,9 +1,11 @@
 package com.gamex.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,41 +17,58 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.models.Exhibition;
 import com.gamex.network.CheckInternetTask;
 import com.gamex.network.GetDataService;
-import com.gamex.network.APIClient;
 import com.gamex.utils.Constant;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends Fragment {
+    @Inject
+    Retrofit retrofit;
+    Call<List<Exhibition>> call;
+
     SwipeRefreshLayout refreshLayout;
     RecyclerView rvOngoing, rvNear, rvYourEvent;
     TextView txtToolBarTitle, txtNoInternet, txtLoading;
     ProgressBar progressBar;
-    Call<List<Exhibition>> call;
+    FragmentActivity mContext;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
     @Override
+    public void onAttach(Context context) {
+        ((GamexApplication) context.getApplicationContext()).getAppComponent().inject(this);
+        super.onAttach(context);
+        if (context instanceof Activity) {
+            mContext = (FragmentActivity) context;
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        txtToolBarTitle = getActivity().findViewById(R.id.toolbar_title);
-        progressBar = getActivity().findViewById(R.id.main_progress_bar);
-        txtNoInternet = getActivity().findViewById(R.id.main_txt_no_internet);
-        txtLoading = getActivity().findViewById(R.id.main_txt_loading);
+
+        txtToolBarTitle = mContext.findViewById(R.id.main_toolbar_title);
+        progressBar = mContext.findViewById(R.id.main_progress_bar);
+        txtNoInternet = mContext.findViewById(R.id.main_txt_no_internet);
+        txtLoading = mContext.findViewById(R.id.main_txt_loading);
 
         txtToolBarTitle.setText("Home");
     }
@@ -96,7 +115,7 @@ public class HomeFragment extends BaseFragment {
 
     private void callAPI() {
         /*Create handle for the RetrofitInstance interface*/
-        GetDataService service = APIClient.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = retrofit.create(GetDataService.class);
         call = service.getAllExhibition();
         call.enqueue(new Callback<List<Exhibition>>() {
             @Override
@@ -115,7 +134,7 @@ public class HomeFragment extends BaseFragment {
                 if (call.isCanceled()) {
                     Log.i(Constant.TAG_HOME, "Cancel HTTP request on onFailure()");
                 } else {
-                    Toast.makeText(mActivity, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     Log.e(Constant.TAG_HOME, t.getMessage());
                 }
                 progressBar.setVisibility(View.GONE);
@@ -133,11 +152,6 @@ public class HomeFragment extends BaseFragment {
         rvOngoing.setAdapter(adapter);
         rvNear.setAdapter(adapter);
         rvYourEvent.setAdapter(adapter);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
     }
 
     @Override

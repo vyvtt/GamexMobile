@@ -1,21 +1,16 @@
 package com.gamex.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gamex.R;
-import com.gamex.activity.MainActivity;
-import com.gamex.network.APIClient;
 import com.gamex.network.CheckInternetTask;
 
 /**
@@ -37,7 +32,7 @@ public class EditProfileFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        txtToolBarTitle = getActivity().findViewById(R.id.toolbar_title);
+        txtToolBarTitle = getActivity().findViewById(R.id.main_toolbar_title);
         txtNoInternet = getActivity().findViewById(R.id.main_txt_no_internet);
         txtLoading = getActivity().findViewById(R.id.main_txt_loading);
         progressBar = getActivity().findViewById(R.id.main_progress_bar);

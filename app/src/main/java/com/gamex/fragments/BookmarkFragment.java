@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gamex.R;
-import com.gamex.activity.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +27,7 @@ public class BookmarkFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         // Change toolbar title
-        txtToolBarTitle = getActivity().findViewById(R.id.toolbar_title);
+        txtToolBarTitle = getActivity().findViewById(R.id.main_toolbar_title);
         txtToolBarTitle.setText("Bookmark");
         // Hide scan QR
         setHasOptionsMenu(true);

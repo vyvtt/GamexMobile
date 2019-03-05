@@ -17,6 +17,7 @@ import com.gamex.adapters.EventDetailTabAdapter;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class ExhibitionDetailActivity extends AppCompatActivity {
+    private final String TAG = ExhibitionDetailActivity.class.getSimpleName();
     private CollapsingToolbarLayout collapsingToolbar;
     private AppBarLayout appBarLayout;
     private TextView txtExName;
@@ -26,6 +27,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_event_detail);
 
@@ -43,7 +45,10 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
 
         getSaveData(); // ex name, img, id from intent -> set to view
         addTabAdapter();
-        appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> animationOnScroll(verticalOffset));
+        appBarLayout.addOnOffsetChangedListener((AppBarLayout appBarLayout, int verticalOffset) -> {
+//            animationOnScroll(verticalOffset);
+            invalidateOptionsMenu();
+        });
     }
 
     private void addTabAdapter() {
@@ -55,7 +60,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     }
 
     private void animationOnScroll(int verticalOffset) {
-        Log.d(ExhibitionDetailActivity.class.getSimpleName(), "onOffsetChanged: verticalOffset: " + verticalOffset);
+        Log.d(TAG, "onOffsetChanged: verticalOffset: " + verticalOffset);
         //  Vertical offset == 0 indicates appBar is fully expanded.
         if (Math.abs(verticalOffset) > 200) {
             appBarExpanded = false;

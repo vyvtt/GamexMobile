@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gamex.R;
-import com.gamex.activity.MainActivity;
 import com.gamex.adapters.YourExhibitionTabAdapter;
 
 /**
@@ -28,7 +27,7 @@ public class YourExhibitionFragment extends BaseFragment {
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Change toolbar title
-        txtToolBarTitle = getActivity().findViewById(R.id.toolbar_title);
+        txtToolBarTitle = getActivity().findViewById(R.id.main_toolbar_title);
         txtToolBarTitle.setText("Your Exhibitions");
         // Hide scan QR
         setHasOptionsMenu(true);

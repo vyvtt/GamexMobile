@@ -1,23 +1,32 @@
 package com.gamex.network;
 
-import com.gamex.utils.Constant;
-
-import java.io.IOException;
-
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
     private static Retrofit retrofit;
+    private static OkHttpClient okHttpClient;
 
     public static Retrofit getRetrofitInstance() {
-        if (retrofit == null) {
-            retrofit = new retrofit2.Retrofit.Builder()
-                    .baseUrl(Constant.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return retrofit;
+//        File httpCacheDirectory = new File(GamexApplication.getAppContext().getCacheDir(), "http-cache");
+//        long cacheSize = (5 * 1024 * 1024);
+//        Cache cache = new Cache(httpCacheDirectory, cacheSize);
+//
+//        if (okHttpClient == null) {
+//            okHttpClient = new OkHttpClient.Builder()
+//                    .addNetworkInterceptor(new CacheInterceptor())
+//                    .cache(cache)
+//                    .build();
+//        }
+//        if (retrofit == null) {
+//            retrofit = new retrofit2.Retrofit.Builder()
+//                    .baseUrl(Constant.BASE_URL)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .client(okHttpClient)
+//                    .build();
+//        }
+//        return retrofit;
+        return null;
     }
 
 //    public static boolean isOnline() {

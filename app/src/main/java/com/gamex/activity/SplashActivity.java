@@ -1,9 +1,9 @@
 package com.gamex.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.gamex.R;
 
@@ -15,7 +15,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 //        getWindow().setExitTransition(null);
 
-        final Intent intent = new Intent(SplashActivity.this, ExhibitionDetailActivity.class);
+        final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 
         new Handler().postDelayed(() -> {
 //                    ActivityOptions options = ActivityOptions

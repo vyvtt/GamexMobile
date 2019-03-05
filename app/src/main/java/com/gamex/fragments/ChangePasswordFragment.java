@@ -50,7 +50,7 @@ public class ChangePasswordFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        txtToolBarTitle = getActivity().findViewById(R.id.toolbar_title);
+        txtToolBarTitle = getActivity().findViewById(R.id.main_toolbar_title);
         txtNoInternet = getActivity().findViewById(R.id.main_txt_no_internet);
         txtLoading = getActivity().findViewById(R.id.main_txt_loading);
         progressBar = getActivity().findViewById(R.id.main_progress_bar);
