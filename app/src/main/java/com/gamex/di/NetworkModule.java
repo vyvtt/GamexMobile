@@ -4,20 +4,22 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.gamex.network.DataService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import retrofit2.Retrofit;
@@ -42,8 +44,7 @@ public class NetworkModule {
     @Singleton
     Cache provideOkHttpCache(Application application) {
         int cacheSize = 10 * 1024 * 1024; // 10 MiB
-        Cache cache = new Cache(application.getCacheDir(), cacheSize);
-        return cache;
+        return new Cache(application.getCacheDir(), cacheSize);
     }
 
     @Provides
@@ -59,31 +60,60 @@ public class NetworkModule {
     OkHttpClient provideOkHttpClient(Cache cache) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.cache(cache);
-        client.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Response response = chain.proceed(chain.request());
-                CacheControl cacheControl = new CacheControl.Builder()
-                        .maxAge(15, TimeUnit.MINUTES) // 15 minutes cache
-                        .build();
-                return response.newBuilder()
-                        .removeHeader("Pragma")
-                        .removeHeader("Cache-Control")
-                        .header("Cache-Control", cacheControl.toString())
-                        .build();
-            }
+        client.addInterceptor(chain -> {
+            Response response = chain.proceed(chain.request());
+            CacheControl cacheControl = new CacheControl.Builder()
+                    .maxAge(15, TimeUnit.MINUTES) // 15 minutes cache
+                    .build();
+            return response.newBuilder()
+                    .removeHeader("Pragma")
+                    .removeHeader("Cache-Control")
+                    .header("Cache-Control", cacheControl.toString())
+                    .build();
         });
         return client.build();
     }
 
     @Provides
+    @Named ("cache")
     @Singleton
-    Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
-        Retrofit retrofit = new Retrofit.Builder()
+    Retrofit provideCacheRetrofit(Gson gson, OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseURL)
                 .client(okHttpClient)
                 .build();
-        return retrofit;
+    }
+
+    @Provides
+    @Named ("no-cache")
+    @Singleton
+    Retrofit provideNoCacheRetrofit(Gson gson) {
+        return new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl(baseURL)
+                .build();
+    }
+
+    @Provides
+    @Named ("cache")
+    @Singleton
+    DataService provideCacheDataService(@Named("cache") Retrofit retrofit) {
+        return retrofit.create(DataService.class);
+    }
+
+    @Provides
+    @Named ("no-cache")
+    @Singleton
+    DataService provideNoCacheDataService(@Named("no-cache") Retrofit retrofit) {
+        return retrofit.create(DataService.class);
+    }
+
+    @Provides @Singleton
+    Picasso providePicasso(Application app) {
+        return new Picasso.Builder(app)
+                .loggingEnabled(true)
+                .downloader(new OkHttp3Downloader(app))
+                .build();
     }
 }

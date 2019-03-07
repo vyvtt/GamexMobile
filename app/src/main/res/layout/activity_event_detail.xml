@@ -9,6 +9,7 @@
     tools:context=".activity.ExhibitionDetailActivity"
     android:theme="@style/MyTheme.CusFullScreenStyle"
     android:background="@drawable/color_gradient_blue"
+    android:animateLayoutChanges="true"
     >
 
     <android.support.design.widget.AppBarLayout
@@ -91,43 +92,53 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ProgressBar
-        android:id="@+id/event_progress_bar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
-        android:visibility="gone"
-        android:indeterminateTint="@color/txt_white"
-        android:indeterminateTintMode="src_in"
-        />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical">
+        <ProgressBar
+            android:id="@+id/event_progress_bar"
+            style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/txt_black"
+            android:indeterminateTintMode="src_in"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <TextView
-        android:id="@+id/event_txt_no_internet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="No Internet Connection."
-        android:gravity="center_vertical|center_horizontal"
-        android:background="@color/bg_red"
-        android:padding="5dp"
-        android:textColor="@color/txt_white"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/event_txt_no_internet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Internet Connection."
+            android:gravity="center_vertical|center_horizontal"
+            android:background="@color/bg_red"
+            android:padding="5dp"
+            android:textColor="@color/txt_white"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <TextView
-        android:id="@+id/event_txt_loading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Loading. Please wait . . . "
-        android:gravity="center_vertical|center_horizontal"
-        android:background="@android:color/transparent"
-        android:padding="5dp"
-        android:textColor="@color/txt_white"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/event_txt_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Loading. Please wait . . . "
+            android:gravity="center_vertical|center_horizontal"
+            android:background="@android:color/transparent"
+            android:padding="5dp"
+            android:textColor="@color/txt_white"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/event_detail_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/event_detail_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </LinearLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/color_gradient_blue">
+    android:background="@drawable/color_gradient_blue"
+    android:animateLayoutChanges="true">
 
     <LinearLayout
         android:layout_width="match_parent"

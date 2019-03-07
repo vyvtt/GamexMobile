@@ -9,6 +9,7 @@
     android:overScrollMode="ifContentScrolls">
 
     <LinearLayout
+        android:id="@+id/fg_ex_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -60,40 +61,6 @@
             android:elevation="4dp"
             android:orientation="vertical">
 
-            <!--<RelativeLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-                <!--<ImageView-->
-                    <!--android:id="@+id/ic_organizer"-->
-                    <!--android:layout_width="20dp"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:src="@drawable/ic_organizer"-->
-                    <!--/>-->
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Organizer"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textColor="@color/txt_black"-->
-                    <!--android:layout_toRightOf="@id/ic_organizer"-->
-                    <!--android:paddingStart="5dp"/>-->
-            <!--</RelativeLayout>-->
-
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:paddingStart="25dp"-->
-                <!--android:text="HAWA CORPORATION - HAWA"-->
-                <!--android:textColor="@color/txt_sub_info"/>-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:background="@color/lighter_gray"/>-->
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -108,10 +75,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Start Date"
-                    android:textStyle="bold"
-                    android:textColor="@color/txt_black"
+                    android:textColor="@color/txt_sub_info"
                     android:layout_toRightOf="@id/ic_time"
-                    android:paddingStart="5dp"/>
+                    android:paddingStart="5dp"
+                    android:textSize="12sp"/>
             </RelativeLayout>
 
             <TextView
@@ -120,15 +87,34 @@
                 android:layout_height="wrap_content"
                 android:text="March 6th 2019"
                 android:paddingStart="25dp"
-                android:textColor="@color/txt_sub_info"/>
+                android:textColor="@color/txt_black"/>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="End Date"
-                android:textStyle="bold"
-                android:textColor="@color/txt_black"
-                android:paddingStart="25dp"/>
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/lighter_gray"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/ic_close"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_close"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="End Date"
+                    android:textColor="@color/txt_sub_info"
+                    android:layout_toRightOf="@id/ic_close"
+                    android:paddingStart="5dp"
+                    android:textSize="12sp"/>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/fg_ex_detail_end_date"
@@ -136,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:text="March 9th 2019. Open from 08:00 to 17:00"
                 android:paddingStart="25dp"
-                android:textColor="@color/txt_sub_info"/>
+                android:textColor="@color/txt_black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,10 +145,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Location"
-                    android:textStyle="bold"
-                    android:textColor="@color/txt_black"
+                    android:textColor="@color/txt_sub_info"
                     android:layout_toRightOf="@id/ic_location"
-                    android:paddingStart="5dp"/>
+                    android:paddingStart="5dp"
+                    android:textSize="12sp"/>
             </RelativeLayout>
 
             <TextView
@@ -171,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="25dp"
                 android:text="Hall A, SECC 799 Nguyen Van Linh, Tan Phu Ward, Dist 7. HoChiMinh City"
-                android:textColor="@color/txt_sub_info"/>
+                android:textColor="@color/txt_black"/>
         </LinearLayout>
 
         <LinearLayout
@@ -188,28 +174,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Description"
-                android:textStyle="bold"
-                android:textColor="@color/txt_black"
+                android:textColor="@color/txt_sub_info"
                 android:layout_toRightOf="@id/ic_location"
-                android:paddingStart="5dp"/>
+                android:paddingStart="5dp"
+                android:textSize="12sp"/>
             <TextView
                 android:id="@+id/fg_ex_detail_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="5dp"
                 android:text="In 2018, for the very first time, RE EE Vietnam is organized along with Electric x Power Vietnam 2018 which will be positioned as a one-stop technology and business marketplace to facilitate the development of energy technologies for industries and commerce, focusing on renewable energy and energy efficiency technologies for Vietnam."
-                android:textColor="@color/txt_sub_info"/>
+                android:textColor="@color/txt_black"/>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnBookmark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/btn_margin_top"
-            android:background="@drawable/effect_ripple"
-            android:text="Bookmark This Exhibition"
-            android:textColor="@color/txt_white"
-            android:layout_marginHorizontal="30dp" />
-
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

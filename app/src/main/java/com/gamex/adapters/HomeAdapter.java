@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gamex.GamexApplication;
 import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.R;
 import com.gamex.models.Exhibition;
@@ -22,14 +23,17 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
+import javax.inject.Inject;
 
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
+    @Inject Picasso picasso;
     private Context context;
     private List<Exhibition> dataList;
 
     public HomeAdapter(Context context, List<Exhibition> dataList) {
         this.context = context;
         this.dataList = dataList;
+        ((GamexApplication) context.getApplicationContext()).getAppComponent().inject(this);
     }
 
     @NonNull
@@ -42,32 +46,42 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
-        Picasso.Builder builder = new Picasso.Builder(context);
-        builder.downloader(new OkHttp3Downloader(context));
-        builder.build().load(dataList.get(i).getLogo())
-                .placeholder((R.drawable.ic_launcher_background))
+//        Picasso.Builder builder = new Picasso.Builder(context);
+//        builder.downloader(new OkHttp3Downloader(context));
+//        builder.build().load(dataList.get(i).getLogo())
+//                .placeholder((R.color.bg_grey))
+//                .error(R.color.bg_grey)
+//                .into(viewHolder.imgBanner);
+
+        picasso.load(dataList.get(i).getLogo())
+                .placeholder((R.color.bg_grey))
                 .error(R.color.bg_grey)
                 .into(viewHolder.imgBanner);
+
+//        Glide
+//                .with(context)
+//                .asGif()
+//                .load(dataList.get(i).getLogo())
+//                .centerCrop()
+//                .placeholder(R.drawable.loading)
+//                .into(viewHolder.imgBanner);
 
         viewHolder.txtName.setText(dataList.get(i).getName());
         String exDate = dataList.get(i).getStartDate() + dataList.get(i).getEndDate();
         viewHolder.txtDate.setText(exDate);
 
-        viewHolder.item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ExhibitionDetailActivity.class);
-                Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
-                        viewHolder.item, 0, 0,
-                        viewHolder.item.getWidth(),
-                        viewHolder.item.getHeight())
-                        .toBundle();
-                // TODO put data hereeeeeeeeeeeeeeee
-                intent.putExtra("EXTRA_EX_NAME", "DATAAAAAAAAAAA");
-                intent.putExtra("EXTRA_EX_ID", "DATAAAAAAAAAAA");
-                intent.putExtra("EXTRA_EX_IMG", "DATAAAAAAAAAAA");
-                ActivityCompat.startActivity(context, intent, options);
-            }
+        viewHolder.item.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ExhibitionDetailActivity.class);
+            Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
+                    viewHolder.item, 0, 0,
+                    viewHolder.item.getWidth(),
+                    viewHolder.item.getHeight())
+                    .toBundle();
+            // TODO put data hereeeeeeeeeeeeeeee
+            intent.putExtra("EXTRA_EX_NAME", dataList.get(i).getName());
+            intent.putExtra("EXTRA_EX_ID", dataList.get(i).getExhibitionId());
+            intent.putExtra("EXTRA_EX_IMG", dataList.get(i).getLogo());
+            ActivityCompat.startActivity(context, intent, options);
         });
     }
 

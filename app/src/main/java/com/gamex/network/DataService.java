@@ -1,8 +1,7 @@
 package com.gamex.network;
 
+import com.gamex.models.Company;
 import com.gamex.models.Exhibition;
-import com.gamex.models.ExhibitionDetails;
-import com.gamex.utils.Constant;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface GetDataService {
+public interface DataService {
     @GET("api/Exhibition")
     Call<List<Exhibition>> getAllExhibition();
 
@@ -30,6 +29,8 @@ public interface GetDataService {
 
     // exhibition details
     @GET("api/exhibition/{exhibitionId}")
-    Call<ExhibitionDetails> getEXhibitionDetails(@Path("exhibitionId") String exhibitionId);
+    Call<Exhibition> getExhibitionDetails(@Path("exhibitionId") String exhibitionId);
 
+    @GET("api/exhibition/{exhibitionId}/company")
+    Call<List<Company>> getListCompanyOfExhibition(@Path("exhibitionId") String exhibitionId);
 }

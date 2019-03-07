@@ -12,22 +12,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gamex.R;
 import com.gamex.activity.ExhibitionDetailActivity;
-import com.gamex.models.CompanyOverview;
+import com.gamex.models.Company;
+import com.gamex.models.CompanyInExhibition;
+import com.gamex.models.Exhibition;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<CompanyOverview> listCompany = new ArrayList<>();
+    private List<CompanyInExhibition> listCompany = new ArrayList<>();
 
-    public ListCompanyAdapter(Context context, ArrayList<CompanyOverview> listCompany) {
+    public ListCompanyAdapter(Context context, List<CompanyInExhibition> listCompany) {
         this.context = context;
         this.listCompany = listCompany;
     }

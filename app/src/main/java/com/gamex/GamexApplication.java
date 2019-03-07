@@ -9,16 +9,6 @@ import com.gamex.di.NetworkModule;
 import com.gamex.utils.Constant;
 
 public class GamexApplication extends Application {
-    //    private static Context context;
-//
-//    public void onCreate() {
-//        super.onCreate();
-//        GamexApplication.context = getApplicationContext();
-//    }
-//
-//    public static Context getAppContext() {
-//        return GamexApplication.context;
-//    }
     private AppComponent mAppComponent;
 
     @Override

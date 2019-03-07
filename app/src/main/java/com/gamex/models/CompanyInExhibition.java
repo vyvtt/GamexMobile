@@ -3,7 +3,9 @@ package com.gamex.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CompanyOverview {
+import java.io.Serializable;
+
+public class CompanyInExhibition implements Serializable {
 
     @SerializedName("companyId")
     @Expose
@@ -19,7 +21,7 @@ public class CompanyOverview {
      * No args constructor for use in serialization
      *
      */
-    public CompanyOverview() {
+    public CompanyInExhibition() {
     }
 
     /**
@@ -28,7 +30,7 @@ public class CompanyOverview {
      * @param name
      * @param companyId
      */
-    public CompanyOverview(Integer companyId, String name, String logo) {
+    public CompanyInExhibition(Integer companyId, String name, String logo) {
         super();
         this.companyId = companyId;
         this.name = name;

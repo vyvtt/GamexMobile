@@ -3,7 +3,10 @@ package com.gamex.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Exhibition {
+import java.io.Serializable;
+import java.util.List;
+
+public class Exhibition implements Serializable {
 
     @SerializedName("exhibitionId")
     @Expose
@@ -17,9 +20,6 @@ public class Exhibition {
     @SerializedName("address")
     @Expose
     private String address;
-    @SerializedName("organizerId")
-    @Expose
-    private String organizerId;
     @SerializedName("startDate")
     @Expose
     private String startDate;
@@ -35,16 +35,36 @@ public class Exhibition {
     @SerializedName("lng")
     @Expose
     private String lng;
+    @SerializedName("listCompany")
+    @Expose
+    private List<CompanyInExhibition> listCompany;
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public Exhibition() {
     }
 
+    public Exhibition(String exhibitionId, String name, String startDate, String endDate, String logo) {
+        this.exhibitionId = exhibitionId;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.logo = logo;
+    }
+
+    public Exhibition(String exhibitionId, String name, String description, String address, String startDate, String endDate, String logo, List<CompanyInExhibition> listCompany) {
+        this.exhibitionId = exhibitionId;
+        this.name = name;
+        this.description = description;
+        this.address = address;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.logo = logo;
+        this.listCompany = listCompany;
+    }
+
     /**
-     *
      * @param logo
      * @param startDate
      * @param address
@@ -53,21 +73,21 @@ public class Exhibition {
      * @param lng
      * @param endDate
      * @param exhibitionId
-     * @param organizerId
      * @param lat
+     * @param listCompany
      */
-    public Exhibition(String exhibitionId, String name, String description, String address, String organizerId, String startDate, String endDate, String logo, String lat, String lng) {
+    public Exhibition(String exhibitionId, String name, String description, String address, String startDate, String endDate, String logo, String lat, String lng, List<CompanyInExhibition> listCompany) {
         super();
         this.exhibitionId = exhibitionId;
         this.name = name;
         this.description = description;
         this.address = address;
-        this.organizerId = organizerId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.logo = logo;
         this.lat = lat;
         this.lng = lng;
+        this.listCompany = listCompany;
     }
 
     public String getExhibitionId() {
@@ -100,14 +120,6 @@ public class Exhibition {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getOrganizerId() {
-        return organizerId;
-    }
-
-    public void setOrganizerId(String organizerId) {
-        this.organizerId = organizerId;
     }
 
     public String getStartDate() {
@@ -150,4 +162,11 @@ public class Exhibition {
         this.lng = lng;
     }
 
+    public List<CompanyInExhibition> getListCompany() {
+        return listCompany;
+    }
+
+    public void setListCompany(List<CompanyInExhibition> listCompany) {
+        this.listCompany = listCompany;
+    }
 }

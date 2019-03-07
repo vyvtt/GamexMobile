@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/color_gradient_blue"
+    android:overScrollMode="ifContentScrolls"
+    android:scrollbarSize="0dp"
+    tools:context=".activity.CompanyDetailActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/company_detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="top"
+            android:background="@drawable/color_gradient_light"
+            style="@style/ToolBarStyle"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                style="@android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:maxLines="1"
+                android:text="Company Details"
+                android:textColor="@color/txt_white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.Toolbar>
+
+        <ProgressBar
+            android:id="@+id/company_progress_bar"
+            style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/txt_white"
+            android:indeterminateTintMode="src_in"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/company_txt_no_internet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_red"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="5dp"
+            android:text="No Internet Connection."
+            android:textColor="@color/txt_white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/company_txt_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="5dp"
+            android:text="Loading. Please wait . . . "
+            android:textColor="@color/txt_white"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_corner_radius"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <ImageView
+                android:id="@+id/company_img"
+                android:layout_width="160dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@color/bg_grey" />
+
+            <TextView
+                android:id="@+id/company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@id/company_img"
+                android:padding="3dp"
+                android:text="VIFA GOOD URBAN 2019 – VIFAG.U. 2019"
+                android:textColor="#262626"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/company_booth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/company_name"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@id/company_img"
+                android:padding="3dp"
+                android:text="Booth: 123-ABC"
+                android:textColor="@color/txt_sub_info"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:background="@drawable/color_gradient_light"
+            android:animateLayoutChanges="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/colorAccent">
+                <TextView
+                    android:id="@+id/company_survey_noti"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="Total x surveys in this exhibition"
+                    android:textColor="@color/txt_black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <!--My dropdown Button -->
+                <RelativeLayout
+                    android:id="@+id/company_survey_btnExpand"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:clickable="true">
+                    <View
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="false"
+                        android:background="@drawable/ic_triangle_down" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <!--The layout below is my ExpandableLayout -->
+            <LinearLayout
+                android:id="@+id/company_survey_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/company_survey_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="ifContentScrolls"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_corner_radius"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Website"
+                android:textColor="@color/txt_sub_info"
+                android:paddingStart="5dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/company_website"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="www.abc-info.com"
+                android:textColor="@color/txt_black"
+                android:paddingStart="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/lighter_gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:textColor="@color/txt_sub_info"
+                android:paddingStart="5dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/company_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No.9 Dinh Le - Hoan Kiem - Ha Noi"
+                android:textColor="@color/txt_black"
+                android:paddingStart="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/lighter_gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone"
+                android:textColor="@color/txt_sub_info"
+                android:paddingStart="5dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/company_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="123-111-888"
+                android:textColor="@color/txt_black"
+                android:paddingStart="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/lighter_gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textColor="@color/txt_sub_info"
+                android:paddingStart="5dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/company_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="abc-info@mail.com"
+                android:textColor="@color/txt_black"
+                android:paddingStart="5dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:padding="15dp"
+            android:background="@drawable/bg_corner_radius"
+            android:elevation="4dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/txt_sub_info"
+                android:paddingStart="5dp"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/company_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:text="In 2018, for the very first time, RE EE Vietnam is organized along with Electric x Power Vietnam 2018 which will be positioned as a one-stop technology and business marketplace to facilitate the development of energy technologies for industries and commerce, focusing on renewable energy and energy efficiency technologies for Vietnam."
+                android:textColor="@color/txt_black"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
