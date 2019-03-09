@@ -1,6 +1,7 @@
 package com.gamex.di;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -37,7 +38,7 @@ public class NetworkModule {
     @Singleton
         // Application reference must come from AppModule.class
     SharedPreferences providesSharedPreferences(Application application) {
-        return PreferenceManager.getDefaultSharedPreferences(application);
+        return application.getSharedPreferences("shared_pref", Context.MODE_PRIVATE);
     }
 
     @Provides

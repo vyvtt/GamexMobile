@@ -29,24 +29,14 @@ public interface DataService {
 //            @Field("username") String username,
 //            @Field("password") String password);
 
-//    @FormUrlEncoded
-    @GET("/token")
-    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("/token")
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     Call<ResponseBody> loginAccount(
-            @Query("grant_type") String grantType,
-            @Query("username") String username,
-            @Query("password") String password
+            @Field("grant_type") String grantType,
+            @Field("username") String username,
+            @Field("password") String password
     );
-
-//    @POST("api/account")
-//    Call<ResponseBody> register(
-//            @Field("Username") String username,
-//            @Field("Email") String email,
-//            @Field("Password") String password,
-//            @Field("ConfirmPassword") String confirmPassword,
-//            @Field("FirstName") String firstName,
-//            @Field("LastName") String lastName
-//    );
 
     @POST("api/account")
     Call<ResponseBody> register(@Body HashMap<String, String> user);

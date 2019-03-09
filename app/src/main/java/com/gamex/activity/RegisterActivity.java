@@ -1,9 +1,9 @@
 package com.gamex.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,16 +15,12 @@ import com.gamex.R;
 import com.gamex.network.DataService;
 import com.gamex.utils.Constant;
 import com.gamex.utils.TextInputLayoutValidator;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Email;
-import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
-import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.json.JSONArray;
@@ -33,7 +29,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -135,7 +130,8 @@ public class RegisterActivity extends AppCompatActivity {
                 .changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
         progressDialog.setCancelable(false);
         progressDialog.show();
-        // Create data MAp to send API
+
+        // Create data Map to send API
         HashMap<String, String> tmpUserInfo = new HashMap<>();
         tmpUserInfo.put("Username", tilUsername.getEditText().getText().toString());
         tmpUserInfo.put("Email", tilEmail.getEditText().getText().toString());

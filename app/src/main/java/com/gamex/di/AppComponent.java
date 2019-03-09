@@ -2,7 +2,9 @@ package com.gamex.di;
 
 import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.activity.LoginActivity;
+import com.gamex.activity.MainActivity;
 import com.gamex.activity.RegisterActivity;
+import com.gamex.activity.SplashActivity;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.adapters.ListCompanyAdapter;
 import com.gamex.fragments.ExDetailFragment;
@@ -23,8 +25,12 @@ public interface AppComponent {
     void inject(HomeAdapter homeAdapter);
     void inject(ListCompanyAdapter listCompanyAdapter);
 
+    // splash
+    void inject(SplashActivity splashActivity);
     // login
     void inject(LoginActivity loginActivity);
     // register
     void inject(RegisterActivity registerActivity);
+    // main
+    void inject(MainActivity mainActivity);
 }

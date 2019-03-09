@@ -1,6 +1,7 @@
 package com.gamex.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.fragments.BookmarkFragment;
 import com.gamex.fragments.ChangePasswordFragment;
@@ -26,15 +28,21 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
-    int primaryColor, secondaryColor, preClickPosition;
-    Toolbar toolbar;
-    Drawer drawerMenu;
-    boolean isInit = true;
+    private int primaryColor, secondaryColor, preClickPosition;
+    private Toolbar toolbar;
+    private Drawer drawerMenu;
+    private boolean isInit = true;
+    @Inject
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ((GamexApplication) getApplication()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -52,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 .withActivity(this)
                 .addProfiles(
                         new ProfileDrawerItem()
-                                .withName("Thuy Vy") // TODO add name + email from shared pref
-                                .withEmail("thuyvyv2tv@gmail.com")
+                                .withName(sharedPreferences.getString("FULLNAME", ""))
                                 .withIcon(getResources().getDrawable(R.drawable.ic_default_ava))
                                 .withTextColorRes(R.color.txt_white)
                                 .withTextColor(getResources().getColor(R.color.txt_white))
@@ -144,7 +151,8 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .withOnDrawerListener(new Drawer.OnDrawerListener() {
                     @Override
-                    public void onDrawerOpened(View drawerView) {}
+                    public void onDrawerOpened(View drawerView) {
+                    }
 
                     @Override
                     public void onDrawerClosed(View drawerView) {
@@ -159,7 +167,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onDrawerSlide(View drawerView, float slideOffset) {}
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                    }
                 })
                 .build();
         drawerMenu.setSelection(Constant.ITEM_HOME);
@@ -203,6 +212,31 @@ public class MainActivity extends AppCompatActivity {
             case Constant.ITEM_CHANGE_PASSWORD:
                 fragmentClass = ChangePasswordFragment.class;
                 break;
+            case Constant.ITEM_LOGOUT:
+                fragment = null;
+                SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+                dialog
+                        .setTitleText("Logout")
+                        .setContentText("Are you sure?")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(sweetAlertDialog -> {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.clear();
+                            editor.apply();
+                            dialog.dismissWithAnimation();
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            this.finish();
+                        })
+                        .setCancelText("Cancel")
+                        .setCancelClickListener(sweetAlertDialog -> {
+                            dialog.dismissWithAnimation();
+                            drawerMenu.closeDrawer();
+                            drawerMenu.setSelection(preClickPosition);
+                        });
+                dialog.setCancelable(false);
+                dialog.show();
+                return;
             default:
                 fragmentClass = HomeFragment.class;
         }

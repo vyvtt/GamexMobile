@@ -11,13 +11,14 @@ public final class Constant {
     public static final int ITEM_CHANGE_PASSWORD = 7;
     public static final int ITEM_LOGOUT = 8;
 
+    // Shared Preference key
+    public static final String PREF_HAS_LOGGED_IN = "HAS_LOGGED_IN";
+    public static final String PREF_ACCESS_TOKEN = "ACCESS_TOKEN";
+    public static final String PREF_FULLNAME = "FULLNAME";
+
     // API
     public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
 //    public static final String BASE_URL = "http://172.20.10.3/";
-
-    public static final String API_EXHIBITION = "api/Exhibition";
-    public static final String API_ACCOUNT_LOGIN = "api/account/login";
-    public static final String API_ACCOUNT_GET_INFO = "api/account/{username}";
 
     // Validate error messages
     public static final String ERR_REQUIRED = "Required";
@@ -25,7 +26,7 @@ public final class Constant {
     public static final String ERR_AZ_CHARACTERS = "Contain alphabetic characters only";
     public static final String ERR_LENGTH_MIN_6 = "At least 6 characters";
 
-    //
+    // TAG for Log
     public final static String TAG_MAIN = "[MainActivity] ***";
     public final static String TAG_LOGIN = "[LoginActivity] ***";
     public final static String TAG_REGISTER = "[RegisterActivity] ***";
