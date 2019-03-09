@@ -25,14 +25,13 @@
                 android:id="@+id/fg_home_rv_img"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:foreground="@drawable/scrim"/>
+                android:layout_height="120dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_gravity="bottom"
-                android:background="@drawable/scrim"/>
+                android:background="@drawable/scrim_gradient_bottom"/>
 
             <TextView
                 android:id="@+id/fg_home_rv_txt_name"

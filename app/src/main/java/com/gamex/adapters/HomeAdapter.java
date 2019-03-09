@@ -58,14 +58,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .error(R.color.bg_grey)
                 .into(viewHolder.imgBanner);
 
-//        Glide
-//                .with(context)
-//                .asGif()
-//                .load(dataList.get(i).getLogo())
-//                .centerCrop()
-//                .placeholder(R.drawable.loading)
-//                .into(viewHolder.imgBanner);
-
         viewHolder.txtName.setText(dataList.get(i).getName());
         String exDate = dataList.get(i).getStartDate() + dataList.get(i).getEndDate();
         viewHolder.txtDate.setText(exDate);

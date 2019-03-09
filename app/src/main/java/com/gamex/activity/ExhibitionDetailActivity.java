@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.gamex.models.CompanyInExhibition;
 import com.gamex.models.Exhibition;
 import com.gamex.network.CheckInternetTask;
 import com.gamex.network.DataService;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,9 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     @Inject
     @Named("cache")
     DataService dataService;
+    @Inject
+    Picasso picasso;
+
     Call<Exhibition> call;
     private Exhibition exhibitionDetails;
 
@@ -49,6 +54,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     private String exId, exName, exImg;
     private ProgressBar progressBar;
     private Toolbar toolbar;
+    private ImageView imgEx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +67,11 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         mappingViewElement();
         setOnEvent(toolbar);
         getSaveDataFromIntent(); // ex name, img, id from intent -> set to view
-        ////////////////////////////////
-        checkInternet();
-        /////////////////////////////////
+        // TODO real data
+//        checkInternet();
+//        addTabAdapter();
+
+        //TODO test data here
         List<CompanyInExhibition> listCompany = new ArrayList<>();
         listCompany.add(new CompanyInExhibition(123, "ADPEX", "---"));
         listCompany.add(new CompanyInExhibition(123, "UBM VIETNAM", "---"));
@@ -82,7 +90,6 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
                 "--- logo",
                 listCompany
                 );
-//        addTabAdapter();
         ViewPager viewPager = findViewById(R.id.event_detail_viewpager);
         EventDetailTabAdapter adapter = new EventDetailTabAdapter(getSupportFragmentManager(), exhibitionTest);
         viewPager.setAdapter(adapter);
@@ -153,14 +160,16 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     }
 
     private void getSaveDataFromIntent() {
-        // TODO get exhibition id, name and logo url from Intent extra
-        // TODO set exhibition info for display toolbar
+        // TODO get exhibition id, name and logo url from Intent extra -> DONE
         exName = getIntent().getStringExtra("EXTRA_EX_NAME");
         exId = getIntent().getStringExtra("EXTRA_EX_ID");
         exImg = getIntent().getStringExtra("EXTRA_EX_IMG");
         txtExName = findViewById(R.id.txtExName);
-        txtExName.setText(exName);
-
+        txtExName.setText("VIETNAM INTERNATIONAL MATERNITY BABY & KIDS FAIR");
+        picasso.load(exImg)
+                .placeholder((R.color.bg_grey))
+                .error(R.drawable.exhibition_cover)
+                .into(imgEx);
     }
 
     private void mappingViewElement() {
@@ -171,6 +180,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         txtNoInternet = findViewById(R.id.event_txt_no_internet);
         txtLoading = findViewById(R.id.event_txt_loading);
         progressBar = findViewById(R.id.event_progress_bar);
+        imgEx = findViewById(R.id.event_detail_img);
 
         txtLoading.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);

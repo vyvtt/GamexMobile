@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
-    String baseURL;
+    private String baseURL;
 
     public NetworkModule(String baseURL) {
         this.baseURL = baseURL;

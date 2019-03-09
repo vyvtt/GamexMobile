@@ -13,6 +13,8 @@ public final class Constant {
 
     // API
     public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
+//    public static final String BASE_URL = "http://172.20.10.3/";
+
     public static final String API_EXHIBITION = "api/Exhibition";
     public static final String API_ACCOUNT_LOGIN = "api/account/login";
     public static final String API_ACCOUNT_GET_INFO = "api/account/{username}";

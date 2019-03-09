@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:icon">
+
         <activity android:name=".activity.CompanyDetailActivity"></activity>
         <activity android:name=".activity.ExhibitionDetailActivity" />
         <activity android:name=".activity.ScanQRActivity" />

@@ -14,24 +14,28 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gamex.GamexApplication;
 import com.gamex.R;
+import com.gamex.activity.CompanyDetailActivity;
 import com.gamex.activity.ExhibitionDetailActivity;
-import com.gamex.models.Company;
 import com.gamex.models.CompanyInExhibition;
-import com.gamex.models.Exhibition;
-import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.ViewHolder> {
     private Context context;
     private List<CompanyInExhibition> listCompany = new ArrayList<>();
+    @Inject
+    Picasso picasso;
 
     public ListCompanyAdapter(Context context, List<CompanyInExhibition> listCompany) {
         this.context = context;
         this.listCompany = listCompany;
+        ((GamexApplication) context.getApplicationContext()).getAppComponent().inject(this);
     }
 
     @NonNull
@@ -43,22 +47,21 @@ public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Picasso.Builder builder = new Picasso.Builder(context);
-        builder.downloader(new OkHttp3Downloader(context));
-        builder.build().load(listCompany.get(i).getLogo())
-                .placeholder((R.drawable.ic_launcher_background))
+        picasso.load(listCompany.get(i).getLogo())
+                .placeholder((R.color.bg_grey))
                 .error(R.color.bg_grey)
                 .into(viewHolder.imgLogo);
 
         viewHolder.txtName.setText(listCompany.get(i).getName());
 
         viewHolder.row.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ExhibitionDetailActivity.class);
+            Intent intent = new Intent(context, CompanyDetailActivity.class);
             Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                     viewHolder.row, 0, 0,
                     viewHolder.row.getWidth(),
                     viewHolder.row.getHeight())
                     .toBundle();
+            // TODO put companyId + exId to next activity
             ActivityCompat.startActivity(context, intent, options);
         });
     }

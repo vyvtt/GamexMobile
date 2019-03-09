@@ -35,30 +35,14 @@ import retrofit2.Retrofit;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ExDetailFragment extends Fragment {
-    @Inject
-    @Named("cache")
-    Retrofit retrofit;
-    private Call<Exhibition> call;
+public class ExDetailFragment extends BaseFragment {
 
     private final String TAG = ExDetailFragment.class.getSimpleName();
-    private String exhibitionId;
-    private TextView txtNoInternet, txtLoading, txtStartDateTop, txtExName, txtStartDate, txtEndDate, txtLocation, txtDescription;
-    private ProgressBar progressBar;
-    private FragmentActivity mContext;
+    private TextView txtStartDateTop, txtExName, txtStartDate, txtEndDate, txtLocation, txtDescription;
     private Exhibition exhibitionFromActivity, exhibitionSaved;
 
     public ExDetailFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        ((GamexApplication) context.getApplicationContext()).getAppComponent().inject(this);
-        super.onAttach(context);
-        if (context instanceof Activity) {
-            mContext = (FragmentActivity) context;
-        }
     }
 
     @Override
@@ -72,11 +56,10 @@ public class ExDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         if (bundle != null) {
-//            exhibitionId = bundle.getString("exhibitionId");
             exhibitionFromActivity = (Exhibition) bundle.getSerializable("EXHIBITION_DETAILS");
         } else {
             Log.e(TAG, "No bundle from Activity");
-            Toast.makeText(mContext, "Something when wrong. Try again later.", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "Something when wrong. Try again later.", Toast.LENGTH_LONG).show();
         }
         View view = inflater.inflate(R.layout.fragment_ex_detail, container, false);
         mappingViewElement(view);
@@ -93,63 +76,16 @@ public class ExDetailFragment extends Fragment {
             updateDataToView(exhibitionSaved);
         } else {
             if (exhibitionSaved != null) {
-                // Returning from backstack, data is fine, do nothing
+                // Returning from back stack, data is fine, do nothing
             } else {
                 // fragment create for 1st time -> get from exhibitionFromActivity
-                // TODO delete test data from this line
-//                Exhibition details = new Exhibition(
-//                        "123",
-//                        "VIFA-EXPO 2019",
-//                        "Vietnam International Exhibition On Film And Television Technology.- The 2nd Vietnam International Exhibition on Products, Services of Telecommuniction, Information Technology & Communication",
-//                        "85 Ly Chinh Thang Street, Ward 7, District 3, Ho Chi Minh City, Vietnam",
-//                        "March 6th",
-//                        "March 9th",
-//                        "logo", "abc", "abc", new ArrayList<>()
-//                );
                 updateDataToView(exhibitionFromActivity);
+                exhibitionSaved = exhibitionFromActivity;
             }
         }
     }
 
-//    private void callAPI() {
-//        DataService service = retrofit.create(DataService.class);
-//        call = service.getExhibitionDetails(exhibitionId);
-//        call.enqueue(new Callback<Exhibition>() {
-//            @Override
-//            public void onResponse(Call<Exhibition> call, Response<Exhibition> response) {
-//                Exhibition tmp = response.body();
-//                if (tmp != null) {
-//                    updateDataToView(tmp);
-//                    exhibitionSaved = tmp;
-//                    Log.i(TAG, response.toString());
-//                } else {
-//                    Log.i(TAG, response.toString());
-//                }
-//                progressBar.setVisibility(View.GONE);
-//                txtLoading.setVisibility(View.GONE);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Exhibition> call, Throwable t) {
-//                if (call.isCanceled()) {
-//                    Log.i(TAG, "Cancel HTTP request on onFailure()");
-//                } else {
-//                    Toast.makeText(mContext, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-//                    Log.e(TAG, t.getMessage());
-//                }
-//                progressBar.setVisibility(View.GONE);
-//                txtLoading.setVisibility(View.GONE);
-//            }
-//        });
-//    }
-
-
     private void mappingViewElement(View view) {
-//        progressBar = mContext.findViewById(R.id.event_progress_bar);
-//        txtNoInternet = mContext.findViewById(R.id.event_txt_no_internet);
-//        txtLoading = mContext.findViewById(R.id.event_txt_loading);
-//        progressBar.setVisibility(View.VISIBLE);
-//        txtLoading.setVisibility(View.VISIBLE);
         txtStartDateTop = view.findViewById(R.id.fg_ex_detail_start_date_top);
         txtExName = view.findViewById(R.id.fg_ex_detail_ex_name);
         txtStartDate = view.findViewById(R.id.fg_ex_detail_start_date);
@@ -165,7 +101,6 @@ public class ExDetailFragment extends Fragment {
         txtEndDate.setText(details.getEndDate());
         txtLocation.setText(details.getAddress());
         txtDescription.setText(details.getDescription());
-        exhibitionSaved = new Exhibition();
     }
 
 }

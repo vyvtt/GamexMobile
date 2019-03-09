@@ -24,7 +24,6 @@ import com.gamex.network.CheckInternetTask;
 import com.gamex.network.DataService;
 import com.gamex.utils.Constant;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
