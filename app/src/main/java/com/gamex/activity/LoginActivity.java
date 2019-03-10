@@ -11,21 +11,29 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.network.DataService;
 import com.gamex.utils.Constant;
 import com.gamex.utils.TextInputLayoutValidator;
-import com.google.zxing.common.StringUtils;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,9 +59,14 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     private final String TAG = LoginActivity.class.getSimpleName() + "------------------------------";
     private SweetAlertDialog progressDialog;
 
+    private CallbackManager callbackManager;
+    private LoginButton btnFacebookLogin;
+    private String fbEmail, fbFirstname, fbLastName;
+
+    private Button btnLoginNhan;
+
     @NotEmpty(message = Constant.ERR_REQUIRED)
     private TextInputLayout tilUsername;
-
     @NotEmpty(message = Constant.ERR_REQUIRED)
     private TextInputLayout tilPassword;
 
@@ -71,20 +84,145 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         }
 
         btnLogin.setOnClickListener(v -> validator.validate());
+//        facebookLogin();
 
         txtToRegister.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
             finish();
         });
+
+        btnLoginNhan.setOnClickListener(v -> {
+            call = dataService.getExternalProvider();
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            String responseBody = response.body().string();
+                            Log.i(TAG, "body: " + responseBody);
+                            JSONArray json = new JSONArray(responseBody);
+                            String url = json.getJSONObject(0).getString("url");
+                            Log.i(TAG, "url from step 1: " + url);
+
+                            Log.i(TAG, "Call new activity");
+                            Intent intent = new Intent(LoginActivity.this, FacebookLoginActivity.class);
+                            intent.putExtra("URL", Constant.BASE_URL + url);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Log.e(TAG, "Response code error: " + response.errorBody().string());
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage(), e.fillInStackTrace());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e(TAG, "Request fail " + t.getMessage());
+                }
+            });
+        });
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        callbackManager.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
+
+//    private void facebookLogin() {
+//        callbackManager = CallbackManager.Factory.create();
+//        btnFacebookLogin.setReadPermissions(Arrays.asList("public_profile", "email"));
+//        btnFacebookLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                Log.i(TAG, "Call FB return success");
+//                progressDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE)
+//                        .setTitleText("Processing data ...");
+//                progressDialog.setCancelable(false);
+//                progressDialog.show();
+//                String accessTokenFromFB = loginResult.getAccessToken().getToken();
+//
+//                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
+//                    Log.i(TAG, object.toString());
+//                    getFBData(object);
+//                    createGamexAccount(accessTokenFromFB);
+//                });
+//
+//                Bundle parameters = new Bundle();
+//                parameters.putString("fields", "id,email,first_name,last_name");
+//                graphRequest.setParameters(parameters);
+//                graphRequest.executeAsync();
+//                Log.i(TAG, "Call graph request");
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                // App code
+//                Log.i(TAG, "Cancelllllllllllll FB");
+//            }
+//
+//            @Override
+//            public void onError(FacebookException exception) {
+//                // App code
+//                Log.i(TAG, exception.toString());
+//            }
+//        });
+//    }
+
+//    private void getFBData(JSONObject object) {
+//        try {
+////            progressDialog.dismissWithAnimation();
+//            fbEmail = object.getString("email");
+//            fbFirstname = object.getString("first_name");
+//            fbLastName = object.getString("last_name");
+//        } catch (JSONException e) {
+//            Log.e(TAG, e.getLocalizedMessage());
+//        }
+//    }
+
+//    private void createGamexAccount(String accessTokenFromFB) {
+//        progressDialog.setTitleText("Creating GamEx Account ...");
+//
+//        HashMap<String, String> user = new HashMap<>();
+//        user.put("Email", fbEmail);
+//        user.put("FirstName", fbFirstname);
+//        user.put("LastName", fbLastName);
+//
+//        call = dataService.loginWithFB(
+//                "Bearer " + accessTokenFromFB,
+//                user
+//        );
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                Log.i(TAG, response.toString());
+//                if (response.isSuccessful()) {
+//                    Log.i(TAG, "Create account OK");
+//                    progressDialog.setTitleText("Create account OK").changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+//                } else {
+//                    Log.i(TAG, "Call GamEx API fail: " + response.errorBody());
+//                    progressDialog.setTitleText("Create account FAIL").changeAlertType(SweetAlertDialog.ERROR_TYPE);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
     private void mappingViewElement() {
         //Bind view
         txtToRegister = findViewById(R.id.txtToRegister);
         btnLogin = findViewById(R.id.btnLogin);
+        btnFacebookLogin = findViewById(R.id.main_btn_facebook);
         tilUsername = findViewById(R.id.tilUsername);
         tilPassword = findViewById(R.id.tilPassword);
+        btnLoginNhan = findViewById(R.id.main_btn_facebook_gamex);
     }
 
     private void initValidator() {
@@ -127,7 +265,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                         Log.i(TAG, "body: " + responseBody);
                         JSONObject json = new JSONObject(responseBody);
 
-                        SharedPreferences.Editor editor= sharedPreferences.edit();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(Constant.PREF_ACCESS_TOKEN, json.getString("access_token"));
                         editor.putString(Constant.PREF_FULLNAME, json.getString("userName"));
                         editor.putBoolean(Constant.PREF_HAS_LOGGED_IN, true);

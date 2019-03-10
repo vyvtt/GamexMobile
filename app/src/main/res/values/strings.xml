@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">GamEx</string>
+    <string name="facebook_app_id">2091823634460119</string>
+    <string name="fb_login_protocol_scheme">fb2091823634460119</string>
+
 
     <!--Login screen-->
     <string name="title_activity_login">Sign in</string>

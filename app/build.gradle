@@ -54,4 +54,7 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.20'
     //dialog
     implementation 'com.github.thomper:sweet-alert-dialog:1.4.0'
+    // FB SDK
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
 }

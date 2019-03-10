@@ -1,6 +1,7 @@
 package com.gamex.di;
 
 import com.gamex.activity.ExhibitionDetailActivity;
+import com.gamex.activity.FacebookLoginActivity;
 import com.gamex.activity.LoginActivity;
 import com.gamex.activity.MainActivity;
 import com.gamex.activity.RegisterActivity;
@@ -29,6 +30,8 @@ public interface AppComponent {
     void inject(SplashActivity splashActivity);
     // login
     void inject(LoginActivity loginActivity);
+    // fb login
+    void inject(FacebookLoginActivity facebookLoginActivity);
     // register
     void inject(RegisterActivity registerActivity);
     // main
