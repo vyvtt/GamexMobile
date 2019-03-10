@@ -53,6 +53,7 @@ public class Exhibition implements Serializable {
         this.logo = logo;
     }
 
+    // For Company details
     public Exhibition(String exhibitionId, String name, String description, String address, String startDate, String endDate, String logo, List<CompanyInExhibition> listCompany) {
         this.exhibitionId = exhibitionId;
         this.name = name;

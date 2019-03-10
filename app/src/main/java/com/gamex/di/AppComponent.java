@@ -6,6 +6,8 @@ import com.gamex.activity.LoginActivity;
 import com.gamex.activity.MainActivity;
 import com.gamex.activity.RegisterActivity;
 import com.gamex.activity.SplashActivity;
+import com.gamex.activity.ViewAllExhibitionActivity;
+import com.gamex.adapters.EndlessRecycleViewAdapter;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.adapters.ListCompanyAdapter;
 import com.gamex.fragments.ExDetailFragment;
@@ -20,11 +22,10 @@ import dagger.Component;
 @Component(modules = {AppModule.class, NetworkModule.class})
 public interface AppComponent {
     void inject(HomeFragment homeFragment);
-//    void inject(ExDetailFragment exDetailFragment);
-//    void inject(ExDetailListCompanyFragment detailListCompanyFragment);
     void inject(ExhibitionDetailActivity exhibitionDetailActivity);
     void inject(HomeAdapter homeAdapter);
     void inject(ListCompanyAdapter listCompanyAdapter);
+    void inject(EndlessRecycleViewAdapter endlessRecycleViewAdapter);
 
     // splash
     void inject(SplashActivity splashActivity);

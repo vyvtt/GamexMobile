@@ -45,15 +45,17 @@ public class SplashActivity extends AppCompatActivity {
 //        }
 //        finish();
 
-        Intent intent;
-        boolean hasLoggedIn = sharedPreferences.getBoolean(Constant.PREF_HAS_LOGGED_IN, false);
-        if (hasLoggedIn) {
-            intent = new Intent(SplashActivity.this, MainActivity.class);
-        } else {
-            intent = new Intent(SplashActivity.this, LoginActivity.class);
-        }
+
+        Intent intent = new Intent(SplashActivity.this, ViewAllExhibitionActivity.class);
+//        boolean hasLoggedIn = sharedPreferences.getBoolean(Constant.PREF_HAS_LOGGED_IN, false);
+//        if (hasLoggedIn) {
+//            intent = new Intent(SplashActivity.this, MainActivity.class);
+//        } else {
+//            intent = new Intent(SplashActivity.this, LoginActivity.class);
+//        }
 
         new Handler().postDelayed(() -> {
+            Log.i("***", "start activity");
                 startActivity(intent);
                 finish();
         },1000); // TODO 100ms is for open app faster -> change to 2000ms later

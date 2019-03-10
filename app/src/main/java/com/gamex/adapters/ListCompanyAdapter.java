@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.activity.CompanyDetailActivity;
-import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.models.CompanyInExhibition;
 import com.squareup.picasso.Picasso;
 
@@ -84,7 +83,7 @@ public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.
             super(itemView);
             imgLogo = itemView.findViewById(R.id.fg_list_company_rv_logo);
             txtName = itemView.findViewById(R.id.fg_list_company_rv_name);
-            row = itemView.findViewById(R.id.fg_yourEx_rv_card);
+            row = itemView.findViewById(R.id.rv_item_card);
         }
     }
 }

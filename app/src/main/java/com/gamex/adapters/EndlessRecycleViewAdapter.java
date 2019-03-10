@@ -14,40 +14,46 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gamex.activity.ExhibitionDetailActivity;
+import com.gamex.GamexApplication;
 import com.gamex.R;
+import com.gamex.activity.ExhibitionDetailActivity;
+import com.gamex.models.Exhibition;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibitionDataAdapter.ViewHolder> {
+import javax.inject.Inject;
+
+public class EndlessRecycleViewAdapter extends RecyclerView.Adapter<EndlessRecycleViewAdapter.ItemViewHolder> {
+    @Inject
+    Picasso picasso;
     private Context context;
-    private ArrayList<String> exImg = new ArrayList<>();
-    private ArrayList<String> exName = new ArrayList<>();
-    private ArrayList<String> exDate = new ArrayList<>();
-    private ArrayList<String> exAddr = new ArrayList<>();
+    public List<Exhibition> dataExhibition;
 
-    public YourExhibitionDataAdapter(Context context, ArrayList<String> exImg, ArrayList<String> exName, ArrayList<String> exDate, ArrayList<String> exAddr) {
+    public EndlessRecycleViewAdapter(Context context, List<Exhibition> dataExhibition) {
+        ((GamexApplication) context.getApplicationContext()).getAppComponent().inject(this);
         this.context = context;
-        this.exImg = exImg;
-        this.exName = exName;
-        this.exDate = exDate;
-        this.exAddr = exAddr;
+        this.dataExhibition = dataExhibition;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_yourexhibition_list, viewGroup, false);
-        return new ViewHolder(view);
+        return new EndlessRecycleViewAdapter.ItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.imgBanner.setImageResource(R.color.bg_grey);
+    public void onBindViewHolder(@NonNull ItemViewHolder viewHolder, int i) {
 
-        viewHolder.txtName.setText(exName.get(i));
-        viewHolder.txtDate.setText(exDate.get(i));
-        viewHolder.txtAddr.setText(exAddr.get(i));
+        picasso.load(dataExhibition.get(i).getLogo())
+                .placeholder((R.color.bg_grey))
+                .error(R.color.bg_grey)
+                .into(viewHolder.imgBanner);
+
+        viewHolder.txtName.setText(dataExhibition.get(i).getName());
+        viewHolder.txtDate.setText(dataExhibition.get(i).getStartDate());
+        viewHolder.txtAddr.setText(dataExhibition.get(i).getAddress());
 
         viewHolder.item.setOnClickListener(v -> {
             Intent intent = new Intent(context, ExhibitionDetailActivity.class);
@@ -56,23 +62,27 @@ public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibiti
                     viewHolder.item.getWidth(),
                     viewHolder.item.getHeight())
                     .toBundle();
+            intent.putExtra("EXTRA_EX_NAME", dataExhibition.get(i).getName());
+            intent.putExtra("EXTRA_EX_ID", dataExhibition.get(i).getExhibitionId());
+            intent.putExtra("EXTRA_EX_IMG", dataExhibition.get(i).getLogo());
             ActivityCompat.startActivity(context, intent, options);
         });
     }
 
     @Override
     public int getItemCount() {
-        return exName.size();
+        return dataExhibition == null ? 0 : dataExhibition.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+
+    class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView imgBanner;
         TextView txtName;
         TextView txtDate;
         TextView txtAddr;
         CardView item;
 
-        ViewHolder(@NonNull View itemView) {
+        ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             imgBanner = itemView.findViewById(R.id.rv_item_img);
             txtName = itemView.findViewById(R.id.rv_item_name);
