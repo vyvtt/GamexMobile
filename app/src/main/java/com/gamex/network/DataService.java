@@ -31,6 +31,7 @@ public interface DataService {
 //            @Field("username") String username,
 //            @Field("password") String password);
 
+    // Login
     @FormUrlEncoded
     @POST("/token")
     @Headers("Content-Type:application/x-www-form-urlencoded")
@@ -44,17 +45,21 @@ public interface DataService {
     @POST("api/account")
     Call<ResponseBody> register(@Body HashMap<String, String> user);
 
-//     login with FB 1: Get external provider
+
+    // login with FB 1: Get external provider
     @GET("/api/Account/ExternalLogins?returnUrl=%2F&generateState=false")
-    Call<ResponseBody> getExternalProvider();
+    Call<ResponseBody> fbGetExternalProvider();
 
-    // login with FB 2: open FB view
-    @GET
-    Call<ResponseBody> getFacebookWebView(@Url String facebook);
-//    Call<ResponseBody> getFacebookWebView(@Path(value="facebook", encoded=true) String facebook);
+    // login with FB 2: GEt user info by access token
+    @GET("/api/account/userinfo")
+    Call<ResponseBody> fbGetUserInfo(@Header("Authorization") String accessToken);
 
-    @GET
-    Call<ResponseBody> getFacebookGraph(@Url String url);
+    // login with FB 3: Register External
+    @POST("/api/Account/RegisterExternal")
+    Call<ResponseBody> fbRegisterExternal(
+            @Header("Authorization") String accessToken,
+            @Header("Cookie") String cookie
+    );
 
     // login with FB
     @Headers({"Content-Type:application/json"})
@@ -62,14 +67,11 @@ public interface DataService {
     Call<ResponseBody> loginWithFB(
             @Header("Authorization") String auth,
             @Body HashMap<String, String> user
-//            @Field("Username") String username,
-//            @Field("FirstName") String firstname,
-//            @Field("LastName") String lastname
-            );
+    );
 
     // account info
     @PUT("api/account/{username}")
-    Call<ResponseBody> getAccountInfo(@Path("username")String username);
+    Call<ResponseBody> getAccountInfo(@Path("username") String username);
 
     // exhibition details
     @GET("api/exhibition/{exhibitionId}")

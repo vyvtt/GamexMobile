@@ -12,10 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.gamex.GamexApplication;
 import com.gamex.R;
@@ -32,8 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -63,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     private LoginButton btnFacebookLogin;
     private String fbEmail, fbFirstname, fbLastName;
 
-    private Button btnLoginNhan;
+    private Button btnLoginWithFB;
 
     @NotEmpty(message = Constant.ERR_REQUIRED)
     private TextInputLayout tilUsername;
@@ -92,8 +86,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             finish();
         });
 
-        btnLoginNhan.setOnClickListener(v -> {
-            call = dataService.getExternalProvider();
+        btnLoginWithFB.setOnClickListener(v -> {
+            call = dataService.fbGetExternalProvider();
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -222,7 +216,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         btnFacebookLogin = findViewById(R.id.main_btn_facebook);
         tilUsername = findViewById(R.id.tilUsername);
         tilPassword = findViewById(R.id.tilPassword);
-        btnLoginNhan = findViewById(R.id.main_btn_facebook_gamex);
+        btnLoginWithFB = findViewById(R.id.main_btn_facebook_gamex);
     }
 
     private void initValidator() {
