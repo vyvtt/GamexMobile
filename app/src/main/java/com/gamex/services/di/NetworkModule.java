@@ -1,11 +1,10 @@
-package com.gamex.di;
+package com.gamex.services.di;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
-import com.gamex.network.DataService;
+import com.gamex.services.network.DataService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

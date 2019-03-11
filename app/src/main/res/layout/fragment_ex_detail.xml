@@ -29,7 +29,7 @@
                 android:id="@+id/fg_ex_detail_start_date_top"
                 android:textColor="@color/color_primary"
                 android:text="March 6th"
-                android:textSize="22sp"
+                android:textSize="15sp"
                 android:padding="3dp"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"

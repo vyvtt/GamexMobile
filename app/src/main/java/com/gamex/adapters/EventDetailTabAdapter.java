@@ -5,12 +5,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+import android.widget.LinearLayout;
 
+import com.gamex.activity.LoginActivity;
 import com.gamex.fragments.ExDetailFragment;
 import com.gamex.fragments.ExDetailListCompanyFragment;
+import com.gamex.models.CompanyInExhibition;
 import com.gamex.models.Exhibition;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventDetailTabAdapter extends FragmentPagerAdapter {
     private String title[] = {"Details", "Exhibitors"};
@@ -31,9 +37,16 @@ public class EventDetailTabAdapter extends FragmentPagerAdapter {
                 bundle.putSerializable("EXHIBITION_DETAILS", (Serializable) exhibitionDetail);
                 ExDetailFragment detailFragment = new ExDetailFragment();
                 detailFragment.setArguments(bundle);
+                Log.i("Adapter", "Set bundle to detail fg");
                 return detailFragment;
             case 1:
-                bundle.putSerializable("EXHIBITION_LIST_COMPANY", (Serializable) exhibitionDetail.getListCompany());
+                List<CompanyInExhibition> listCompany;
+                try {
+                    listCompany = exhibitionDetail.getListCompany();
+                } catch (NullPointerException e) {
+                    listCompany = new ArrayList<>();
+                }
+                bundle.putSerializable("EXHIBITION_LIST_COMPANY", (Serializable) listCompany);
                 ExDetailListCompanyFragment listCompanyFragment = new ExDetailListCompanyFragment();
                 listCompanyFragment.setArguments(bundle);
                 return listCompanyFragment;

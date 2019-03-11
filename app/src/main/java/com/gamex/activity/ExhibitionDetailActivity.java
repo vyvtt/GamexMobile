@@ -1,5 +1,7 @@
 package com.gamex.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -22,8 +24,10 @@ import com.gamex.R;
 import com.gamex.adapters.EventDetailTabAdapter;
 import com.gamex.models.CompanyInExhibition;
 import com.gamex.models.Exhibition;
-import com.gamex.network.CheckInternetTask;
-import com.gamex.network.DataService;
+import com.gamex.services.network.BaseCallBack;
+import com.gamex.services.network.CheckInternetTask;
+import com.gamex.services.network.DataService;
+import com.gamex.utils.Constant;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,7 +37,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 @SuppressWarnings("FieldCanBeLocal")
@@ -43,11 +46,14 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     DataService dataService;
     @Inject
     Picasso picasso;
+    @Inject
+    SharedPreferences sharedPreferences;
 
     Call<Exhibition> call;
     private Exhibition exhibitionDetails;
 
     private final String TAG = ExhibitionDetailActivity.class.getSimpleName();
+    private String accessToken;
     private CollapsingToolbarLayout collapsingToolbar;
     private AppBarLayout appBarLayout;
     private TextView txtExName, txtNoInternet, txtLoading;
@@ -63,38 +69,39 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_event_detail);
 
+        accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
+
         // bind
         mappingViewElement();
         setOnEvent(toolbar);
         getSaveDataFromIntent(); // ex name, img, id from intent -> set to view
         // TODO real data
-//        checkInternet();
-//        addTabAdapter();
+        checkInternet();
 
         //TODO test data here
-        List<CompanyInExhibition> listCompany = new ArrayList<>();
-        listCompany.add(new CompanyInExhibition(123, "ADPEX", "---"));
-        listCompany.add(new CompanyInExhibition(123, "UBM VIETNAM", "---"));
-        listCompany.add(new CompanyInExhibition(123, "FSoft", "---"));
-        listCompany.add(new CompanyInExhibition(123, "Global Expo", "---"));
-        listCompany.add(new CompanyInExhibition(123, "CECT,BEXCO", "---"));
-        listCompany.add(new CompanyInExhibition(123, "Automobile Manufacturers’ Association (VAMA) ", "---"));
-        Exhibition exhibitionTest = new Exhibition(
-                "id-1",
-                "TELEFILM 2019 / ICTCOMM 2019",
-                "- Vietnam International Exhibition On Film And Television Technology.\n" +
-                        "- The 2nd Vietnam International Exhibition on Products, Services of Telecommuniction, Information Technology & Communication",
-                "Rm.G3, Ground Floor, Fosco Building, No.6 Phung Khac Khoan, Dakao Ward, District 1, HoChiMinh City, Vietnam",
-                " June 6th",
-                "June 8th ",
-                "--- logo",
-                listCompany
-                );
-        ViewPager viewPager = findViewById(R.id.event_detail_viewpager);
-        EventDetailTabAdapter adapter = new EventDetailTabAdapter(getSupportFragmentManager(), exhibitionTest);
-        viewPager.setAdapter(adapter);
-        TabLayout tabLayout = findViewById(R.id.event_detail_tablayout);
-        tabLayout.setupWithViewPager(viewPager);
+//        List<CompanyInExhibition> listCompany = new ArrayList<>();
+//        listCompany.add(new CompanyInExhibition(123, "ADPEX", "---"));
+//        listCompany.add(new CompanyInExhibition(123, "UBM VIETNAM", "---"));
+//        listCompany.add(new CompanyInExhibition(123, "FSoft", "---"));
+//        listCompany.add(new CompanyInExhibition(123, "Global Expo", "---"));
+//        listCompany.add(new CompanyInExhibition(123, "CECT,BEXCO", "---"));
+//        listCompany.add(new CompanyInExhibition(123, "Automobile Manufacturers’ Association (VAMA) ", "---"));
+//        Exhibition exhibitionTest = new Exhibition(
+//                "id-1",
+//                "TELEFILM 2019 / ICTCOMM 2019",
+//                "- Vietnam International Exhibition On Film And Television Technology.\n" +
+//                        "- The 2nd Vietnam International Exhibition on Products, Services of Telecommuniction, Information Technology & Communication",
+//                "Rm.G3, Ground Floor, Fosco Building, No.6 Phung Khac Khoan, Dakao Ward, District 1, HoChiMinh City, Vietnam",
+//                " June 6th",
+//                "June 8th ",
+//                "--- logo",
+//                listCompany
+//                );
+//        ViewPager viewPager = findViewById(R.id.event_detail_viewpager);
+//        EventDetailTabAdapter adapter = new EventDetailTabAdapter(getSupportFragmentManager(), exhibitionTest);
+//        viewPager.setAdapter(adapter);
+//        TabLayout tabLayout = findViewById(R.id.event_detail_tablayout);
+//        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void checkInternet() {
@@ -112,17 +119,19 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     }
 
     private void callAPI() {
-        call = dataService.getExhibitionDetails(exId);
-        call.enqueue(new Callback<Exhibition>() {
+        call = dataService.getExhibitionDetails(accessToken, exId);
+        call.enqueue(new BaseCallBack<Exhibition>(this) {
             @Override
-            public void onResponse(Call<Exhibition> call, Response<Exhibition> response) {
+            public void onSuccess(Call<Exhibition> call, Response<Exhibition> response) {
                 if (response.code() == 200) {
                     exhibitionDetails = response.body();
                     progressBar.setVisibility(View.GONE);
                     txtLoading.setVisibility(View.GONE);
                     Log.i(TAG, response.toString());
+                    addTabAdapter();
                 } else {
                     Log.i(TAG, response.toString());
+                    Toast.makeText(ExhibitionDetailActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -165,7 +174,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         exId = getIntent().getStringExtra("EXTRA_EX_ID");
         exImg = getIntent().getStringExtra("EXTRA_EX_IMG");
         txtExName = findViewById(R.id.txtExName);
-        txtExName.setText("VIETNAM INTERNATIONAL MATERNITY BABY & KIDS FAIR");
+        txtExName.setText(exName);
         picasso.load(exImg)
                 .placeholder((R.color.bg_grey))
                 .error(R.drawable.exhibition_cover)

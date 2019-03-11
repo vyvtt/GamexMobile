@@ -18,6 +18,9 @@ public final class Constant {
 
     // API
     public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
+    public static final String API_TYPE_ONGOING = "ongoing";
+    public static final String API_TYPE_UPCOMING = "upcoming";
+    public static final String API_TYPE_NEAR = "near-you";
 //    public static final String BASE_URL = "http://172.20.10.3/";
 
     // Validate error messages

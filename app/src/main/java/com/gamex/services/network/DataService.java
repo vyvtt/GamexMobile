@@ -1,10 +1,11 @@
-package com.gamex.network;
+package com.gamex.services.network;
 
 import com.gamex.models.Company;
 import com.gamex.models.Exhibition;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -18,6 +19,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface DataService {
@@ -61,22 +63,36 @@ public interface DataService {
             @Header("Cookie") String cookie
     );
 
-    // login with FB
-    @Headers({"Content-Type:application/json"})
-    @POST("/api/Account/RegisterExternal")
-    Call<ResponseBody> loginWithFB(
-            @Header("Authorization") String auth,
-            @Body HashMap<String, String> user
+    // Main screen exhibition
+    @GET("/api/exhibitions")
+    Call<List<Exhibition>> getExhibitionsList(
+            @Header("Authorization") String accessToken,
+            @QueryMap Map<String, String> options
     );
 
-    // account info
-    @PUT("api/account/{username}")
-    Call<ResponseBody> getAccountInfo(@Path("username") String username);
+    // Exhibition details
+    @GET("/api/exhibition")
+    Call<Exhibition> getExhibitionDetails(
+            @Header("Authorization") String accessToken,
+            @Query("id") String id
+    );
 
-    // exhibition details
-    @GET("api/exhibition/{exhibitionId}")
-    Call<Exhibition> getExhibitionDetails(@Path("exhibitionId") String exhibitionId);
+//    // login with FB
+//    @Headers({"Content-Type:application/json"})
+//    @POST("/api/Account/RegisterExternal")
+//    Call<ResponseBody> loginWithFB(
+//            @Header("Authorization") String auth,
+//            @Body HashMap<String, String> user
+//    );
 
-    @GET("api/exhibition/{exhibitionId}/company")
-    Call<List<Company>> getListCompanyOfExhibition(@Path("exhibitionId") String exhibitionId);
+//    // account info
+//    @PUT("api/account/{username}")
+//    Call<ResponseBody> getAccountInfo(@Path("username") String username);
+
+//    // exhibition details
+//    @GET("api/exhibition/{exhibitionId}")
+//    Call<Exhibition> getExhibitionDetails(@Path("exhibitionId") String exhibitionId);
+
+//    @GET("api/exhibition/{exhibitionId}/company")
+//    Call<List<Company>> getListCompanyOfExhibition(@Path("exhibitionId") String exhibitionId);
 }

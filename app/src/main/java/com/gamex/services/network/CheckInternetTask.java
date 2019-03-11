@@ -1,4 +1,4 @@
-package com.gamex.network;
+package com.gamex.services.network;
 
 import android.os.AsyncTask;
 

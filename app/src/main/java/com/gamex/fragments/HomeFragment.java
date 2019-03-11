@@ -2,6 +2,7 @@ package com.gamex.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,10 +21,12 @@ import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.models.Exhibition;
-import com.gamex.network.CheckInternetTask;
-import com.gamex.network.DataService;
+import com.gamex.services.network.BaseCallBack;
+import com.gamex.services.network.CheckInternetTask;
+import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,13 +41,22 @@ import retrofit2.Response;
  */
 public class HomeFragment extends Fragment {
 
-    @Inject @Named("cache") DataService dataService;
-    Call<List<Exhibition>> call;
+    @Inject
+    @Named("cache")
+    DataService dataService;
+    Call<List<Exhibition>> callOngoing;
+    Call<List<Exhibition>> callUpcoming;
+    Call<List<Exhibition>> callNear;
+    @Inject
+    SharedPreferences sharedPreferences;
+    private String accessToken;
+    private boolean isLoadingOngoing, isLoadingUpcoming, isLoadingNear;
+    private HashMap<String, String> apiParam;
 
     private final String TAG = HomeFragment.class.getSimpleName();
     private SwipeRefreshLayout refreshLayout;
-    private RecyclerView rvOngoing, rvNear, rvYourEvent;
-    private TextView txtToolBarTitle, txtNoInternet, txtLoading;
+    private RecyclerView rvOngoing, rvNear, rvUpcoming;
+    private TextView txtToolBarTitle, txtNoInternet, txtLoading, btnAllOngoing, btnAllUpcoming, btnAllNear;
     private ProgressBar progressBar;
     private FragmentActivity mContext;
 
@@ -66,27 +78,26 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
+        isLoadingNear = isLoadingOngoing = isLoadingUpcoming = false;
+        apiParam = new HashMap<>();
+        accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
 
         mappingViewElement(view);
         setResponseToEvent();
+        setLayoutManager();
         checkInternet();
         // TODO test
 //        List<Exhibition> test = new ArrayList<>();
 //        test.add(new Exhibition("id-1", "name 1", "start", "end", "logo"));
 //        test.add(new Exhibition("id-2", "name 2", "start", "end", "logo"));
 //        test.add(new Exhibition("id-3", "name 3", "start", "end", "logo"));
-//        setDataAdapter(test);
+//        setLayoutManager(test);
 
         return view;
     }
 
     private void setResponseToEvent() {
-        refreshLayout.setOnRefreshListener(() -> {
-            // TODO refresh
-            checkInternet();
-            // Complete refresh
-            refreshLayout.setRefreshing(false);
-        });
+        refreshLayout.setOnRefreshListener(this::checkInternet);
     }
 
     private void mappingViewElement(View view) {
@@ -95,9 +106,14 @@ public class HomeFragment extends Fragment {
         txtNoInternet = mContext.findViewById(R.id.main_txt_no_internet);
         txtLoading = mContext.findViewById(R.id.main_txt_loading);
         refreshLayout = view.findViewById(R.id.swipeToRefresh);
+
         rvOngoing = view.findViewById(R.id.fg_home_rv_ongoing);
         rvNear = view.findViewById(R.id.fg_home_rv_near);
-        rvYourEvent = view.findViewById(R.id.fg_home_rv_your_event);
+        rvUpcoming = view.findViewById(R.id.fg_home_rv_upcoming);
+
+        btnAllOngoing = view.findViewById(R.id.btn_view_all_ongoing);
+        btnAllUpcoming = view.findViewById(R.id.btn_view_all_upcoming);
+        btnAllNear = view.findViewById(R.id.btn_view_all_near);
         //set title
         txtToolBarTitle.setText("Home");
     }
@@ -108,7 +124,9 @@ public class HomeFragment extends Fragment {
                 Log.i(TAG, "Has Internet Connection");
                 progressBar.setVisibility(View.VISIBLE);
                 txtLoading.setVisibility(View.VISIBLE);
-                callAPI();
+                callAPIOngoing();
+                callAPIUpcoming();
+                callAPINear();
             } else {
                 Log.i(TAG, "No Internet Connection");
                 txtNoInternet.setVisibility(View.VISIBLE);
@@ -118,55 +136,137 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void callAPI() {
-        call = dataService.getAllExhibition();
-        call.enqueue(new Callback<List<Exhibition>>() {
+    private void callAPIOngoing() {
+        apiParam.clear();
+        apiParam.put("type", Constant.API_TYPE_ONGOING);
+
+        isLoadingOngoing = true;
+        callOngoing = dataService.getExhibitionsList(accessToken, apiParam);
+        callOngoing.enqueue(new BaseCallBack<List<Exhibition>>(mContext) {
             @Override
-            public void onResponse(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
-                if (response.code() == 200) {
-                    setDataAdapter(response.body());
-                    progressBar.setVisibility(View.GONE);
-                    txtLoading.setVisibility(View.GONE);
+            public void onSuccess(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
+                isLoadingOngoing = false;
+                if (response.isSuccessful()) {
+                    HomeAdapter adapter = new HomeAdapter(mContext, response.body());
+                    rvOngoing.setAdapter(adapter);
                     Log.i(TAG, response.toString());
                 } else {
                     Log.i(TAG, response.toString());
                 }
+                stopLoadingAnimation();
             }
 
             @Override
             public void onFailure(Call<List<Exhibition>> call, Throwable t) {
+                isLoadingOngoing = false;
                 if (call.isCanceled()) {
                     Log.i(TAG, "Cancel HTTP request on onFailure()");
                 } else {
                     Toast.makeText(mContext, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, t.getMessage());
                 }
-                progressBar.setVisibility(View.GONE);
-                txtLoading.setVisibility(View.GONE);
+                stopLoadingAnimation();
             }
         });
     }
 
-    private void setDataAdapter(List<Exhibition> listExhibition) {
-        Log.i(TAG, listExhibition.toString());
+    private void callAPIUpcoming() {
+        apiParam.clear();
+        apiParam.put("type", Constant.API_TYPE_UPCOMING);
+
+        isLoadingUpcoming = true;
+        callUpcoming = dataService.getExhibitionsList(accessToken, apiParam);
+        callUpcoming.enqueue(new BaseCallBack<List<Exhibition>>(mContext) {
+            @Override
+            public void onSuccess(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
+                isLoadingUpcoming = false;
+                if (response.isSuccessful()) {
+                    HomeAdapter adapter = new HomeAdapter(mContext, response.body());
+                    rvUpcoming.setAdapter(adapter);
+                    Log.i(TAG, response.toString());
+                } else {
+                    Log.i(TAG, response.toString());
+                }
+                stopLoadingAnimation();
+            }
+
+            @Override
+            public void onFailure(Call<List<Exhibition>> call, Throwable t) {
+                isLoadingUpcoming = false;
+                if (call.isCanceled()) {
+                    Log.i(TAG, "Cancel HTTP request on onFailure()");
+                } else {
+                    Toast.makeText(mContext, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, t.getMessage());
+                }
+                stopLoadingAnimation();
+            }
+        });
+    }
+
+    private void callAPINear() {
+        apiParam.clear();
+        apiParam.put("type", Constant.API_TYPE_NEAR);
+
+        isLoadingNear = true;
+        callNear = dataService.getExhibitionsList(accessToken, apiParam);
+        callNear.enqueue(new BaseCallBack<List<Exhibition>>(mContext) {
+            @Override
+            public void onSuccess(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
+                isLoadingNear = false;
+                if (response.isSuccessful()) {
+                    HomeAdapter adapter = new HomeAdapter(mContext, response.body());
+                    rvNear.setAdapter(adapter);
+                    Log.i(TAG, response.toString());
+                } else {
+                    Log.i(TAG, response.toString());
+                }
+                stopLoadingAnimation();
+            }
+
+            @Override
+            public void onFailure(Call<List<Exhibition>> call, Throwable t) {
+                isLoadingNear = false;
+                if (call.isCanceled()) {
+                    Log.i(TAG, "Cancel HTTP request on onFailure()");
+                } else {
+                    Toast.makeText(mContext, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, t.getMessage());
+                }
+                stopLoadingAnimation();
+            }
+        });
+    }
+
+    private void stopLoadingAnimation() {
+        if (!isLoadingOngoing && !isLoadingUpcoming && !isLoadingNear) {
+            Log.i(TAG, "All API done ---> Stop loading animation");
+            progressBar.setVisibility(View.GONE);
+            txtLoading.setVisibility(View.GONE);
+            if (refreshLayout.isRefreshing()) {
+                refreshLayout.setRefreshing(false);
+            }
+        }
+    }
+
+    private void setLayoutManager() {
         rvOngoing.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rvNear.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        rvYourEvent.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-
-        // TODO set data adapter here
-        HomeAdapter adapter = new HomeAdapter(getContext(), listExhibition);
-        rvOngoing.setAdapter(adapter);
-        rvNear.setAdapter(adapter);
-        rvYourEvent.setAdapter(adapter);
+        rvUpcoming.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
     }
 
     @Override
     public void onStop() {
         super.onStop();
         // Cancel retrofit call when change fragment
-        if (call != null) {
-            call.cancel();
-            Log.i(Constant.TAG_HOME, "Cancel retrofit request on Fragment stop");
+        if (callOngoing != null) {
+            callOngoing.cancel();
+        }
+        if (callUpcoming != null) {
+            callUpcoming.cancel();
+        }
+        if (callNear != null) {
+            callNear.cancel();
         }
     }
 }

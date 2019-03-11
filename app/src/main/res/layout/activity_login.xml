@@ -111,24 +111,20 @@
         android:layout_marginBottom="8dp"
         android:orientation="vertical">
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/main_btn_facebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
-
         <Button
             android:id="@+id/main_btn_facebook_gamex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/effect_ripple_fb"
-            android:drawableLeft="@drawable/ic_facebook"
+            android:background="#3b5998"
+            android:drawableStart="@drawable/ic_facebook"
             android:drawablePadding="10dp"
             android:padding="10dp"
             android:text="Continue with Facebook"
-            android:textColor="@color/txt_white" />
+            android:textColor="@color/txt_white"
+            style="@style/MyTabLayoutStyle"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"/>
     </LinearLayout>
 
     <LinearLayout

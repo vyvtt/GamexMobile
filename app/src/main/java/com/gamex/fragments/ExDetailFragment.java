@@ -1,36 +1,22 @@
 package com.gamex.fragments;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gamex.GamexApplication;
 import com.gamex.R;
+import com.gamex.activity.LoginActivity;
 import com.gamex.models.Exhibition;
-import com.gamex.network.DataService;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,6 +43,7 @@ public class ExDetailFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             exhibitionFromActivity = (Exhibition) bundle.getSerializable("EXHIBITION_DETAILS");
+            Log.i(TAG, exhibitionFromActivity.toString());
         } else {
             Log.e(TAG, "No bundle from Activity");
             Toast.makeText(mActivity, "Something when wrong. Try again later.", Toast.LENGTH_LONG).show();

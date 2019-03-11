@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gamex.GamexApplication;
@@ -32,6 +33,7 @@ public class ExDetailListCompanyFragment extends Fragment {
     private RecyclerView rvListCompany;
     private FragmentActivity mContext;
     private List<CompanyInExhibition> listCompanyFromActivity, listCompanySaved;
+    private TextView txtNoData;
 
     public ExDetailListCompanyFragment() {
         // Required empty public constructor
@@ -39,7 +41,6 @@ public class ExDetailListCompanyFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-//        ((GamexApplication) context.getApplicationContext()).getAppComponent().inject(this);
         super.onAttach(context);
         if (context instanceof Activity) {
             mContext = (FragmentActivity) context;
@@ -90,12 +91,18 @@ public class ExDetailListCompanyFragment extends Fragment {
     }
 
     private void setRecycleViewAdapter(List<CompanyInExhibition> data) {
-        rvListCompany.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        ListCompanyAdapter adapter = new ListCompanyAdapter(getContext(), data);
-        rvListCompany.setAdapter(adapter);
+        if (data.isEmpty()) {
+            txtNoData.setVisibility(View.VISIBLE);
+        } else {
+            txtNoData.setVisibility(View.GONE);
+            rvListCompany.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            ListCompanyAdapter adapter = new ListCompanyAdapter(mContext, data);
+            rvListCompany.setAdapter(adapter);
+        }
     }
 
     private void mappingViewElement(View view) {
         rvListCompany = view.findViewById(R.id.fg_company_list_rv);
+        txtNoData = view.findViewById(R.id.fg_list_company_txt_no_data);
     }
 }

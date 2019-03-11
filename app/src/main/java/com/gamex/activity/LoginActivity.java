@@ -2,20 +2,18 @@ package com.gamex.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.CallbackManager;
-import com.facebook.login.widget.LoginButton;
 import com.gamex.GamexApplication;
 import com.gamex.R;
-import com.gamex.network.DataService;
+import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
 import com.gamex.utils.TextInputLayoutValidator;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -53,9 +51,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     private final String TAG = LoginActivity.class.getSimpleName() + "------------------------------";
     private SweetAlertDialog progressDialog;
 
-    private CallbackManager callbackManager;
-    private LoginButton btnFacebookLogin;
-    private String fbEmail, fbFirstname, fbLastName;
+
 
     private Button btnLoginWithFB;
 
@@ -78,7 +74,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         }
 
         btnLogin.setOnClickListener(v -> validator.validate());
-//        facebookLogin();
 
         txtToRegister.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -213,7 +208,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         //Bind view
         txtToRegister = findViewById(R.id.txtToRegister);
         btnLogin = findViewById(R.id.btnLogin);
-        btnFacebookLogin = findViewById(R.id.main_btn_facebook);
         tilUsername = findViewById(R.id.tilUsername);
         tilPassword = findViewById(R.id.tilPassword);
         btnLoginWithFB = findViewById(R.id.main_btn_facebook_gamex);
@@ -335,5 +329,10 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

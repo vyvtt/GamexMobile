@@ -33,35 +33,37 @@
                 android:layout_margin="15dp">
 
                 <TextView
-                    android:id="@+id/fg_home_tv_your_event"
+                    android:id="@+id/fg_home_tv_ongoing"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
-                    android:text="Your Exhibitions"
+                    android:text="On-going Exhibitions"
                     android:textColor="@color/txt_black"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/btn_view_all_ongoing"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    android:layout_alignBottom="@id/fg_home_tv_your_event"
+                    android:layout_alignBottom="@id/fg_home_tv_ongoing"
                     android:layout_alignParentRight="true"
                     android:drawableRight="@drawable/ic_arrow_right"
                     android:drawablePadding="5dp"
                     android:layout_marginHorizontal="12dp"
                     android:gravity="center_vertical"
                     android:text="View all"
-                    android:textColor="@color/txt_link" />
+                    android:textColor="@color/txt_link"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"/>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/fg_home_rv_your_event"
+                    android:id="@+id/fg_home_rv_ongoing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/fg_home_tv_your_event"
-                    android:overScrollMode="ifContentScrolls"
+                    android:layout_below="@id/fg_home_tv_ongoing"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"/>
             </RelativeLayout>
@@ -76,34 +78,38 @@
                 android:layout_marginBottom="15dp">
 
                 <TextView
-                    android:id="@+id/fg_home_tv_ongoing"
+                    android:id="@+id/fg_home_tv_upcoming"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
-                    android:text="On-going Exhibitions"
+                    android:text="Upcoming Exhibitions"
                     android:textColor="@color/txt_black"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/btn_view_all_upcoming"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    android:layout_alignBottom="@id/fg_home_tv_ongoing"
+                    android:layout_alignBottom="@id/fg_home_tv_upcoming"
                     android:layout_alignParentRight="true"
                     android:drawableRight="@drawable/ic_arrow_right"
                     android:drawablePadding="5dp"
                     android:layout_marginHorizontal="12dp"
                     android:gravity="center_vertical"
                     android:text="View all"
-                    android:textColor="@color/txt_link" />
+                    android:textColor="@color/txt_link"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"/>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/fg_home_rv_ongoing"
+                    android:id="@+id/fg_home_rv_upcoming"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/fg_home_tv_ongoing"
+                    android:layout_below="@id/fg_home_tv_upcoming"
+                    android:overScrollMode="ifContentScrolls"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"/>
             </RelativeLayout>
@@ -130,6 +136,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/btn_view_all_near"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_alignBottom="@id/fg_home_tv_near"
@@ -139,7 +146,9 @@
                     android:layout_marginHorizontal="12dp"
                     android:gravity="center_vertical"
                     android:text="View all"
-                    android:textColor="@color/txt_link" />
+                    android:textColor="@color/txt_link"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/fg_home_rv_near"
@@ -153,8 +162,6 @@
     </android.support.v4.widget.NestedScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <!--</in.srain.cube.views.ptr.PtrClassicFrameLayout>-->
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"

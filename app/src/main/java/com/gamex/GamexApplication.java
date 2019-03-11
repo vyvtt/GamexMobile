@@ -2,10 +2,10 @@ package com.gamex;
 
 import android.app.Application;
 
-import com.gamex.di.AppComponent;
-import com.gamex.di.AppModule;
-import com.gamex.di.DaggerAppComponent;
-import com.gamex.di.NetworkModule;
+import com.gamex.services.di.AppComponent;
+import com.gamex.services.di.AppModule;
+import com.gamex.services.di.DaggerAppComponent;
+import com.gamex.services.di.NetworkModule;
 import com.gamex.utils.Constant;
 
 public class GamexApplication extends Application {

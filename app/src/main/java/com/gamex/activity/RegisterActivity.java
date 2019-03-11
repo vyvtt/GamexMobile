@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
-import com.gamex.network.DataService;
+import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
 import com.gamex.utils.TextInputLayoutValidator;
 import com.mobsandgeeks.saripaar.ValidationError;

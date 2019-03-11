@@ -1,6 +1,5 @@
 package com.gamex.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,16 +13,12 @@ import android.widget.FrameLayout;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
-import com.gamex.network.DataService;
+import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -256,5 +251,12 @@ public class FacebookLoginActivity extends AppCompatActivity {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

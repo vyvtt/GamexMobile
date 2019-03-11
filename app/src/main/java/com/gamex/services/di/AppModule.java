@@ -1,4 +1,4 @@
-package com.gamex.di;
+package com.gamex.services.di;
 
 import android.app.Application;
 import android.content.SharedPreferences;

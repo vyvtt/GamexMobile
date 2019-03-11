@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gamex.GamexApplication;
-import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.R;
+import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.models.Exhibition;
-import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -45,14 +45,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-
-//        Picasso.Builder builder = new Picasso.Builder(context);
-//        builder.downloader(new OkHttp3Downloader(context));
-//        builder.build().load(dataList.get(i).getLogo())
-//                .placeholder((R.color.bg_grey))
-//                .error(R.color.bg_grey)
-//                .into(viewHolder.imgBanner);
-
         picasso.load(dataList.get(i).getLogo())
                 .placeholder((R.color.bg_grey))
                 .error(R.color.bg_grey)
@@ -63,6 +55,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         viewHolder.txtDate.setText(exDate);
 
         viewHolder.item.setOnClickListener(v -> {
+            Log.i("Click ex ------", dataList.get(i).getName());
             Intent intent = new Intent(context, ExhibitionDetailActivity.class);
             Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                     viewHolder.item, 0, 0,

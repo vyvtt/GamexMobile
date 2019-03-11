@@ -1,4 +1,4 @@
-package com.gamex.di;
+package com.gamex.services.di;
 
 import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.activity.FacebookLoginActivity;
@@ -6,12 +6,9 @@ import com.gamex.activity.LoginActivity;
 import com.gamex.activity.MainActivity;
 import com.gamex.activity.RegisterActivity;
 import com.gamex.activity.SplashActivity;
-import com.gamex.activity.ViewAllExhibitionActivity;
 import com.gamex.adapters.EndlessRecycleViewAdapter;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.adapters.ListCompanyAdapter;
-import com.gamex.fragments.ExDetailFragment;
-import com.gamex.fragments.ExDetailListCompanyFragment;
 import com.gamex.fragments.HomeFragment;
 
 import javax.inject.Singleton;

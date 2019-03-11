@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.gamex.R;
-import com.gamex.network.CheckInternetTask;
+import com.gamex.services.network.CheckInternetTask;
 
 /**
  * A simple {@link Fragment} subclass.
