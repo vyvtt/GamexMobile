@@ -67,7 +67,7 @@ public interface DataService {
     @GET("/api/exhibitions")
     Call<List<Exhibition>> getExhibitionsList(
             @Header("Authorization") String accessToken,
-            @QueryMap Map<String, String> options
+            @QueryMap Map<String, Object> options
     );
 
     // Exhibition details

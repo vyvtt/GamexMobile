@@ -50,9 +50,9 @@ public class EndlessRecycleViewAdapter extends RecyclerView.Adapter<EndlessRecyc
                 .placeholder((R.color.bg_grey))
                 .error(R.color.bg_grey)
                 .into(viewHolder.imgBanner);
-
+        String date = dataExhibition.get(i).getStartDate() + " - " + dataExhibition.get(i).getEndDate();
         viewHolder.txtName.setText(dataExhibition.get(i).getName());
-        viewHolder.txtDate.setText(dataExhibition.get(i).getStartDate());
+        viewHolder.txtDate.setText(date);
         viewHolder.txtAddr.setText(dataExhibition.get(i).getAddress());
 
         viewHolder.item.setOnClickListener(v -> {

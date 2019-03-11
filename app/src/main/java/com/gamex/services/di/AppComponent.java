@@ -6,6 +6,7 @@ import com.gamex.activity.LoginActivity;
 import com.gamex.activity.MainActivity;
 import com.gamex.activity.RegisterActivity;
 import com.gamex.activity.SplashActivity;
+import com.gamex.activity.ViewAllExhibitionActivity;
 import com.gamex.adapters.EndlessRecycleViewAdapter;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.adapters.ListCompanyAdapter;
@@ -23,6 +24,7 @@ public interface AppComponent {
     void inject(HomeAdapter homeAdapter);
     void inject(ListCompanyAdapter listCompanyAdapter);
     void inject(EndlessRecycleViewAdapter endlessRecycleViewAdapter);
+    void inject(ViewAllExhibitionActivity viewAllExhibitionActivity);
 
     // splash
     void inject(SplashActivity splashActivity);

@@ -2,6 +2,7 @@ package com.gamex.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
+import com.gamex.activity.ViewAllExhibitionActivity;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.models.Exhibition;
 import com.gamex.services.network.BaseCallBack;
@@ -51,7 +53,7 @@ public class HomeFragment extends Fragment {
     SharedPreferences sharedPreferences;
     private String accessToken;
     private boolean isLoadingOngoing, isLoadingUpcoming, isLoadingNear;
-    private HashMap<String, String> apiParam;
+    private HashMap<String, Object> apiParam;
 
     private final String TAG = HomeFragment.class.getSimpleName();
     private SwipeRefreshLayout refreshLayout;
@@ -86,18 +88,29 @@ public class HomeFragment extends Fragment {
         setResponseToEvent();
         setLayoutManager();
         checkInternet();
-        // TODO test
-//        List<Exhibition> test = new ArrayList<>();
-//        test.add(new Exhibition("id-1", "name 1", "start", "end", "logo"));
-//        test.add(new Exhibition("id-2", "name 2", "start", "end", "logo"));
-//        test.add(new Exhibition("id-3", "name 3", "start", "end", "logo"));
-//        setLayoutManager(test);
-
         return view;
     }
 
     private void setResponseToEvent() {
         refreshLayout.setOnRefreshListener(this::checkInternet);
+
+        btnAllOngoing.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, ViewAllExhibitionActivity.class);
+            intent.putExtra("VIEW_ALL_TYPE", Constant.API_TYPE_ONGOING);
+            startActivity(intent);
+        });
+
+        btnAllUpcoming.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, ViewAllExhibitionActivity.class);
+            intent.putExtra("VIEW_ALL_TYPE", Constant.API_TYPE_UPCOMING);
+            startActivity(intent);
+        });
+
+        btnAllNear.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, ViewAllExhibitionActivity.class);
+            intent.putExtra("VIEW_ALL_TYPE", Constant.API_TYPE_NEAR);
+            startActivity(intent);
+        });
     }
 
     private void mappingViewElement(View view) {
