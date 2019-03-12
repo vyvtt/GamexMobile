@@ -1,12 +1,19 @@
 package com.gamex.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +42,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -62,6 +68,10 @@ public class HomeFragment extends Fragment {
     private ProgressBar progressBar;
     private FragmentActivity mContext;
 
+    private int ACCESS_FINE_LOCATION_PERMISSION_CODE = 99;
+    private double lat = 10.7805666, lng = 106.70075980000001;
+    private LocationManager locationManager;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -80,9 +90,13 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         isLoadingNear = isLoadingOngoing = isLoadingUpcoming = false;
         apiParam = new HashMap<>();
         accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
+
+        checkLocationPermission();
+        getLocation();
 
         mappingViewElement(view);
         setResponseToEvent();
@@ -91,8 +105,50 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private void checkLocationPermission() {
+        Log.i(TAG, "checkLocationPermission");
+        if (ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(mContext,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION_PERMISSION_CODE);
+        }
+    }
+
+    private void getLocation() {
+        if (ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager = (LocationManager)
+                    mContext.getSystemService(Context.LOCATION_SERVICE);
+
+            final LocationListener locationListener = new LocationListener() {
+                public void onLocationChanged(Location location) {
+                    lng = location.getLongitude();
+                    lat = location.getLatitude();
+                    Log.i(TAG, "New location ----------------------------- " + lng + " " + lat);
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+                }
+            };
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        }
+    }
+
     private void setResponseToEvent() {
-        refreshLayout.setOnRefreshListener(this::checkInternet);
+        refreshLayout.setOnRefreshListener(() -> {
+            getLocation();
+            checkInternet();
+        });
 
         btnAllOngoing.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, ViewAllExhibitionActivity.class);
@@ -220,6 +276,8 @@ public class HomeFragment extends Fragment {
     private void callAPINear() {
         apiParam.clear();
         apiParam.put("type", Constant.API_TYPE_NEAR);
+        apiParam.put("lat", lat);
+        apiParam.put("lng", lng);
 
         isLoadingNear = true;
         callNear = dataService.getExhibitionsList(accessToken, apiParam);

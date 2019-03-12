@@ -15,6 +15,7 @@ public final class Constant {
     public static final String PREF_HAS_LOGGED_IN = "HAS_LOGGED_IN";
     public static final String PREF_ACCESS_TOKEN = "ACCESS_TOKEN";
     public static final String PREF_FULLNAME = "FULLNAME";
+    public static final String PREF_HAS_CREATE_PASSWORD = "HAS_CREATE_PASSWORD";
 
     // API
     public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";

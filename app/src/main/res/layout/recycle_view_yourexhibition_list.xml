@@ -49,7 +49,8 @@
                 android:padding="3dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:maxLines="1"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:text="February 28th to March 2nd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -59,7 +60,7 @@
                 android:layout_below="@id/rv_item_date"
                 android:layout_toRightOf="@id/rv_item_img"
                 android:textSize="14sp"
-                android:textColor="@color/bg_grey"
+                android:textColor="@color/txt_sub_info"
                 android:padding="3dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"

@@ -230,10 +230,11 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
     }
 
     private void loadMore() {
-        progressBarLoadMore.setVisibility(View.VISIBLE);
-
         if (!isNoMoreData) {
+            progressBarLoadMore.setVisibility(View.VISIBLE);
             callAPI();
+        } else {
+            Toast.makeText(this, "No more data!", Toast.LENGTH_SHORT).show();
         }
     }
 

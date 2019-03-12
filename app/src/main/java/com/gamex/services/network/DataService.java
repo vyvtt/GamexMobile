@@ -1,6 +1,5 @@
 package com.gamex.services.network;
 
-import com.gamex.models.Company;
 import com.gamex.models.Exhibition;
 
 import java.util.HashMap;
@@ -16,22 +15,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
-import retrofit2.http.Url;
 
 public interface DataService {
-    @GET("api/Exhibition")
-    Call<List<Exhibition>> getAllExhibition();
-
-    // login
-//    @FormUrlEncoded
-//    @POST("api/account/login")
-//    Call<ResponseBody> loginAccount(
-//            @Field("username") String username,
-//            @Field("password") String password);
 
     // Login
     @FormUrlEncoded
@@ -52,7 +39,7 @@ public interface DataService {
     @GET("/api/Account/ExternalLogins?returnUrl=%2F&generateState=false")
     Call<ResponseBody> fbGetExternalProvider();
 
-    // login with FB 2: GEt user info by access token
+    // login with FB 2: Get user info by access token
     @GET("/api/account/userinfo")
     Call<ResponseBody> fbGetUserInfo(@Header("Authorization") String accessToken);
 
@@ -61,6 +48,15 @@ public interface DataService {
     Call<ResponseBody> fbRegisterExternal(
             @Header("Authorization") String accessToken,
             @Header("Cookie") String cookie
+    );
+
+    // login with FB 4: Registration password for GamEx account
+    @FormUrlEncoded
+    @POST("/api/account/password")
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    Call<ResponseBody> fbCreatePassword(
+            @Field("Password") String password,
+            @Field("ConfirmPassword") String confirmPassword
     );
 
     // Main screen exhibition
@@ -75,6 +71,12 @@ public interface DataService {
     Call<Exhibition> getExhibitionDetails(
             @Header("Authorization") String accessToken,
             @Query("id") String id
+    );
+
+    // Survey details (question)
+    @GET("/api/survey")
+    Call<ResponseBody> getSurveyDetails(
+            @Header("Authorization") String accessToken
     );
 
 //    // login with FB

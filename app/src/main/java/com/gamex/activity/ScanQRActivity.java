@@ -37,7 +37,7 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         } else {
-            //PERMISSION_GRANTED
+            //PERMISSION_GRANTED already -> do nothing about permission
             initScan();
         }
     }

@@ -1,6 +1,7 @@
 package com.gamex.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,8 @@ public class RegisterActivity extends AppCompatActivity {
     @Named("no-cache")
     DataService dataService;
     Call<ResponseBody> call;
+    @Inject
+    SharedPreferences sharedPreferences;
 
     private TextView txtToLogin;
     private Validator validator;
@@ -150,6 +153,10 @@ public class RegisterActivity extends AppCompatActivity {
                     progressDialog.setTitleText("Create Account Successfully!")
                             .setConfirmText("Great!")
                             .setConfirmClickListener(sweetAlertDialog -> {
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean(Constant.PREF_HAS_CREATE_PASSWORD, true);
+                                editor.commit();
+
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 intent.putExtra("USERNAME_FROM_REGISTER", tilUsername.getEditText().getText().toString());
                                 startActivity(intent);
@@ -174,7 +181,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.i(TAG, "RegisterError: " + errArray.toString());
 
                         } catch (IOException | JSONException | NullPointerException e) {
-                            e.printStackTrace();
+                            Log.e(TAG, e.getMessage(), e.fillInStackTrace());
                         }
                     }
                     progressDialog

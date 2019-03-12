@@ -2,22 +2,13 @@ package com.gamex.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.utils.Constant;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import javax.inject.Inject;
 
@@ -44,6 +35,7 @@ public class SplashActivity extends AppCompatActivity {
 //        } catch (NoSuchAlgorithmException e) {
 //        }
 //        finish();
+
 
 
         Intent intent;

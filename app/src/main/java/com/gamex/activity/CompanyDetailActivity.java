@@ -47,7 +47,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
         // test list survey
         rvListSurvey.setHasFixedSize(true);
         rvListSurvey.setLayoutManager(new LinearLayoutManager(getApplication()));
-
         List<SurveyTest> listSurvey = new ArrayList<>();
         listSurvey.add(new SurveyTest(1, "Survey Build successful!", 30, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", 10));
         listSurvey.add(new SurveyTest(1, "Technology survey?", 100, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", 1));

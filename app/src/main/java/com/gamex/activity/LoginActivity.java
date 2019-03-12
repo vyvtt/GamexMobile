@@ -255,13 +255,13 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(Constant.PREF_ACCESS_TOKEN, json.getString("access_token"));
-                        editor.putString(Constant.PREF_FULLNAME, json.getString("userName"));
+                        editor.putString(Constant.PREF_FULLNAME, json.getString("fullName"));
                         editor.putBoolean(Constant.PREF_HAS_LOGGED_IN, true);
-                        editor.apply();
+                        editor.commit();
                     } catch (IOException | JSONException e) {
                         Log.e(TAG, e.getMessage());
                     }
-
+                    progressDialog.dismissWithAnimation();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

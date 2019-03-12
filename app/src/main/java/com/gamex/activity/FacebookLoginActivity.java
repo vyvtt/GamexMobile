@@ -3,18 +3,23 @@ package com.gamex.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
+import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
+import com.mobsandgeeks.saripaar.annotation.Password;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.json.JSONException;
@@ -37,6 +42,13 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private String cookieAspNetExternalCookie = "";
     private String accessToken;
 
+    private LinearLayout layoutChangePass;
+    private Button btnDone;
+    @Password(message = Constant.ERR_LENGTH_MIN_6)
+    TextInputLayout tilNewPass;
+    @ConfirmPassword
+    TextInputLayout tilRePass;
+
     Call<ResponseBody> call;
     @Inject
     @Named("no-cache")
@@ -50,9 +62,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook_login);
 
-        webView = findViewById(R.id.webview);
-        webViewContainer = findViewById(R.id.webview_frame);
-        webView.getSettings().setJavaScriptEnabled(true);
+        mappingViewElement();
 
         String url = getIntent().getStringExtra("URL");
         webView.loadUrl(url);
@@ -60,10 +70,6 @@ public class FacebookLoginActivity extends AppCompatActivity {
         this.webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Uri uri = Uri.parse(url);
-                String host = uri.getHost();
-                Log.i("host: ", host);
-
                 if (url.contains("gamexwebapi.azurewebsites.net/#access_token")) {
                     Log.i(TAG, "URL Match! Stop web view");
 
@@ -73,33 +79,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
                     progressDialog.setCancelable(false);
                     progressDialog.show();
 
-                    // Get Cookie
-                    // ARRAffinity=9e5f3094bd196c13904d9e836a48b048684e2b4551551a13bc41c3f7ade383f2;
-                    // .AspNet.ExternalCookie=EaLFH6AMTi6bCOIClZ_4QGZSf_poSJopMVTeczWRqjgEUkxw7s4othvHN_WFNB3Jj0Z9OHRs2OzXTupsnZjM0XVwQS1yNO-ahAGPL2V8DRiH5WoW0qJ8FN6HEfyYpCUkMjsWEpAdlzEgydBl0DNwhtrbdfokpEV1kdVhNveKPQeV2artUOf6P66-oCJy_4T8GbhizMK7PWmNJ2jetoYFaSHAY7KqbE8k547e7V-OKEz8ILAn01HKN9CfzkljHSq10I19j-A5kHrSK9EJ5KNPeLP0fx6SMZZgeiowV7MjEeHY93kruXlbxZp1TTG_geC6LAS7XOgNrIjZ-Mb0Ura4FWSG2_2nUuvdKP-iPhDZ3SKT70G_K5ntgnJh6EUo3UnmON88exYmKqAvDoWFylsSgmJQy4vUuZQYaPLekUIJoFM9hgRSjCr3yiitEgZzMDXcScy2tG1u3YIgYYNdnhbAcPfjqgerqx7-HHtTD3KqLJeX9gEPndCto3zQw-RZ--wyINWBXh-yjKtdjsARElWERx-k8Cg0d9C7yt3OmqhAjnY
-                    String cookies = CookieManager.getInstance().getCookie(url);
-                    cookieAspNetExternalCookie = "";
-                    String[] tmpCookies = cookies.split(";");
-                    for (String cookie : tmpCookies) {
-                        if (cookie.contains(".AspNet.ExternalCookie")) {
-                            String[] temp1 = cookie.split("=");
-                            cookieAspNetExternalCookie = temp1[1];
-                            break;
-                        }
-                    }
-                    cookieAspNetExternalCookie = ".AspNet.ExternalCookie="
-                            + cookieAspNetExternalCookie
-                            + ";Path=/;HttpOnly;Domain=gamexwebapi.azurewebsites.net";
-
-                    // Get access token
-                    String tmp = uri.toString();
-                    accessToken = tmp.substring(
-                            tmp.indexOf("=") + 1,
-                            tmp.indexOf("&")
-                    );
-
-                    Log.i(TAG, ".AspNet.ExternalCookie: " + cookieAspNetExternalCookie);
-                    Log.i("Access Token *****: ", accessToken);
-
+                    getCookie(url);
+                    getAccessToken(Uri.parse(url).toString());
                     destroyWebView();
 
                     // GEt user info
@@ -148,6 +129,39 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void getCookie(String url) {
+        String cookies = CookieManager.getInstance().getCookie(url);
+        cookieAspNetExternalCookie = "";
+        String[] tmpCookies = cookies.split(";");
+        for (String cookie : tmpCookies) {
+            if (cookie.contains(".AspNet.ExternalCookie")) {
+                String[] temp1 = cookie.split("=");
+                cookieAspNetExternalCookie = temp1[1];
+                break;
+            }
+        }
+        cookieAspNetExternalCookie = ".AspNet.ExternalCookie="
+                + cookieAspNetExternalCookie
+                + ";Path=/;HttpOnly;Domain=gamexwebapi.azurewebsites.net";
+    }
+
+    private void getAccessToken(String tmp) {
+        accessToken = tmp.substring(
+                tmp.indexOf("=") + 1,
+                tmp.indexOf("&")
+        );
+    }
+
+
+    private void mappingViewElement() {
+        webView = findViewById(R.id.fb_webview);
+        webViewContainer = findViewById(R.id.webview_frame);
+        webView.getSettings().setJavaScriptEnabled(true);
+        tilNewPass = findViewById(R.id.fb_tilNewPass);
+        tilRePass = findViewById(R.id.fb_tilRePass);
+        btnDone = findViewById(R.id.fb_btnChangePass);
     }
 
     private void backToLoginOnRequestFail() {
