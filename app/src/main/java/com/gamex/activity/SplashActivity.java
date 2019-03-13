@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent;
         boolean hasLoggedIn = sharedPreferences.getBoolean(Constant.PREF_HAS_LOGGED_IN, false);
         if (hasLoggedIn) {
-                intent = new Intent(SplashActivity.this, SurveyActivity.class);
+                intent = new Intent(SplashActivity.this, MainActivity.class);
         } else {
             intent = new Intent(SplashActivity.this, LoginActivity.class);
         }

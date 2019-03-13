@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -34,7 +35,6 @@ public interface DataService {
     // register
     @POST("api/account")
     Call<ResponseBody> register(@Body HashMap<String, String> user);
-
 
     // login with FB 1: Get external provider
     @GET("/api/Account/ExternalLogins?returnUrl=%2F&generateState=false")
@@ -71,6 +71,12 @@ public interface DataService {
             @Header("Authorization") String accessToken,
             @Query("id") int surveyId
     );
+
+    @POST("/api/survey")
+    Call<ResponseBody> submitSurvey(
+            @Header("Authorization") String accessToken,
+            @Body RequestBody answer
+            );
 
 //    // login with FB
 //    @Headers({"Content-Type:application/json"})

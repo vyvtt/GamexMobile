@@ -63,8 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
     @NotEmpty(message = Constant.ERR_REQUIRED, trim = true)
     TextInputLayout tilUsername;
 
-//    @Password(message = Constant.ERR_LENGTH_MIN_6)
-    @Password(min = 2)
+    @Password(message = Constant.ERR_LENGTH_MIN_6)
     TextInputLayout tilPassword;
 
     @ConfirmPassword

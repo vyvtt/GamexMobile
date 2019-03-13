@@ -36,6 +36,8 @@
     <color name="gradient_end">#FF303F9F</color>
     <color name="gradient_start">#FF009688</color>
 
+    <color name="blue_btn_bg_color">@color/color_secondary</color>
+    <color name="blue_btn_bg_pressed_color">@color/color_secondary_dark</color>
 
     <!-- Material DEFAULT colors -->
     <color name="material_drawer_primary">@color/color_primary</color>

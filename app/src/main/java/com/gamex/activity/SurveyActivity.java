@@ -42,6 +42,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -166,11 +167,7 @@ public class SurveyActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Survey> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
-                sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                sweetAlertDialog.setTitleText("Opps ...")
-                        .setContentText("Can not connect to GamEx server")
-                        .setConfirmText("Try again later")
-                        .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
+                alertOnFail("Can not connect to GamEx server");
             }
         });
     };
@@ -202,11 +199,6 @@ public class SurveyActivity extends AppCompatActivity {
         }
     };
 
-    /**
-     * save the user answer on click of either the next, previous or review button
-     * the method is also called by saveInstance state (orientation change or minimizing the app)
-     * when there is answer -> isAnswered = true
-     */
     private void saveUserAnswer() {
 
         if (curQuestionNumber < listQuestions.size()) {
@@ -265,13 +257,8 @@ public class SurveyActivity extends AppCompatActivity {
         txtPoint.setText(getIntent().getStringExtra(""));
     }
 
-    /**
-     * Display the listQuestions from the set along with it's options, each question can
-     * have different number of options and different type of views for the inputs
-     */
     private void displayQuestion() {
 
-        //remove previous question and it's corresponding options
         optionsLayout.removeAllViews();
 
         //display the current question number and total number of listQuestions
@@ -298,11 +285,6 @@ public class SurveyActivity extends AppCompatActivity {
         displayOptions();
     }
 
-    /**
-     * display options for each question - type could be Radiobuttons, checkboxes or edittext
-     * restore answers from question object that were saved on activity reload (orientation change, minimize app)
-     * or on clicking next, previous or review buttons
-     */
     private void displayOptions() {
 
         //get the current question and it's options
@@ -339,13 +321,6 @@ public class SurveyActivity extends AppCompatActivity {
                             break;
                         }
                     }
-
-
-//                    RadioButton selectedRadioButton = findViewById(question.getProposedAnswers().get(0).getProposedAnswerId());
-//                    RadioButton radioButton = (RadioButton) radioGroup.getChildAt(question.getProposedAnswers().get(0).getProposedAnswerId());
-//                    RadioButton radioButton = (RadioButton) radioGroup.getChildAt(previousIndexOfSelectedRadioButton);
-//                    selectedRadioButton.setChecked(true);
-//                    previousIndexOfSelectedRadioButton = -1;
                 }
 
                 optionsView = radioGroup;
@@ -374,10 +349,6 @@ public class SurveyActivity extends AppCompatActivity {
             case EDITTEXT:
                 //For the case of edit text, display an EditText for the user to enter the answer
                 EditText editText = new EditText(this);
-                //set the InputType to display digits only keyboard if applicable
-//                if (TextUtils.isDigitsOnly(listQuestions.get(curQuestionNumber).getAnswer())) {
-//                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-//                }
 
                 //restore saved answers, set hint text if answer is empty/remains unanswered
                 if (!TextUtils.isEmpty(question.getUserAnwerText())) {
@@ -406,20 +377,32 @@ public class SurveyActivity extends AppCompatActivity {
         toast.show();
     }
 
+    private void alertOnFail(String content) {
+        if (sweetAlertDialog != null && sweetAlertDialog.isShowing()) {
+            sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+            sweetAlertDialog.setTitleText("Opps ...")
+                    .setContentText(content)
+                    .setConfirmText("Try again later")
+                    .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
+        }
+    }
+
     private void displayConfirmAlert(String title, String message, final boolean isBackPressed) {
-        SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE);
-        dialog
+        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog
                 .setTitleText(title)
                 .setContentText(message)
                 .setConfirmText("Yes")
                 .setCancelText("Cancel")
-                .setConfirmClickListener(sweetAlertDialog1 -> {
+                .setConfirmClickListener(sweetAlertDialog -> {
                     if (isBackPressed) {
                         finish();
                     } else {
                         // TODO submit
                         Log.i(TAG, "Submit: " + listQuestions.toString());
-                        createJsonResponse();
+                        sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                        sweetAlertDialog.setTitleText("Gathering data ...");
+                        submitAnswer();
                     }
                 })
                 .setCancelClickListener(sweetAlertDialog -> {
@@ -427,8 +410,8 @@ public class SurveyActivity extends AppCompatActivity {
                         sweetAlertDialog.dismissWithAnimation();
                     }
                 });
-        dialog.setCancelable(false);
-        dialog.show();
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.show();
     }
 
     private void cancelToast() {
@@ -478,5 +461,64 @@ public class SurveyActivity extends AppCompatActivity {
             Log.e(TAG, e.getMessage(), e.fillInStackTrace());
         }
         return null;
+    }
+
+    private void submitAnswer() {
+        String jsonAnswers = createJsonResponse();
+
+        if (jsonAnswers == null) {
+            alertOnFail("Something went wrong");
+        }
+
+        if (sweetAlertDialog != null) {
+            sweetAlertDialog.setTitleText("Connecting to Server ...");
+        }
+
+        RequestBody answer = RequestBody.create
+                (okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonAnswers);
+        Call<ResponseBody> call = dataService.submitSurvey(accessToken, answer);
+
+        call.enqueue(new BaseCallBack<ResponseBody>(this) {
+            @Override
+            public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.i(TAG, response.message());
+
+                try {
+                    if (response.isSuccessful()) {
+
+                        String strResponse = response.body().string();
+                        JSONObject jsonResponse = new JSONObject(strResponse);
+                        int point = jsonResponse.getInt("point");
+
+                        if (sweetAlertDialog != null) {
+                            sweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            sweetAlertDialog
+                                    .setTitleText("Submit successfully")
+                                    .setContentText("You gain " + point + " points!")
+                                    .setConfirmText("Great")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.dismissWithAnimation();
+                                            // TODO back to list survey
+                                        }
+                                    });
+                        }
+
+                    } else {
+                        alertOnFail(response.message());
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage(), e.fillInStackTrace());
+                    alertOnFail("Something went wrong");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+                alertOnFail("Can not connect to GamEx server");
+            }
+        });
     }
 }
