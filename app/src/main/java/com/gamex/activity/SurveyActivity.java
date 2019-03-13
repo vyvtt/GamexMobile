@@ -1,25 +1,42 @@
 package com.gamex.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
-import com.gamex.models.Exhibition;
+import com.gamex.models.ProposedAnswer;
+import com.gamex.models.Question;
+import com.gamex.models.QuestionType;
+import com.gamex.models.Survey;
 import com.gamex.services.network.BaseCallBack;
 import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,22 +50,33 @@ public class SurveyActivity extends AppCompatActivity {
     @Inject
     @Named("cache")
     DataService dataService;
-    Call<ResponseBody> call;
+    Call<Survey> call;
     @Inject
     SharedPreferences sharedPreferences;
     private String accessToken;
 
-
     private RelativeLayout layoutOverview;
-    private ConstraintLayout layoutMain;
+    private RelativeLayout layoutMain;
     private LinearLayout optionsLayout;
 
     private TextView txtQuestion, txtTitle, txtDes, txtPoint, txtCountQuestion;
     private Button btnStart, btnNext, btnPrev;
     private ProgressBar progressBar;
+    private Toast toast;
 
     private SweetAlertDialog sweetAlertDialog;
     private final String TAG = SurveyActivity.class.getSimpleName() + "---------";
+    private String surveyTitle, surveyDescription, surveyPoint;
+    private int surveyId;
+
+    private Survey survey;
+    private int curQuestionNumber;
+    private int totalQuestions;
+    private List<Question> listQuestions;
+    private boolean isAnswered;
+
+    private QuestionType optionsType;
+    private View optionsView;
 
 
     @Override
@@ -56,7 +84,23 @@ public class SurveyActivity extends AppCompatActivity {
         ((GamexApplication) getApplication()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
+
+        //init value
+        if (listQuestions == null) {
+            listQuestions = new ArrayList<>();
+        }
+        accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
+
+        getDataFromIntent();
         mappingViewElement();
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        surveyId = intent.getIntExtra("SV_ID", -1);
+        surveyDescription = intent.getStringExtra("SV_DES");
+        surveyPoint = intent.getStringExtra("SV_POINT");
+        surveyTitle = intent.getStringExtra("SV_TITLE");
     }
 
     private void mappingViewElement() {
@@ -87,15 +131,29 @@ public class SurveyActivity extends AppCompatActivity {
         sweetAlertDialog.show();
 
         // TODO call api to get question
-        call = dataService.getSurveyDetails(accessToken);
-        call.enqueue(new BaseCallBack<ResponseBody>(this) {
+        surveyId = 1;
+        call = dataService.getSurveyQuestions(accessToken, surveyId);
+        call.enqueue(new BaseCallBack<Survey>(this) {
             @Override
-            public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onSuccess(Call<Survey> call, Response<Survey> response) {
                 Log.i(TAG, response.message());
                 if (response.isSuccessful()) {
                     // TODO get data
                     layoutOverview.setVisibility(View.GONE);
                     layoutMain.setVisibility(View.VISIBLE);
+
+                    survey = response.body();
+                    listQuestions = survey.getQuestions();
+                    totalQuestions = listQuestions.size();
+                    curQuestionNumber = 0;
+                    progressBar.setMax(totalQuestions);
+
+                    displayQuestion();
+
+                    Log.i(TAG, survey.toString());
+
+                    sweetAlertDialog.dismissWithAnimation();
+
                 } else {
                     sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     sweetAlertDialog.setTitleText("Opps ...")
@@ -104,8 +162,9 @@ public class SurveyActivity extends AppCompatActivity {
                             .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
                 }
             }
+
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Survey> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
                 sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                 sweetAlertDialog.setTitleText("Opps ...")
@@ -117,18 +176,307 @@ public class SurveyActivity extends AppCompatActivity {
     };
 
     private View.OnClickListener prevButtonClickListener = v -> {
-
+        saveUserAnswer();
+        if (curQuestionNumber > 0) {
+            curQuestionNumber--;
+            displayQuestion();
+        } else {
+            alertNoPrevQuestions();
+        }
     };
 
     private View.OnClickListener nextButtonClickListener = v -> {
+        saveUserAnswer();
 
+        if (!isAnswered) {
+            alertQuestionUnanswered();
+            return;
+        }
+
+        curQuestionNumber++;
+        if (curQuestionNumber < listQuestions.size()) {
+            displayQuestion();
+        } else {
+            curQuestionNumber--;
+            displayConfirmAlert("", "Do you want to submit the answers?", false);
+        }
     };
+
+    /**
+     * save the user answer on click of either the next, previous or review button
+     * the method is also called by saveInstance state (orientation change or minimizing the app)
+     * when there is answer -> isAnswered = true
+     */
+    private void saveUserAnswer() {
+
+        if (curQuestionNumber < listQuestions.size()) {
+
+            Question currentQuestion = listQuestions.get(curQuestionNumber);
+            ArrayList<Integer> answerSelectId = new ArrayList<>();
+            String answerText;
+
+            switch (optionsType) {
+                case RADIOBUTTON:
+                    //save the selected RadioButton IDs
+                    int selectButtonId = ((RadioGroup) optionsView).getCheckedRadioButtonId();
+                    RadioButton selectedRadioButton = findViewById(selectButtonId);
+
+                    if (selectedRadioButton == null) { // not select yet
+                        return;
+                    } else {
+                        answerSelectId.add(selectButtonId);
+                        currentQuestion.setUserAnswerButtonId(answerSelectId);
+                        isAnswered = true;
+                    }
+                    break;
+
+                case CHECKBOX:
+                    //save checkbox IDs that have been checked by the user
+                    LinearLayout parentLayout = (LinearLayout) optionsView;
+                    int numOfCheckBox = parentLayout.getChildCount();
+                    for (int i = 0; i < numOfCheckBox; i++) {
+                        CheckBox childCheckBox = (CheckBox) parentLayout.getChildAt(i);
+                        if (childCheckBox.isChecked()) {
+                            answerSelectId.add(i);
+                            isAnswered = true;
+                        }
+                    }
+                    currentQuestion.setUserAnswerButtonId(answerSelectId);
+                    break;
+
+                case EDITTEXT:
+                    //save the EditText answer
+                    EditText edtAnswer = (EditText) optionsView;
+                    answerText = edtAnswer.getText().toString();
+                    if (!TextUtils.isEmpty(answerText)) {
+                        currentQuestion.setUserAnwerText(answerText);
+                        isAnswered = true;
+                    } else {
+                        currentQuestion.setUserAnwerText(null);
+                    }
+                    break;
+            }
+        }
+    }
 
     private void getOverviewData() {
         txtTitle.setText(getIntent().getStringExtra(""));
         txtDes.setText(getIntent().getStringExtra(""));
         txtPoint.setText(getIntent().getStringExtra(""));
+    }
 
-        accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN,"");
+    /**
+     * Display the listQuestions from the set along with it's options, each question can
+     * have different number of options and different type of views for the inputs
+     */
+    private void displayQuestion() {
+
+        //remove previous question and it's corresponding options
+        optionsLayout.removeAllViews();
+
+        //display the current question number and total number of listQuestions
+        String text = (curQuestionNumber + 1) + "/" + totalQuestions;
+        txtCountQuestion.setText(text);
+
+        //update the progress bar status
+        progressBar.setProgress(curQuestionNumber + 1);
+
+        if (isAnswered) { // refresh state from previous question
+            isAnswered = false;
+        }
+
+        Question currentQuestion = listQuestions.get(curQuestionNumber);
+        txtQuestion.setText(currentQuestion.getContent());
+
+        //set the button for last question to be 'Submit', rather than 'Next'
+        if (curQuestionNumber == listQuestions.size() - 1) {
+            btnNext.setText("Submit");
+        } else {
+            btnNext.setText("Next");
+        }
+
+        displayOptions();
+    }
+
+    /**
+     * display options for each question - type could be Radiobuttons, checkboxes or edittext
+     * restore answers from question object that were saved on activity reload (orientation change, minimize app)
+     * or on clicking next, previous or review buttons
+     */
+    private void displayOptions() {
+
+        //get the current question and it's options
+        Question question = listQuestions.get(curQuestionNumber);
+        List<ProposedAnswer> proposedAnswers = question.getProposedAnswers();
+        QuestionType currentQuestionType = question.getQuestionType();
+
+        switch (currentQuestionType) {
+
+            case RADIOBUTTON:
+                //For the case of radio buttons, create a RadioGroup and add each option as a RadioButton
+                //to the group - set an ID for each RadioButton to be referred later
+                RadioGroup radioGroup = new RadioGroup(this);
+                for (int i = 0; i < proposedAnswers.size(); i++) {
+                    RadioButton radioButton = new RadioButton(this);
+                    radioButton.setText(proposedAnswers.get(i).getContent());
+                    radioButton.setId(proposedAnswers.get(i).getProposedAnswerId());
+                    radioButton.setPadding(0, 40, 0, 40);
+                    radioGroup.addView(radioButton);
+                }
+                optionsLayout.addView(radioGroup);
+
+                //restore saved answers
+                if (question.getUserAnswerButtonId() != null && question.getUserAnswerButtonId().size() > 0) {
+                    // radio button -> only one answer
+                    int total = radioGroup.getChildCount();
+                    int previousSelectId = question.getUserAnswerButtonId().get(0);
+
+                    for (int index = 0; index < total; index++) {
+                        int curId = radioGroup.getChildAt(index).getId();
+                        if (curId == previousSelectId) {
+                            RadioButton selectedRadioButton = (RadioButton) radioGroup.getChildAt(index);
+                            selectedRadioButton.setChecked(true);
+                            break;
+                        }
+                    }
+
+
+//                    RadioButton selectedRadioButton = findViewById(question.getProposedAnswers().get(0).getProposedAnswerId());
+//                    RadioButton radioButton = (RadioButton) radioGroup.getChildAt(question.getProposedAnswers().get(0).getProposedAnswerId());
+//                    RadioButton radioButton = (RadioButton) radioGroup.getChildAt(previousIndexOfSelectedRadioButton);
+//                    selectedRadioButton.setChecked(true);
+//                    previousIndexOfSelectedRadioButton = -1;
+                }
+
+                optionsView = radioGroup;
+                break;
+
+
+            case CHECKBOX:
+                //For the case of check boxes, create a new CheckBox for each option
+                for (ProposedAnswer proposedAnswer : proposedAnswers) {
+                    CheckBox checkbox = new CheckBox(this);
+                    checkbox.setText(proposedAnswer.getContent());
+                    checkbox.setId(proposedAnswer.getProposedAnswerId());
+                    checkbox.setPadding(0, 40, 0, 40);
+                    optionsLayout.addView(checkbox);
+                }
+
+                //restore saved answers
+                if (question.getUserAnswerButtonId() != null && question.getUserAnswerButtonId().size() > 0) {
+                    for (int index : question.getUserAnswerButtonId()) {
+                        ((CheckBox) optionsLayout.getChildAt(index)).setChecked(true);
+                    }
+                }
+                optionsView = optionsLayout;
+                break;
+
+            case EDITTEXT:
+                //For the case of edit text, display an EditText for the user to enter the answer
+                EditText editText = new EditText(this);
+                //set the InputType to display digits only keyboard if applicable
+//                if (TextUtils.isDigitsOnly(listQuestions.get(curQuestionNumber).getAnswer())) {
+//                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                }
+
+                //restore saved answers, set hint text if answer is empty/remains unanswered
+                if (!TextUtils.isEmpty(question.getUserAnwerText())) {
+                    editText.setText(question.getUserAnwerText());
+                    editText.setSelection(question.getUserAnwerText().length());
+                } else {
+                    editText.setHint("Type your answer here");
+                }
+
+                optionsLayout.addView(editText);
+                optionsView = editText;
+                break;
+        }
+        optionsType = currentQuestionType;
+    }
+
+    private void alertQuestionUnanswered() {
+        cancelToast();
+        toast = Toast.makeText(this, "Did you answer?", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    private void alertNoPrevQuestions() {
+        cancelToast();
+        toast = Toast.makeText(this, "This is the first question", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    private void displayConfirmAlert(String title, String message, final boolean isBackPressed) {
+        SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE);
+        dialog
+                .setTitleText(title)
+                .setContentText(message)
+                .setConfirmText("Yes")
+                .setCancelText("Cancel")
+                .setConfirmClickListener(sweetAlertDialog1 -> {
+                    if (isBackPressed) {
+                        finish();
+                    } else {
+                        // TODO submit
+                        Log.i(TAG, "Submit: " + listQuestions.toString());
+                        createJsonResponse();
+                    }
+                })
+                .setCancelClickListener(sweetAlertDialog -> {
+                    if (sweetAlertDialog != null) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                });
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    private void cancelToast() {
+        if (toast != null)
+            toast.cancel();
+    }
+
+    @Override
+    public void onBackPressed() {
+        displayConfirmAlert("Quit?", "You haven't submit this survey yet. If you quit, All of yours answers will be lost", true);
+    }
+
+    private String createJsonResponse() {
+        try {
+            JSONObject jsonSurvey = new JSONObject();
+            JSONArray jsonArraySurveyAnswer = new JSONArray();
+
+            for (Question question : listQuestions) {
+
+                JSONObject tmp = new JSONObject();
+                tmp.put("questionId", question.getQuestionId());
+
+                if (question.getQuestionType() == QuestionType.EDITTEXT) {
+                    tmp.put("other", question.getUserAnwerText());
+
+                } else if (question.getQuestionType() == QuestionType.RADIOBUTTON) {
+                    tmp.put("proposedAnswerId", question.getUserAnswerButtonId().get(0));
+
+                } else {
+                    JSONArray jsonArrayProposedAnswer = new JSONArray();
+                    for (Integer proposedAnswerId : question.getUserAnswerButtonId()) {
+                        jsonArrayProposedAnswer.put(proposedAnswerId);
+                    }
+                    tmp.put("proposedAnswerIds", jsonArrayProposedAnswer);
+                }
+
+                jsonArraySurveyAnswer.put(tmp);
+            }
+
+            jsonSurvey.put("surveyId", surveyId);
+            jsonSurvey.put("surveyAnswers", jsonArraySurveyAnswer);
+
+            Log.i(TAG, jsonSurvey.toString());
+            return jsonSurvey.toString();
+
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage(), e.fillInStackTrace());
+        }
+        return null;
     }
 }

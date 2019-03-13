@@ -42,13 +42,6 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private String cookieAspNetExternalCookie = "";
     private String accessToken;
 
-    private LinearLayout layoutChangePass;
-    private Button btnDone;
-    @Password(message = Constant.ERR_LENGTH_MIN_6)
-    TextInputLayout tilNewPass;
-    @ConfirmPassword
-    TextInputLayout tilRePass;
-
     Call<ResponseBody> call;
     @Inject
     @Named("no-cache")
@@ -159,9 +152,6 @@ public class FacebookLoginActivity extends AppCompatActivity {
         webView = findViewById(R.id.fb_webview);
         webViewContainer = findViewById(R.id.webview_frame);
         webView.getSettings().setJavaScriptEnabled(true);
-        tilNewPass = findViewById(R.id.fb_tilNewPass);
-        tilRePass = findViewById(R.id.fb_tilRePass);
-        btnDone = findViewById(R.id.fb_btnChangePass);
     }
 
     private void backToLoginOnRequestFail() {
@@ -217,7 +207,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         }
     }
 
-    private void savePrefAndStartMainActivity(String fullname, String accessToken) throws JSONException {
+    private void savePrefAndStartMainActivity(String fullname, String accessToken) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(Constant.PREF_ACCESS_TOKEN, accessToken);
         editor.putString(Constant.PREF_FULLNAME, fullname);

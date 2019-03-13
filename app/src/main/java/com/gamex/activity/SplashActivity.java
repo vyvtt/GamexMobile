@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
+import com.gamex.models.Survey;
 import com.gamex.utils.Constant;
 
 import javax.inject.Inject;
@@ -41,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent;
         boolean hasLoggedIn = sharedPreferences.getBoolean(Constant.PREF_HAS_LOGGED_IN, false);
         if (hasLoggedIn) {
-            intent = new Intent(SplashActivity.this, MainActivity.class);
+                intent = new Intent(SplashActivity.this, SurveyActivity.class);
         } else {
             intent = new Intent(SplashActivity.this, LoginActivity.class);
         }

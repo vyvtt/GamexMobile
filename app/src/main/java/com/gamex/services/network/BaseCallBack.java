@@ -3,6 +3,7 @@ package com.gamex.services.network;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.gamex.activity.LoginActivity;
 import com.gamex.activity.MainActivity;
@@ -23,6 +24,7 @@ public abstract class BaseCallBack<T> implements Callback<T> {
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
         if (response.code() == 401) {
+            Log.i("BaseCallback", response.message());
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
             sweetAlertDialog.setTitleText("Opps ...")
                     .setContentText("Your session has expired. Please Login again!")

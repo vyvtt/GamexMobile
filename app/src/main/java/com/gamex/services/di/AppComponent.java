@@ -29,13 +29,13 @@ public interface AppComponent {
     void inject(SurveyActivity surveyActivity);
 
     // splash
-    void inject(SplashActivity splashActivity);
+    void inject(SplashActivity activity);
     // login
-    void inject(LoginActivity loginActivity);
+    void inject(LoginActivity activity);
     // fb login
-    void inject(FacebookLoginActivity facebookLoginActivity);
+    void inject(FacebookLoginActivity activity);
     // register
-    void inject(RegisterActivity registerActivity);
+    void inject(RegisterActivity activity);
     // main
-    void inject(MainActivity mainActivity);
+    void inject(MainActivity activity);
 }

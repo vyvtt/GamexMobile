@@ -1,6 +1,7 @@
 package com.gamex.services.network;
 
 import com.gamex.models.Exhibition;
+import com.gamex.models.Survey;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,15 +51,6 @@ public interface DataService {
             @Header("Cookie") String cookie
     );
 
-    // login with FB 4: Registration password for GamEx account
-    @FormUrlEncoded
-    @POST("/api/account/password")
-    @Headers("Content-Type:application/x-www-form-urlencoded")
-    Call<ResponseBody> fbCreatePassword(
-            @Field("Password") String password,
-            @Field("ConfirmPassword") String confirmPassword
-    );
-
     // Main screen exhibition
     @GET("/api/exhibitions")
     Call<List<Exhibition>> getExhibitionsList(
@@ -75,8 +67,9 @@ public interface DataService {
 
     // Survey details (question)
     @GET("/api/survey")
-    Call<ResponseBody> getSurveyDetails(
-            @Header("Authorization") String accessToken
+    Call<Survey> getSurveyQuestions(
+            @Header("Authorization") String accessToken,
+            @Query("id") int surveyId
     );
 
 //    // login with FB
