@@ -62,16 +62,16 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp" />
 
-        <ProgressBar
-            android:id="@+id/view_all_load_more"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:indeterminate="true"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:visibility="gone"
-            />
+        <!--<ProgressBar-->
+            <!--android:id="@+id/view_all_load_more"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:indeterminate="true"-->
+            <!--android:paddingLeft="8dp"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:visibility="gone"-->
+            <!--/>-->
 </RelativeLayout>

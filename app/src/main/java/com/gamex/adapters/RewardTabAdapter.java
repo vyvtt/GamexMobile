@@ -18,9 +18,9 @@ public class RewardTabAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i){
             case 0:
-                return new RewardExchangeFragment();
+//                return new RewardExchangeFragment();
             case 1:
-                return new RewardHistoryFragment();
+//                return new RewardHistoryFragment();
         }
         return null;
     }

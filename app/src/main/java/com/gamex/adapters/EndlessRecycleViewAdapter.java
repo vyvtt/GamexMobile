@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gamex.GamexApplication;
@@ -46,27 +47,47 @@ public class EndlessRecycleViewAdapter extends RecyclerView.Adapter<EndlessRecyc
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder viewHolder, int i) {
 
-        picasso.load(dataExhibition.get(i).getLogo())
-                .placeholder((R.color.bg_grey))
-                .error(R.color.bg_grey)
-                .into(viewHolder.imgBanner);
-        String date = dataExhibition.get(i).getStartDate() + " - " + dataExhibition.get(i).getEndDate();
-        viewHolder.txtName.setText(dataExhibition.get(i).getName());
-        viewHolder.txtDate.setText(date);
-        viewHolder.txtAddr.setText(dataExhibition.get(i).getAddress());
+        if (dataExhibition.get(i) == null) {
 
-        viewHolder.item.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ExhibitionDetailActivity.class);
-            Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
-                    viewHolder.item, 0, 0,
-                    viewHolder.item.getWidth(),
-                    viewHolder.item.getHeight())
-                    .toBundle();
-            intent.putExtra("EXTRA_EX_NAME", dataExhibition.get(i).getName());
-            intent.putExtra("EXTRA_EX_ID", dataExhibition.get(i).getExhibitionId());
-            intent.putExtra("EXTRA_EX_IMG", dataExhibition.get(i).getLogo());
-            ActivityCompat.startActivity(context, intent, options);
-        });
+            System.out.println("NULL IN ADAPTER ->>>>>>>>>>>>>>>>>>>>>> ");
+
+            viewHolder.item.setVisibility(View.GONE);
+            viewHolder.loadingCircle.setVisibility(View.VISIBLE);
+
+        } else {
+
+            System.out.println("NOT NULL ");
+
+            viewHolder.item.setVisibility(View.VISIBLE);
+            viewHolder.loadingCircle.setVisibility(View.GONE);
+
+            picasso.load(dataExhibition.get(i).getLogo())
+                    .placeholder((R.color.bg_grey))
+                    .error(R.color.bg_grey)
+                    .into(viewHolder.imgBanner);
+            viewHolder.txtName.setText(dataExhibition.get(i).getName());
+            viewHolder.txtDate.setText(dataExhibition.get(i).getStartDate());
+            viewHolder.txtAddr.setText(dataExhibition.get(i).getAddress());
+
+            viewHolder.item.setOnClickListener(v -> {
+                Intent intent = new Intent(context, ExhibitionDetailActivity.class);
+                Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
+                        viewHolder.item, 0, 0,
+                        viewHolder.item.getWidth(),
+                        viewHolder.item.getHeight())
+                        .toBundle();
+                intent.putExtra("EXTRA_EX_NAME", dataExhibition.get(i).getName());
+                intent.putExtra("EXTRA_EX_ID", dataExhibition.get(i).getExhibitionId());
+                intent.putExtra("EXTRA_EX_IMG", dataExhibition.get(i).getLogo());
+                ActivityCompat.startActivity(context, intent, options);
+            });
+        }
+    }
+
+    public void removeAt(int position) {
+        dataExhibition.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, dataExhibition.size());
     }
 
     @Override
@@ -76,6 +97,7 @@ public class EndlessRecycleViewAdapter extends RecyclerView.Adapter<EndlessRecyc
 
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout loadingCircle;
         ImageView imgBanner;
         TextView txtName;
         TextView txtDate;
@@ -89,6 +111,7 @@ public class EndlessRecycleViewAdapter extends RecyclerView.Adapter<EndlessRecyc
             txtDate = itemView.findViewById(R.id.rv_item_date);
             txtAddr = itemView.findViewById(R.id.rv_item_address);
             item = itemView.findViewById(R.id.rv_item_card);
+            loadingCircle = itemView.findViewById(R.id.rv_item_loading_circle);
         }
     }
 }
