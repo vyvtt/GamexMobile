@@ -4,7 +4,9 @@ package com.gamex.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProposedAnswer {
+import java.io.Serializable;
+
+public class ProposedAnswer implements Serializable {
 
     @SerializedName("proposedAnswerId")
     @Expose

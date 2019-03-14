@@ -17,16 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gamex.R;
-import com.gamex.models.SurveyTest;
+import com.gamex.models.Survey;
 
 import java.util.List;
 
 public class SurveyOverviewAdapter extends RecyclerView.Adapter<SurveyOverviewAdapter.ViewHolder> {
-    private List<SurveyTest> listSurvey;
+    private List<Survey> listSurvey;
     private SparseBooleanArray expandState = new SparseBooleanArray();
     private Context context;
 
-    public SurveyOverviewAdapter(List<SurveyTest> listSurvey) {
+    public SurveyOverviewAdapter(List<Survey> listSurvey) {
         this.listSurvey = listSurvey;
         for (int i = 0; i < listSurvey.size(); i++) {
             expandState.append(i, false);
@@ -45,20 +45,24 @@ public class SurveyOverviewAdapter extends RecyclerView.Adapter<SurveyOverviewAd
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.setIsRecyclable(false);
 
-        viewHolder.txtName.setText(listSurvey.get(i).getTitle());
-        viewHolder.txtOverview.setText(Html.fromHtml("<b>"
-                + listSurvey.get(i).getTotalQuestion()
-                + " questions</b> with <b>"
-                + listSurvey.get(i).getPoints()
-                + " points</b> gain when completed."));
-        viewHolder.txtDescription.setText(listSurvey.get(i).getDescription());
+        Survey currentSurvey = listSurvey.get(i);
 
-        viewHolder.btnTakeSurvey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "take survey!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        viewHolder.txtName.setText(currentSurvey.getTitle());
+        viewHolder.txtOverview.setText(Html.fromHtml("Total <b>"
+                + currentSurvey.getPoint() + " points</b> gain when completed."));
+        viewHolder.txtDescription.setText(currentSurvey.getDescription());
+
+        if (currentSurvey.getTaken()) {
+            viewHolder.btnTakeSurvey.setText("You have taken this survey already");
+            viewHolder.btnTakeSurvey.setEnabled(false);
+        } else {
+            viewHolder.btnTakeSurvey.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "take survey!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         //check if view is expanded
         final boolean isExpanded = expandState.get(i);

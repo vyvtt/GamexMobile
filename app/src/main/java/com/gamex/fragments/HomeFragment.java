@@ -50,7 +50,7 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     @Inject
-    @Named("cache")
+    @Named("no-cache")
     DataService dataService;
     Call<List<Exhibition>> callOngoing;
     Call<List<Exhibition>> callUpcoming;
@@ -191,6 +191,7 @@ public class HomeFragment extends Fragment {
         new CheckInternetTask(internet -> {
             if (internet) {
                 Log.i(TAG, "Has Internet Connection");
+                txtNoInternet.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 txtLoading.setVisibility(View.VISIBLE);
                 callAPIOngoing();
@@ -250,9 +251,14 @@ public class HomeFragment extends Fragment {
             public void onSuccess(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
                 isLoadingUpcoming = false;
                 if (response.isSuccessful()) {
+                    Log.i(TAG, response.toString());
+                    List<Exhibition> tmp = response.body();
+                    for (Exhibition exhibition: tmp
+                         ) {
+                        System.out.println(exhibition.toString());
+                    }
                     HomeAdapter adapter = new HomeAdapter(mContext, response.body());
                     rvUpcoming.setAdapter(adapter);
-                    Log.i(TAG, response.toString());
                 } else {
                     Log.i(TAG, response.toString());
                 }

@@ -9,7 +9,7 @@ public class CompanyInExhibition implements Serializable {
 
     @SerializedName("companyId")
     @Expose
-    private Integer companyId;
+    private String companyId;
     @SerializedName("name")
     @Expose
     private String name;
@@ -30,18 +30,18 @@ public class CompanyInExhibition implements Serializable {
      * @param name
      * @param companyId
      */
-    public CompanyInExhibition(Integer companyId, String name, String logo) {
+    public CompanyInExhibition(String companyId, String name, String logo) {
         super();
         this.companyId = companyId;
         this.name = name;
         this.logo = logo;
     }
 
-    public Integer getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 

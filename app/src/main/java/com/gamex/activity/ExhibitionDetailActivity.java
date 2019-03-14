@@ -123,7 +123,8 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         call.enqueue(new BaseCallBack<Exhibition>(this) {
             @Override
             public void onSuccess(Call<Exhibition> call, Response<Exhibition> response) {
-                if (response.code() == 200) {
+                Log.i(TAG, response.toString());
+                if (response.isSuccessful()) {
                     exhibitionDetails = response.body();
                     progressBar.setVisibility(View.GONE);
                     txtLoading.setVisibility(View.GONE);
@@ -141,7 +142,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
                     Log.i(TAG, "Cancel HTTP request on onFailure()");
                 } else {
                     Toast.makeText(ExhibitionDetailActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, t.getMessage());
+                    Log.e(TAG, t.getMessage(), t.fillInStackTrace());
                 }
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
@@ -173,6 +174,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         exName = getIntent().getStringExtra("EXTRA_EX_NAME");
         exId = getIntent().getStringExtra("EXTRA_EX_ID");
         exImg = getIntent().getStringExtra("EXTRA_EX_IMG");
+
         txtExName = findViewById(R.id.txtExName);
         txtExName.setText(exName);
         picasso.load(exImg)

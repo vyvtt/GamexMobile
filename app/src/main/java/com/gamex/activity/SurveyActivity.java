@@ -2,13 +2,11 @@ package com.gamex.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +47,12 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class SurveyActivity extends AppCompatActivity {
+    public static final String QUESTION_NUMBER = "QUESTION_NUMBER";
+    public static final String QUESTIONS = "QUESTIONS";
+    public static final String SURVEY_TITLE = "SURVEY_TITLE";
+    public static final String SURVEY_DESCRIPTION = "SURVEY_DESCRIPTION";
+    public static final String SURVEY_POINT = "SURVEY_POINT";
+
     @Inject
     @Named("cache")
     DataService dataService;
@@ -79,7 +84,6 @@ public class SurveyActivity extends AppCompatActivity {
     private QuestionType optionsType;
     private View optionsView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ((GamexApplication) getApplication()).getAppComponent().inject(this);
@@ -96,12 +100,65 @@ public class SurveyActivity extends AppCompatActivity {
         mappingViewElement();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        saveUserAnswer();
+
+        outState.putInt(QUESTION_NUMBER, curQuestionNumber);
+        outState.putSerializable(QUESTIONS, (Serializable) listQuestions);
+
+        outState.putString(SURVEY_DESCRIPTION, surveyDescription);
+        outState.putString(SURVEY_POINT, surveyPoint);
+        outState.putString(SURVEY_TITLE, surveyTitle);
+    }
+
+
+    /**
+     * restore state of the quiz on activity resumes after stop/pause
+     * @param savedInstanceState provides access to the data prior to activity resume
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        curQuestionNumber = savedInstanceState.getInt(QUESTION_NUMBER);
+        listQuestions = (ArrayList<Question>) savedInstanceState.getSerializable(QUESTIONS);
+
+        surveyDescription = savedInstanceState.getString(SURVEY_DESCRIPTION);
+        surveyPoint = savedInstanceState.getString(SURVEY_POINT);
+        surveyTitle = savedInstanceState.getString(SURVEY_TITLE);
+
+        if (listQuestions.isEmpty()) {
+
+            layoutOverview.setVisibility(View.VISIBLE);
+            layoutMain.setVisibility(View.GONE);
+            curQuestionNumber = 0;
+
+            txtTitle.setText(surveyTitle);
+            txtDes.setText(surveyDescription);
+            txtPoint.setText(Html.fromHtml("Total <b>" + surveyPoint + " points</b> gain when completed."));
+
+        } else {
+            layoutOverview.setVisibility(View.GONE);
+            layoutMain.setVisibility(View.VISIBLE);
+
+            displayQuestion();
+        }
+    }
+
     private void getDataFromIntent() {
         Intent intent = getIntent();
         surveyId = intent.getIntExtra("SV_ID", -1);
         surveyDescription = intent.getStringExtra("SV_DES");
         surveyPoint = intent.getStringExtra("SV_POINT");
         surveyTitle = intent.getStringExtra("SV_TITLE");
+
+        txtTitle.setText(surveyTitle);
+        txtDes.setText(surveyDescription);
+        txtPoint.setText(Html.fromHtml("Total <b>" + surveyPoint + " points</b> gain when completed."));
     }
 
     private void mappingViewElement() {
@@ -144,6 +201,7 @@ public class SurveyActivity extends AppCompatActivity {
                     layoutMain.setVisibility(View.VISIBLE);
 
                     survey = response.body();
+
                     listQuestions = survey.getQuestions();
                     totalQuestions = listQuestions.size();
                     curQuestionNumber = 0;
@@ -241,20 +299,14 @@ public class SurveyActivity extends AppCompatActivity {
                     EditText edtAnswer = (EditText) optionsView;
                     answerText = edtAnswer.getText().toString();
                     if (!TextUtils.isEmpty(answerText)) {
-                        currentQuestion.setUserAnwerText(answerText);
+                        currentQuestion.setUserAnswerText(answerText);
                         isAnswered = true;
                     } else {
-                        currentQuestion.setUserAnwerText(null);
+                        currentQuestion.setUserAnswerText(null);
                     }
                     break;
             }
         }
-    }
-
-    private void getOverviewData() {
-        txtTitle.setText(getIntent().getStringExtra(""));
-        txtDes.setText(getIntent().getStringExtra(""));
-        txtPoint.setText(getIntent().getStringExtra(""));
     }
 
     private void displayQuestion() {
@@ -351,9 +403,9 @@ public class SurveyActivity extends AppCompatActivity {
                 EditText editText = new EditText(this);
 
                 //restore saved answers, set hint text if answer is empty/remains unanswered
-                if (!TextUtils.isEmpty(question.getUserAnwerText())) {
-                    editText.setText(question.getUserAnwerText());
-                    editText.setSelection(question.getUserAnwerText().length());
+                if (!TextUtils.isEmpty(question.getUserAnswerText())) {
+                    editText.setText(question.getUserAnswerText());
+                    editText.setSelection(question.getUserAnswerText().length());
                 } else {
                     editText.setHint("Type your answer here");
                 }
@@ -435,7 +487,7 @@ public class SurveyActivity extends AppCompatActivity {
                 tmp.put("questionId", question.getQuestionId());
 
                 if (question.getQuestionType() == QuestionType.EDITTEXT) {
-                    tmp.put("other", question.getUserAnwerText());
+                    tmp.put("other", question.getUserAnswerText());
 
                 } else if (question.getQuestionType() == QuestionType.RADIOBUTTON) {
                     tmp.put("proposedAnswerId", question.getUserAnswerButtonId().get(0));

@@ -2,7 +2,9 @@ package com.gamex.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum QuestionType {
+import java.io.Serializable;
+
+public enum QuestionType implements Serializable {
     @SerializedName("1")
     EDITTEXT,
     @SerializedName("2")

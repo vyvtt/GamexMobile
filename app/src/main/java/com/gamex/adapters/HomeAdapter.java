@@ -55,17 +55,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         viewHolder.txtDate.setText(exDate);
 
         viewHolder.item.setOnClickListener(v -> {
-            Log.i("Click ex ------", dataList.get(i).getName());
+
             Intent intent = new Intent(context, ExhibitionDetailActivity.class);
             Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                     viewHolder.item, 0, 0,
                     viewHolder.item.getWidth(),
                     viewHolder.item.getHeight())
                     .toBundle();
-            // TODO put data hereeeeeeeeeeeeeeee
+
             intent.putExtra("EXTRA_EX_NAME", dataList.get(i).getName());
             intent.putExtra("EXTRA_EX_ID", dataList.get(i).getExhibitionId());
             intent.putExtra("EXTRA_EX_IMG", dataList.get(i).getLogo());
+
             ActivityCompat.startActivity(context, intent, options);
         });
     }

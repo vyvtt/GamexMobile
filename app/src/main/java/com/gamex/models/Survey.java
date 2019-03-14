@@ -1,11 +1,12 @@
 
 package com.gamex.models;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Survey {
+public class Survey implements Serializable {
 
     @SerializedName("surveyId")
     @Expose
@@ -50,6 +51,14 @@ public class Survey {
         this.description = description;
         this.isTaken = isTaken;
         this.questions = questions;
+    }
+
+    public Survey(Integer surveyId, String title, Integer point, String description, boolean isTaken) {
+        this.surveyId = surveyId;
+        this.title = title;
+        this.point = point;
+        this.description = description;
+        this.isTaken = isTaken;
     }
 
     public Integer getSurveyId() {

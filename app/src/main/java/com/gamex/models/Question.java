@@ -1,11 +1,12 @@
 
 package com.gamex.models;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Question {
+public class Question implements Serializable {
 
     @SerializedName("questionId")
     @Expose
@@ -21,7 +22,7 @@ public class Question {
     private List<ProposedAnswer> proposedAnswers = null;
 
     private List<Integer> userAnswerButtonId;
-    private String userAnwerText;
+    private String userAnswerText;
 
     /**
      * No args constructor for use in serialization
@@ -85,12 +86,12 @@ public class Question {
         this.userAnswerButtonId = userAnswerButtonId;
     }
 
-    public String getUserAnwerText() {
-        return userAnwerText;
+    public String getUserAnswerText() {
+        return userAnswerText;
     }
 
-    public void setUserAnwerText(String userAnwerText) {
-        this.userAnwerText = userAnwerText;
+    public void setUserAnswerText(String userAnswerText) {
+        this.userAnswerText = userAnswerText;
     }
 
     @Override
@@ -101,7 +102,7 @@ public class Question {
                 ", questionType=" + questionType +
                 ", proposedAnswers=" + proposedAnswers +
                 ", userAnswerButtonId=" + userAnswerButtonId +
-                ", userAnwerText='" + userAnwerText + '\'' +
+                ", userAnswerText='" + userAnswerText + '\'' +
                 '}';
     }
 }

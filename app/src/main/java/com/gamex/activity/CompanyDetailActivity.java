@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.gamex.R;
 import com.gamex.adapters.SurveyOverviewAdapter;
+import com.gamex.models.Survey;
 import com.gamex.models.SurveyTest;
 
 import java.util.ArrayList;
@@ -47,11 +48,11 @@ public class CompanyDetailActivity extends AppCompatActivity {
         // test list survey
         rvListSurvey.setHasFixedSize(true);
         rvListSurvey.setLayoutManager(new LinearLayoutManager(getApplication()));
-        List<SurveyTest> listSurvey = new ArrayList<>();
-        listSurvey.add(new SurveyTest(1, "Survey Build successful!", 30, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", 10));
-        listSurvey.add(new SurveyTest(1, "Technology survey?", 100, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", 1));
-        listSurvey.add(new SurveyTest(1, "Survey about your life", 99, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", 8));
-        listSurvey.add(new SurveyTest(1, "I'm dead inside Survey", 22, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", 5));
+        List<Survey> listSurvey = new ArrayList<>();
+        listSurvey.add(new Survey(1, "Survey Build successful!", 30, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", true));
+        listSurvey.add(new Survey(1, "Technology survey?", 100, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", false));
+        listSurvey.add(new Survey(1, "Survey about your life", 99, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", true));
+        listSurvey.add(new Survey(1, "I'm dead inside Survey", 22, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", false));
 
         rvListSurvey.setAdapter(new SurveyOverviewAdapter(listSurvey));
     }

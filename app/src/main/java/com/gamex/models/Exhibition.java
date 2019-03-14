@@ -170,4 +170,20 @@ public class Exhibition implements Serializable {
     public void setListCompany(List<CompanyInExhibition> listCompany) {
         this.listCompany = listCompany;
     }
+
+    @Override
+    public String toString() {
+        return "Exhibition{" +
+                "exhibitionId='" + exhibitionId + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", address='" + address + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", logo='" + logo + '\'' +
+                ", lat='" + lat + '\'' +
+                ", lng='" + lng + '\'' +
+                ", listCompany=" + listCompany +
+                '}';
+    }
 }

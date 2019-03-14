@@ -35,15 +35,14 @@
                 <TextView
                     android:id="@+id/fg_home_tv_ongoing"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
                     android:text="On-going Exhibitions"
                     android:textColor="@color/txt_black"
                     android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:padding="5dp"/>
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/btn_view_all_ongoing"
@@ -58,7 +57,7 @@
                     android:textColor="@color/txt_link"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:padding="5dp"/>
+                    android:layout_marginBottom="11dp"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/fg_home_rv_ongoing"
@@ -81,7 +80,7 @@
                 <TextView
                     android:id="@+id/fg_home_tv_upcoming"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
@@ -105,7 +104,7 @@
                     android:textColor="@color/txt_link"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:padding="5dp"/>
+                    android:layout_marginBottom="11dp"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/fg_home_rv_upcoming"
@@ -129,7 +128,7 @@
                 <TextView
                     android:id="@+id/fg_home_tv_near"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
@@ -153,7 +152,7 @@
                     android:textColor="@color/txt_link"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:padding="5dp"/>
+                    android:layout_marginBottom="11dp"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/fg_home_rv_near"
