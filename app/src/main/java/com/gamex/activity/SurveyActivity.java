@@ -432,7 +432,7 @@ public class SurveyActivity extends AppCompatActivity {
     private void alertOnFail(String content) {
         if (sweetAlertDialog != null && sweetAlertDialog.isShowing()) {
             sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
-            sweetAlertDialog.setTitleText("Opps ...")
+            sweetAlertDialog.setTitleText("Oops ...")
                     .setContentText(content)
                     .setConfirmText("Try again later")
                     .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);

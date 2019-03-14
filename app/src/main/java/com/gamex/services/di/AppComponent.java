@@ -5,12 +5,14 @@ import com.gamex.activity.FacebookLoginActivity;
 import com.gamex.activity.LoginActivity;
 import com.gamex.activity.MainActivity;
 import com.gamex.activity.RegisterActivity;
+import com.gamex.activity.ScanQRActivity;
 import com.gamex.activity.SplashActivity;
 import com.gamex.activity.SurveyActivity;
 import com.gamex.activity.ViewAllExhibitionActivity;
 import com.gamex.adapters.EndlessRecycleViewAdapter;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.adapters.ListCompanyAdapter;
+import com.gamex.fragments.ExDetailFragment;
 import com.gamex.fragments.HomeFragment;
 
 import javax.inject.Singleton;
@@ -38,4 +40,8 @@ public interface AppComponent {
     void inject(RegisterActivity activity);
     // main
     void inject(MainActivity activity);
+    // scan qr
+    void inject(ScanQRActivity activity);
+    // event details
+    void inject(ExDetailFragment exDetailFragment);
 }

@@ -51,6 +51,17 @@ public interface DataService {
             @Header("Cookie") String cookie
     );
 
+    // Scan QR Check in
+    @FormUrlEncoded
+    @POST("/api/user/exhibition")
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    Call<ResponseBody> checkInEvent(
+            @Header("Authorization") String accessToken,
+            @Field("id") String id
+    );
+
+    // Scan QR survey
+
     // Main screen exhibition
     @GET("/api/exhibitions")
     Call<List<Exhibition>> getExhibitionsList(

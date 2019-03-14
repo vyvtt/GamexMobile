@@ -17,7 +17,8 @@ public final class Constant {
     public static final String PREF_FULLNAME = "FULLNAME";
 
     // API
-    public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
+//    public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
+    public static final String BASE_URL = "http://192.168.100.59:44319/";
     public static final String API_TYPE_ONGOING = "ongoing";
     public static final String API_TYPE_UPCOMING = "upcoming";
     public static final String API_TYPE_NEAR = "near-you";
@@ -29,10 +30,9 @@ public final class Constant {
     public static final String ERR_AZ_CHARACTERS = "Contain alphabetic characters only";
     public static final String ERR_LENGTH_MIN_6 = "At least 6 characters";
 
-    // TAG for Log
-    public final static String TAG_MAIN = "[MainActivity] ***";
-    public final static String TAG_LOGIN = "[LoginActivity] ***";
-    public final static String TAG_REGISTER = "[RegisterActivity] ***";
-    public final static String TAG_HOME = "[HomeFragment] ***";
-    public final static String TAG_FG_EX_DETAIL = "[ExDetailFragment] ***";
+    // Intent extra
+    public static final String EXTRA_EX_NAME = "EXTRA_EX_NAME";
+    public static final String EXTRA_EX_ID = "EXTRA_EX_ID";
+    public static final String EXTRA_EX_IMG = "EXTRA_EX_IMG";
+    public static final String EXTRA_SCAN_QR_EX_ID = "EXTRA_SCAN_QR_EX_ID";
 }

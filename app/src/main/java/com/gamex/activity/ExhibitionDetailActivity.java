@@ -41,6 +41,7 @@ import retrofit2.Response;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class ExhibitionDetailActivity extends AppCompatActivity {
+
     @Inject
     @Named("cache")
     DataService dataService;
@@ -170,17 +171,24 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     }
 
     private void getSaveDataFromIntent() {
-        // TODO get exhibition id, name and logo url from Intent extra -> DONE
-        exName = getIntent().getStringExtra("EXTRA_EX_NAME");
-        exId = getIntent().getStringExtra("EXTRA_EX_ID");
-        exImg = getIntent().getStringExtra("EXTRA_EX_IMG");
 
-        txtExName = findViewById(R.id.txtExName);
-        txtExName.setText(exName);
-        picasso.load(exImg)
-                .placeholder((R.color.bg_grey))
-                .error(R.drawable.exhibition_cover)
-                .into(imgEx);
+        String strFromScanQR = getIntent().getStringExtra(Constant.EXTRA_SCAN_QR_EX_ID);
+
+        if (strFromScanQR != null) {
+            exId = strFromScanQR;
+        } else {
+
+            exName = getIntent().getStringExtra(Constant.EXTRA_EX_NAME);
+            exId = getIntent().getStringExtra(Constant.EXTRA_EX_ID);
+            exImg = getIntent().getStringExtra(Constant.EXTRA_EX_IMG);
+
+            txtExName = findViewById(R.id.txtExName);
+            txtExName.setText(exName);
+            picasso.load(exImg)
+                    .placeholder((R.color.bg_grey))
+                    .error(R.drawable.exhibition_cover)
+                    .into(imgEx);
+        }
     }
 
     private void mappingViewElement() {

@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createDrawer() {
         // Create the Drawer header
-        AccountHeader headerResult = new AccountHeaderBuilder()
+        AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withHeaderBackground(getResources().getDrawable(R.drawable.color_gradient_blue))
                 .withActivity(this)
                 .addProfiles(
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         drawerMenu = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
-                .withAccountHeader(headerResult)
+                .withAccountHeader(accountHeader)
                 .withDelayOnDrawerClose(200)
                 .addDrawerItems(
                         headerActivity,
