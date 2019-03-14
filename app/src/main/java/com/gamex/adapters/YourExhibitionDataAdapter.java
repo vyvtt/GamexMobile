@@ -37,7 +37,7 @@ public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibiti
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_yourexhibition_list, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_item_exhibition, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -74,11 +74,11 @@ public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibiti
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgBanner = itemView.findViewById(R.id.rv_item_img);
-            txtName = itemView.findViewById(R.id.rv_item_name);
-            txtDate = itemView.findViewById(R.id.rv_item_date);
-            txtAddr = itemView.findViewById(R.id.rv_item_address);
-            item = itemView.findViewById(R.id.rv_item_card);
+            imgBanner = itemView.findViewById(R.id.item_exhibition_img);
+            txtName = itemView.findViewById(R.id.item_exhibition_name);
+            txtDate = itemView.findViewById(R.id.item_exhibition_date);
+            txtAddr = itemView.findViewById(R.id.item_exhibition_address);
+            item = itemView.findViewById(R.id.item_exhibition_card);
         }
     }
 }

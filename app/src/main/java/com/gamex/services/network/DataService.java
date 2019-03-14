@@ -1,6 +1,8 @@
 package com.gamex.services.network;
 
+import com.gamex.models.Company;
 import com.gamex.models.Exhibition;
+import com.gamex.models.History;
 import com.gamex.models.Survey;
 
 import java.util.HashMap;
@@ -76,6 +78,14 @@ public interface DataService {
             @Query("id") String id
     );
 
+    // Company details
+    // TODO company details api link
+    @GET("TODO COMPANY DETAILS")
+    Call<Company> getCompanyDetails(
+            @Header("Authorization") String accessToken,
+            @Query("id") String id
+    );
+
     // Survey details (question)
     @GET("/api/survey")
     Call<Survey> getSurveyQuestions(
@@ -83,11 +93,19 @@ public interface DataService {
             @Query("id") int surveyId
     );
 
+    // Submit survey
     @POST("/api/survey")
     Call<ResponseBody> submitSurvey(
             @Header("Authorization") String accessToken,
             @Body RequestBody answer
             );
+
+    // Activity history
+    @GET("/api/activity")
+    Call<List<History>> getActivityHistory(
+            @Header("Authorization") String accessToken,
+            @QueryMap Map<String, Object> options
+    );
 
 //    // login with FB
 //    @Headers({"Content-Type:application/json"})

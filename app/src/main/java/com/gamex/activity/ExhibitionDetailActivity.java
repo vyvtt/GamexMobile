@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -55,8 +57,11 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
 
     private final String TAG = ExhibitionDetailActivity.class.getSimpleName();
     private String accessToken;
+
     private CollapsingToolbarLayout collapsingToolbar;
     private AppBarLayout appBarLayout;
+    private Button btnRefresh;
+
     private TextView txtExName, txtNoInternet, txtLoading;
     private String exId, exName, exImg;
     private ProgressBar progressBar;
@@ -72,10 +77,12 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
 
         accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
 
-        // bind
         mappingViewElement();
+
         setOnEvent(toolbar);
+
         getSaveDataFromIntent(); // ex name, img, id from intent -> set to view
+
         // TODO real data
         checkInternet();
 
@@ -109,9 +116,17 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         new CheckInternetTask(internet -> {
             if (internet) {
                 Log.i(TAG, "Has Internet Connection");
+
+                txtNoInternet.setVisibility(View.GONE);
+                btnRefresh.setVisibility(View.GONE);
+                txtLoading.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 callAPI();
+
             } else {
                 Log.i(TAG, "No Internet Connection");
+
+                btnRefresh.setVisibility(View.VISIBLE);
                 txtNoInternet.setVisibility(View.VISIBLE);
                 txtLoading.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
@@ -125,16 +140,19 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Call<Exhibition> call, Response<Exhibition> response) {
                 Log.i(TAG, response.toString());
+
                 if (response.isSuccessful()) {
                     exhibitionDetails = response.body();
-                    progressBar.setVisibility(View.GONE);
-                    txtLoading.setVisibility(View.GONE);
                     Log.i(TAG, response.toString());
                     addTabAdapter();
+
                 } else {
                     Log.i(TAG, response.toString());
                     Toast.makeText(ExhibitionDetailActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                    btnRefresh.setVisibility(View.VISIBLE);
                 }
+
+                stopLoadingAnimation();
             }
 
             @Override
@@ -144,11 +162,16 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(ExhibitionDetailActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, t.getMessage(), t.fillInStackTrace());
+                    btnRefresh.setVisibility(View.VISIBLE);
                 }
-                progressBar.setVisibility(View.GONE);
-                txtLoading.setVisibility(View.GONE);
+                stopLoadingAnimation();
             }
         });
+    }
+
+    private void stopLoadingAnimation() {
+        progressBar.setVisibility(View.GONE);
+        txtLoading.setVisibility(View.GONE);
     }
 
     private void addTabAdapter() {
@@ -165,9 +188,10 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        appBarLayout.addOnOffsetChangedListener((AppBarLayout appBarLayout, int verticalOffset) -> {
-            invalidateOptionsMenu();
-        });
+
+        appBarLayout.addOnOffsetChangedListener((AppBarLayout appBarLayout, int verticalOffset) -> invalidateOptionsMenu());
+
+        btnRefresh.setOnClickListener(v -> checkInternet());
     }
 
     private void getSaveDataFromIntent() {
@@ -192,6 +216,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     }
 
     private void mappingViewElement() {
+
         toolbar = findViewById(R.id.event_detail_toolbar);
         appBarLayout = findViewById(R.id.event_detail_appbar);
         collapsingToolbar = findViewById(R.id.event_detail_collapse_toolbar);
@@ -203,6 +228,8 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
 
         txtLoading.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+
+        btnRefresh = findViewById(R.id.event_detail_refresh);
     }
 
     @Override

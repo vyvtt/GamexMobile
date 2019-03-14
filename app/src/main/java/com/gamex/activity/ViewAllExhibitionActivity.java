@@ -2,7 +2,6 @@ package com.gamex.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,13 +15,12 @@ import android.widget.Toast;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
-import com.gamex.adapters.EndlessRecycleViewAdapter;
+import com.gamex.adapters.EndlessRvExhibitionAdapter;
 import com.gamex.models.Exhibition;
 import com.gamex.services.network.BaseCallBack;
 import com.gamex.services.network.CheckInternetTask;
 import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +42,7 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-    private EndlessRecycleViewAdapter adapter;
+    private EndlessRvExhibitionAdapter adapter;
     private List<Exhibition> exhibitionList;
     private boolean itShouldLoadMore = true;
     private boolean isNoMoreData = false;
@@ -80,7 +78,7 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        adapter = new EndlessRecycleViewAdapter(this, exhibitionList);
+        adapter = new EndlessRvExhibitionAdapter(this, exhibitionList);
         recyclerView.setAdapter(adapter);
 
         // load 1st time
@@ -115,19 +113,19 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
         });
     }
 
-    private void checkInternetFirstLoad() {
-        new CheckInternetTask(internet -> {
-            if (internet) {
-                Log.i(TAG, "Has Internet Connection");
-                firstLoadData();
-            } else {
-                Log.i(TAG, "No Internet Connection");
-                txtNoInternet.setVisibility(View.VISIBLE);
-                txtLoading.setVisibility(View.GONE);
-                progressBarFirstLoad.setVisibility(View.GONE);
-            }
-        });
-    }
+//    private void checkInternetFirstLoad() {
+//        new CheckInternetTask(internet -> {
+//            if (internet) {
+//                Log.i(TAG, "Has Internet Connection");
+//                firstLoadData();
+//            } else {
+//                Log.i(TAG, "No Internet Connection");
+//                txtNoInternet.setVisibility(View.VISIBLE);
+//                txtLoading.setVisibility(View.GONE);
+//                progressBarFirstLoad.setVisibility(View.GONE);
+//            }
+//        });
+//    }
 
     private void mappingViewElement() {
         toolbar = findViewById(R.id.view_all_toolbar);

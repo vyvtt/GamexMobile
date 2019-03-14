@@ -27,7 +27,7 @@ public class BookmarkFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         // Change toolbar title
-        txtToolBarTitle = getActivity().findViewById(R.id.main_toolbar_title);
+        txtToolBarTitle = mActivity.findViewById(R.id.main_toolbar_title);
         txtToolBarTitle.setText("Bookmark");
         // Hide scan QR
         setHasOptionsMenu(true);

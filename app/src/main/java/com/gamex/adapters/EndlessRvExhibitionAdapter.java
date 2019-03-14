@@ -25,29 +25,29 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class EndlessRecycleViewAdapter extends RecyclerView.Adapter<EndlessRecycleViewAdapter.ItemViewHolder> {
+public class EndlessRvExhibitionAdapter extends RecyclerView.Adapter<EndlessRvExhibitionAdapter.ItemViewHolder> {
     @Inject
     Picasso picasso;
     private Context context;
-    public List<Exhibition> dataExhibition;
+    public List<Exhibition> data;
 
-    public EndlessRecycleViewAdapter(Context context, List<Exhibition> dataExhibition) {
+    public EndlessRvExhibitionAdapter(Context context, List<Exhibition> data) {
         ((GamexApplication) context.getApplicationContext()).getAppComponent().inject(this);
         this.context = context;
-        this.dataExhibition = dataExhibition;
+        this.data = data;
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_yourexhibition_list, viewGroup, false);
-        return new EndlessRecycleViewAdapter.ItemViewHolder(view);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_item_exhibition, viewGroup, false);
+        return new EndlessRvExhibitionAdapter.ItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder viewHolder, int i) {
 
-        if (dataExhibition.get(i) == null) {
+        if (data.get(i) == null) {
 
             System.out.println("NULL IN ADAPTER ->>>>>>>>>>>>>>>>>>>>>> ");
 
@@ -56,18 +56,16 @@ public class EndlessRecycleViewAdapter extends RecyclerView.Adapter<EndlessRecyc
 
         } else {
 
-            System.out.println("NOT NULL ");
-
             viewHolder.item.setVisibility(View.VISIBLE);
             viewHolder.loadingCircle.setVisibility(View.GONE);
 
-            picasso.load(dataExhibition.get(i).getLogo())
+            picasso.load(data.get(i).getLogo())
                     .placeholder((R.color.bg_grey))
                     .error(R.color.bg_grey)
                     .into(viewHolder.imgBanner);
-            viewHolder.txtName.setText(dataExhibition.get(i).getName());
-            viewHolder.txtDate.setText(dataExhibition.get(i).getStartDate());
-            viewHolder.txtAddr.setText(dataExhibition.get(i).getAddress());
+            viewHolder.txtName.setText(data.get(i).getName());
+            viewHolder.txtDate.setText(data.get(i).getStartDate());
+            viewHolder.txtAddr.setText(data.get(i).getAddress());
 
             viewHolder.item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ExhibitionDetailActivity.class);
@@ -76,23 +74,23 @@ public class EndlessRecycleViewAdapter extends RecyclerView.Adapter<EndlessRecyc
                         viewHolder.item.getWidth(),
                         viewHolder.item.getHeight())
                         .toBundle();
-                intent.putExtra("EXTRA_EX_NAME", dataExhibition.get(i).getName());
-                intent.putExtra("EXTRA_EX_ID", dataExhibition.get(i).getExhibitionId());
-                intent.putExtra("EXTRA_EX_IMG", dataExhibition.get(i).getLogo());
+                intent.putExtra("EXTRA_EX_NAME", data.get(i).getName());
+                intent.putExtra("EXTRA_EX_ID", data.get(i).getExhibitionId());
+                intent.putExtra("EXTRA_EX_IMG", data.get(i).getLogo());
                 ActivityCompat.startActivity(context, intent, options);
             });
         }
     }
 
     public void removeAt(int position) {
-        dataExhibition.remove(position);
+        data.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, dataExhibition.size());
+        notifyItemRangeChanged(position, data.size());
     }
 
     @Override
     public int getItemCount() {
-        return dataExhibition == null ? 0 : dataExhibition.size();
+        return data == null ? 0 : data.size();
     }
 
 
@@ -106,12 +104,12 @@ public class EndlessRecycleViewAdapter extends RecyclerView.Adapter<EndlessRecyc
 
         ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgBanner = itemView.findViewById(R.id.rv_item_img);
-            txtName = itemView.findViewById(R.id.rv_item_name);
-            txtDate = itemView.findViewById(R.id.rv_item_date);
-            txtAddr = itemView.findViewById(R.id.rv_item_address);
-            item = itemView.findViewById(R.id.rv_item_card);
-            loadingCircle = itemView.findViewById(R.id.rv_item_loading_circle);
+            imgBanner = itemView.findViewById(R.id.item_exhibition_img);
+            txtName = itemView.findViewById(R.id.item_exhibition_name);
+            txtDate = itemView.findViewById(R.id.item_exhibition_date);
+            txtAddr = itemView.findViewById(R.id.item_exhibition_address);
+            item = itemView.findViewById(R.id.item_exhibition_card);
+            loadingCircle = itemView.findViewById(R.id.item_exhibition_loading_circle);
         }
     }
 }

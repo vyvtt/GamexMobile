@@ -47,7 +47,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
     @Inject
     @Named("no-cache")
@@ -174,7 +174,7 @@ public class HomeFragment extends Fragment {
         progressBar = mContext.findViewById(R.id.main_progress_bar);
         txtNoInternet = mContext.findViewById(R.id.main_txt_no_internet);
         txtLoading = mContext.findViewById(R.id.main_txt_loading);
-        refreshLayout = view.findViewById(R.id.swipeToRefresh);
+        refreshLayout = view.findViewById(R.id.fg_home_swipeToRefresh);
 
         rvOngoing = view.findViewById(R.id.fg_home_rv_ongoing);
         rvNear = view.findViewById(R.id.fg_home_rv_near);

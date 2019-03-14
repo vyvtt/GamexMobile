@@ -1,5 +1,6 @@
 package com.gamex.services.di;
 
+import com.gamex.activity.CompanyDetailActivity;
 import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.activity.FacebookLoginActivity;
 import com.gamex.activity.LoginActivity;
@@ -9,10 +10,11 @@ import com.gamex.activity.ScanQRActivity;
 import com.gamex.activity.SplashActivity;
 import com.gamex.activity.SurveyActivity;
 import com.gamex.activity.ViewAllExhibitionActivity;
-import com.gamex.adapters.EndlessRecycleViewAdapter;
+import com.gamex.adapters.EndlessRvExhibitionAdapter;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.adapters.ListCompanyAdapter;
 import com.gamex.fragments.ExDetailFragment;
+import com.gamex.fragments.HistoryFragment;
 import com.gamex.fragments.HomeFragment;
 
 import javax.inject.Singleton;
@@ -26,9 +28,10 @@ public interface AppComponent {
     void inject(ExhibitionDetailActivity exhibitionDetailActivity);
     void inject(HomeAdapter homeAdapter);
     void inject(ListCompanyAdapter listCompanyAdapter);
-    void inject(EndlessRecycleViewAdapter endlessRecycleViewAdapter);
+    void inject(EndlessRvExhibitionAdapter endlessRvExhibitionAdapter);
     void inject(ViewAllExhibitionActivity viewAllExhibitionActivity);
     void inject(SurveyActivity surveyActivity);
+    void inject(HistoryFragment fragment);
 
     // splash
     void inject(SplashActivity activity);
@@ -44,4 +47,6 @@ public interface AppComponent {
     void inject(ScanQRActivity activity);
     // event details
     void inject(ExDetailFragment exDetailFragment);
+    // company details
+    void inject(CompanyDetailActivity activity);
 }

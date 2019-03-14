@@ -40,7 +40,7 @@ public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_list_company, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_item_company, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -52,6 +52,7 @@ public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.
                 .into(viewHolder.imgLogo);
 
         viewHolder.txtName.setText(listCompany.get(i).getName());
+        // TODO set booth sub-info
 
         viewHolder.row.setOnClickListener(v -> {
             Intent intent = new Intent(context, CompanyDetailActivity.class);
@@ -76,14 +77,15 @@ public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.
 //    INNER CLASS VIEW HOLDER ---------------------------------------------------------------->
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgLogo;
-        TextView txtName;
+        TextView txtName, txtBooth;
         CardView row;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgLogo = itemView.findViewById(R.id.fg_list_company_rv_logo);
             txtName = itemView.findViewById(R.id.fg_list_company_rv_name);
-            row = itemView.findViewById(R.id.rv_item_card);
+            txtBooth = itemView.findViewById(R.id.fg_list_company_rv_booth);
+            row = itemView.findViewById(R.id.item_exhibition_card);
         }
     }
 }

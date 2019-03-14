@@ -89,7 +89,7 @@
             <TextView
                 android:id="@+id/company_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_toRightOf="@id/company_img"
@@ -97,20 +97,21 @@
                 android:text="VIFA GOOD URBAN 2019 – VIFAG.U. 2019"
                 android:textColor="#262626"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:gravity="center_vertical"/>
 
-            <TextView
-                android:id="@+id/company_booth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/company_name"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toRightOf="@id/company_img"
-                android:padding="3dp"
-                android:text="Booth: 123-ABC"
-                android:textColor="@color/txt_sub_info"
-                android:textSize="16sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/company_booth"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/company_name"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:layout_toRightOf="@id/company_img"-->
+                <!--android:padding="3dp"-->
+                <!--android:text="Booth: 123-ABC"-->
+                <!--android:textColor="@color/txt_sub_info"-->
+                <!--android:textSize="16sp" />-->
         </RelativeLayout>
 
         <LinearLayout

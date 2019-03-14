@@ -7,13 +7,13 @@
     android:layout_marginBottom="8dp">
 
     <LinearLayout
-        android:id="@+id/rv_item_loading_circle"
+        android:id="@+id/item_exhibition_loading_circle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone">
         <ProgressBar
-            android:id="@+id/view_all_load_more"
+            android:id="@+id/item_exhibition_load_more"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
@@ -24,7 +24,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/rv_item_card"
+        android:id="@+id/item_exhibition_card"
         android:layout_width="match_parent"
         android:layout_height="136dp"
         app:cardCornerRadius="5dp"
@@ -39,16 +39,16 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/rv_item_img"
+                android:id="@+id/item_exhibition_img"
                 android:scaleType="centerCrop"
                 android:layout_width="130dp"
                 android:layout_height="120dp"
                 android:layout_margin="8dp"/>
 
             <TextView
-                android:id="@+id/rv_item_name"
+                android:id="@+id/item_exhibition_name"
                 android:textColor="#262626"
-                android:layout_toRightOf="@id/rv_item_img"
+                android:layout_toRightOf="@id/item_exhibition_img"
                 android:text="Brochure"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -60,9 +60,9 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/rv_item_date"
-                android:layout_below="@id/rv_item_name"
-                android:layout_toRightOf="@id/rv_item_img"
+                android:id="@+id/item_exhibition_date"
+                android:layout_below="@id/item_exhibition_name"
+                android:layout_toRightOf="@id/item_exhibition_img"
                 android:textSize="14sp"
                 android:textColor="@color/txt_black"
                 android:padding="3dp"
@@ -75,9 +75,9 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/rv_item_address"
-                android:layout_below="@id/rv_item_date"
-                android:layout_toRightOf="@id/rv_item_img"
+                android:id="@+id/item_exhibition_address"
+                android:layout_below="@id/item_exhibition_date"
+                android:layout_toRightOf="@id/item_exhibition_img"
                 android:textSize="14sp"
                 android:textColor="@color/txt_sub_info"
                 android:padding="3dp"

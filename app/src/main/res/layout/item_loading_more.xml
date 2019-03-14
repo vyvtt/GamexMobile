@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <ProgressBar
-        android:id="@+id/view_all_load_more"
+        android:id="@+id/item_exhibition_load_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

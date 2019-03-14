@@ -17,8 +17,8 @@ public final class Constant {
     public static final String PREF_FULLNAME = "FULLNAME";
 
     // API
-//    public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
-    public static final String BASE_URL = "http://192.168.100.59:44319/";
+    public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
+//    public static final String BASE_URL = "http://192.168.100.59:44319/";
     public static final String API_TYPE_ONGOING = "ongoing";
     public static final String API_TYPE_UPCOMING = "upcoming";
     public static final String API_TYPE_NEAR = "near-you";

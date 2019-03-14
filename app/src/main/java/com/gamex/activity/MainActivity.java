@@ -16,6 +16,7 @@ import com.gamex.R;
 import com.gamex.fragments.BookmarkFragment;
 import com.gamex.fragments.ChangePasswordFragment;
 import com.gamex.fragments.EditProfileFragment;
+import com.gamex.fragments.HistoryFragment;
 import com.gamex.fragments.HomeFragment;
 import com.gamex.fragments.YourExhibitionFragment;
 import com.gamex.utils.Constant;
@@ -211,6 +212,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case Constant.ITEM_CHANGE_PASSWORD:
                 fragmentClass = ChangePasswordFragment.class;
+                break;
+            case Constant.ITEM_HISTORY:
+                fragmentClass = HistoryFragment.class;
                 break;
             case Constant.ITEM_LOGOUT:
                 fragment = null;
