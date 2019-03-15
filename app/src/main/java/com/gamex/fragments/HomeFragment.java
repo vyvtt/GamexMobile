@@ -50,7 +50,7 @@ import retrofit2.Response;
 public class HomeFragment extends BaseFragment {
 
     @Inject
-    @Named("no-cache")
+    @Named("cache")
     DataService dataService;
     Call<List<Exhibition>> callOngoing;
     Call<List<Exhibition>> callUpcoming;

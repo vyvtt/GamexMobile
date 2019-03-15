@@ -106,13 +106,12 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
         sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
 
-        // TODO: Scan result handler here
         String scanResult = rawResult.getText();
 
         Log.i(TAG, "Scan: " + scanResult);
 
         if (scanResult.contains("?")) {
-            // survey
+            // TODO call api to get survey list
 
         } else {
             // exhibition
@@ -149,29 +148,34 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
                         }
 
                     } else {
-                        Log.e(TAG, response.errorBody().string());
-                        handleFailOnRequest("Something went wrong");
+
+                        String strErr = response.errorBody().string();
+                        JSONObject jsonErr = new JSONObject(strErr);
+                        String mesErr = jsonErr.getString("message");
+
+                        handleFailOnRequest(mesErr, "OK");
                     }
 
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e.fillInStackTrace());
+                    handleFailOnRequest("Something went wrong", "Please try again later");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e(TAG, t.getMessage(), t.fillInStackTrace());
-                handleFailOnRequest("Cannot connect to GamEx server");
+                handleFailOnRequest("Cannot connect to GamEx server", "Please try again later");
             }
         });
     }
 
-    private void handleFailOnRequest(String content) {
+    private void handleFailOnRequest(String content, String confirm) {
         if (sweetAlertDialog != null) {
             sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
             sweetAlertDialog.setTitleText("Oops ...")
                     .setContentText(content)
-                    .setConfirmText("Please try again later")
+                    .setConfirmText(confirm)
                     .setConfirmClickListener(sweetAlertDialog -> {
                         sweetAlertDialog.dismissWithAnimation();
                         zXingScannerView.setResultHandler(ScanQRActivity.this);

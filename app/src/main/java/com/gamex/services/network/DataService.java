@@ -19,6 +19,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -107,22 +108,15 @@ public interface DataService {
             @QueryMap Map<String, Object> options
     );
 
-//    // login with FB
-//    @Headers({"Content-Type:application/json"})
-//    @POST("/api/Account/RegisterExternal")
-//    Call<ResponseBody> loginWithFB(
-//            @Header("Authorization") String auth,
-//            @Body HashMap<String, String> user
-//    );
+    // Change password
+    @FormUrlEncoded
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @PUT("/api/account/password")
+    Call<ResponseBody> changePassword(
+            @Header("Authorization") String accessToken,
+            @Field("oldPassword") String oldPass,
+            @Field("newPassword") String newPass,
+            @Field("confirmPassword") String rePass
+    );
 
-//    // account info
-//    @PUT("api/account/{username}")
-//    Call<ResponseBody> getAccountInfo(@Path("username") String username);
-
-//    // exhibition details
-//    @GET("api/exhibition/{exhibitionId}")
-//    Call<Exhibition> getExhibitionDetails(@Path("exhibitionId") String exhibitionId);
-
-//    @GET("api/exhibition/{exhibitionId}/company")
-//    Call<List<Company>> getListCompanyOfExhibition(@Path("exhibitionId") String exhibitionId);
 }

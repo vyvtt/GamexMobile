@@ -83,10 +83,8 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
 
         getSaveDataFromIntent(); // ex name, img, id from intent -> set to view
 
-        // TODO real data
         checkInternet();
 
-        //TODO test data here
 //        List<CompanyInExhibition> listCompany = new ArrayList<>();
 //        listCompany.add(new CompanyInExhibition(123, "ADPEX", "---"));
 //        listCompany.add(new CompanyInExhibition(123, "UBM VIETNAM", "---"));

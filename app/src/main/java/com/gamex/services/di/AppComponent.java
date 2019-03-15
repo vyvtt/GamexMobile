@@ -13,6 +13,7 @@ import com.gamex.activity.ViewAllExhibitionActivity;
 import com.gamex.adapters.EndlessRvExhibitionAdapter;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.adapters.ListCompanyAdapter;
+import com.gamex.fragments.ChangePasswordFragment;
 import com.gamex.fragments.ExDetailFragment;
 import com.gamex.fragments.HistoryFragment;
 import com.gamex.fragments.HomeFragment;
@@ -24,15 +25,19 @@ import dagger.Component;
 @Singleton
 @Component(modules = {AppModule.class, NetworkModule.class})
 public interface AppComponent {
-    void inject(HomeFragment homeFragment);
-    void inject(ExhibitionDetailActivity exhibitionDetailActivity);
-    void inject(HomeAdapter homeAdapter);
-    void inject(ListCompanyAdapter listCompanyAdapter);
-    void inject(EndlessRvExhibitionAdapter endlessRvExhibitionAdapter);
-    void inject(ViewAllExhibitionActivity viewAllExhibitionActivity);
-    void inject(SurveyActivity surveyActivity);
-    void inject(HistoryFragment fragment);
 
+    void inject(HomeFragment fragment);
+    void inject(ChangePasswordFragment fragment);
+    void inject(HistoryFragment fragment);
+    void inject(ExDetailFragment fragment);
+
+    void inject(HomeAdapter adapter);
+    void inject(ListCompanyAdapter adapter);
+    void inject(EndlessRvExhibitionAdapter adapter);
+
+    void inject(ExhibitionDetailActivity activity);
+    void inject(ViewAllExhibitionActivity activity);
+    void inject(SurveyActivity activity);
     // splash
     void inject(SplashActivity activity);
     // login
@@ -45,8 +50,6 @@ public interface AppComponent {
     void inject(MainActivity activity);
     // scan qr
     void inject(ScanQRActivity activity);
-    // event details
-    void inject(ExDetailFragment exDetailFragment);
     // company details
     void inject(CompanyDetailActivity activity);
 }
