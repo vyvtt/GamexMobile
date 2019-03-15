@@ -1,9 +1,8 @@
 package com.gamex.activity;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,8 +96,8 @@ public class SurveyActivity extends AppCompatActivity {
         }
         accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
 
-        getDataFromIntent();
         mappingViewElement();
+        getDataFromIntent();
     }
 
     @Override
@@ -150,11 +150,15 @@ public class SurveyActivity extends AppCompatActivity {
     }
 
     private void getDataFromIntent() {
-        Intent intent = getIntent();
-        surveyId = intent.getIntExtra("SV_ID", -1);
-        surveyDescription = intent.getStringExtra("SV_DES");
-        surveyPoint = intent.getStringExtra("SV_POINT");
-        surveyTitle = intent.getStringExtra("SV_TITLE");
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null) {
+            Log.i(TAG, "bunble != null");
+            surveyId = bundle.getInt(Constant.EXTRA_SURVEY_ID);
+            surveyDescription = bundle.getString(Constant.EXTRA_SURVEY_DES);
+            surveyPoint = String.valueOf(bundle.getInt(Constant.EXTRA_SURVEY_POINT));
+            surveyTitle = bundle.getString(Constant.EXTRA_SURVEY_TITLE);
+        }
 
         txtTitle.setText(surveyTitle);
         txtDes.setText(surveyDescription);
@@ -188,13 +192,13 @@ public class SurveyActivity extends AppCompatActivity {
         sweetAlertDialog.setTitleText("Fetching data ...").setCancelable(false);
         sweetAlertDialog.show();
 
-        // TODO call api to get question
-        surveyId = 1;
+        Log.i(TAG, "survey id : " + surveyId);
         call = dataService.getSurveyQuestions(accessToken, surveyId);
         call.enqueue(new BaseCallBack<Survey>(this) {
             @Override
             public void onSuccess(Call<Survey> call, Response<Survey> response) {
                 Log.i(TAG, response.message());
+
                 if (response.isSuccessful()) {
                     // TODO get data
                     layoutOverview.setVisibility(View.GONE);
@@ -214,8 +218,14 @@ public class SurveyActivity extends AppCompatActivity {
                     sweetAlertDialog.dismissWithAnimation();
 
                 } else {
+
+                    try {
+                        Log.e(TAG, response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                    sweetAlertDialog.setTitleText("Opps ...")
+                    sweetAlertDialog.setTitleText("Oops ...")
                             .setContentText("Something went wrong")
                             .setConfirmText("Try again later")
                             .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
@@ -277,6 +287,8 @@ public class SurveyActivity extends AppCompatActivity {
                         answerSelectId.add(selectButtonId);
                         currentQuestion.setUserAnswerButtonId(answerSelectId);
                         isAnswered = true;
+//
+//                        Log.i(TAG, "save radio: " + answerSelectId.toString());
                     }
                     break;
 
@@ -287,7 +299,7 @@ public class SurveyActivity extends AppCompatActivity {
                     for (int i = 0; i < numOfCheckBox; i++) {
                         CheckBox childCheckBox = (CheckBox) parentLayout.getChildAt(i);
                         if (childCheckBox.isChecked()) {
-                            answerSelectId.add(i);
+                            answerSelectId.add(childCheckBox.getId());
                             isAnswered = true;
                         }
                     }
@@ -351,6 +363,9 @@ public class SurveyActivity extends AppCompatActivity {
                 //to the group - set an ID for each RadioButton to be referred later
                 RadioGroup radioGroup = new RadioGroup(this);
                 for (int i = 0; i < proposedAnswers.size(); i++) {
+
+                    Log.i(TAG, "radio: " + proposedAnswers.get(i).toString());
+
                     RadioButton radioButton = new RadioButton(this);
                     radioButton.setText(proposedAnswers.get(i).getContent());
                     radioButton.setId(proposedAnswers.get(i).getProposedAnswerId());
@@ -382,6 +397,9 @@ public class SurveyActivity extends AppCompatActivity {
             case CHECKBOX:
                 //For the case of check boxes, create a new CheckBox for each option
                 for (ProposedAnswer proposedAnswer : proposedAnswers) {
+
+                    Log.i(TAG, "checkbox: " + proposedAnswer.toString());
+
                     CheckBox checkbox = new CheckBox(this);
                     checkbox.setText(proposedAnswer.getContent());
                     checkbox.setId(proposedAnswer.getProposedAnswerId());
@@ -435,6 +453,7 @@ public class SurveyActivity extends AppCompatActivity {
             sweetAlertDialog.setTitleText("Oops ...")
                     .setContentText(content)
                     .setConfirmText("Try again later")
+                    .showCancelButton(false)
                     .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
         }
     }
@@ -516,10 +535,12 @@ public class SurveyActivity extends AppCompatActivity {
     }
 
     private void submitAnswer() {
+
         String jsonAnswers = createJsonResponse();
 
         if (jsonAnswers == null) {
             alertOnFail("Something went wrong");
+            return;
         }
 
         if (sweetAlertDialog != null) {
@@ -528,6 +549,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         RequestBody answer = RequestBody.create
                 (okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonAnswers);
+
         Call<ResponseBody> call = dataService.submitSurvey(accessToken, answer);
 
         call.enqueue(new BaseCallBack<ResponseBody>(this) {
@@ -548,12 +570,10 @@ public class SurveyActivity extends AppCompatActivity {
                                     .setTitleText("Submit successfully")
                                     .setContentText("You gain " + point + " points!")
                                     .setConfirmText("Great")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            sweetAlertDialog.dismissWithAnimation();
-                                            // TODO back to list survey
-                                        }
+                                    .setConfirmClickListener(sweetAlertDialog -> {
+                                        sweetAlertDialog.dismissWithAnimation();
+                                        // TODO back to list survey
+//                                        SurveyActivity.this.finish();
                                     });
                         }
 

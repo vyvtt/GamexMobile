@@ -91,21 +91,21 @@ public class HistoryFragment extends BaseFragment {
 
         mappingViewElement(view);
 
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
-        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
+//        dataHistory.add(new History("1", "Gain 100 points by survey", "24/03/2019 21:00pm"));
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
@@ -115,41 +115,41 @@ public class HistoryFragment extends BaseFragment {
         return view;
     }
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//
-//        // load 1st time
-//        new CheckInternetTask(internet -> {
-//            if (internet) {
-//                txtNoInternet.setVisibility(View.GONE);
-//                txtLoading.setVisibility(View.VISIBLE);
-//                progressBarFirstLoad.setVisibility(View.VISIBLE);
-//
-//                if (!isNoMoreData) {
-//                    callAPI();
-//                }
-//            } else {
-//                txtNoInternet.setVisibility(View.VISIBLE);
-//                txtLoading.setVisibility(View.GONE);
-//                progressBarFirstLoad.setVisibility(View.GONE);
-//            }
-//        });
-//
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                if (dy > 0) {
-//                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
-//                        if (itShouldLoadMore) {
-//                            loadMore();
-//                        }
-//                    }
-//                }
-//            }
-//        });
-//    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // load 1st time
+        new CheckInternetTask(internet -> {
+            if (internet) {
+                txtNoInternet.setVisibility(View.GONE);
+                txtLoading.setVisibility(View.VISIBLE);
+                progressBarFirstLoad.setVisibility(View.VISIBLE);
+
+                if (!isNoMoreData) {
+                    callAPI();
+                }
+            } else {
+                txtNoInternet.setVisibility(View.VISIBLE);
+                txtLoading.setVisibility(View.GONE);
+                progressBarFirstLoad.setVisibility(View.GONE);
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
+                        if (itShouldLoadMore) {
+                            loadMore();
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     private void loadMore() {
         if (!isNoMoreData) {

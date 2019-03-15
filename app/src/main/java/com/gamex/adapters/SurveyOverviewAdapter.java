@@ -2,7 +2,11 @@ package com.gamex.adapters;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.SparseBooleanArray;
@@ -17,9 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gamex.R;
+import com.gamex.activity.SurveyActivity;
 import com.gamex.models.Survey;
+import com.gamex.utils.Constant;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class SurveyOverviewAdapter extends RecyclerView.Adapter<SurveyOverviewAdapter.ViewHolder> {
     private List<Survey> listSurvey;
@@ -56,11 +64,24 @@ public class SurveyOverviewAdapter extends RecyclerView.Adapter<SurveyOverviewAd
             viewHolder.btnTakeSurvey.setText("You have taken this survey already");
             viewHolder.btnTakeSurvey.setEnabled(false);
         } else {
-            viewHolder.btnTakeSurvey.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "take survey!", Toast.LENGTH_SHORT).show();
-                }
+            viewHolder.btnTakeSurvey.setOnClickListener(v -> {
+                Intent intent = new Intent(context, SurveyActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putInt(Constant.EXTRA_SURVEY_ID, currentSurvey.getSurveyId());
+                bundle.putString(Constant.EXTRA_SURVEY_TITLE, currentSurvey.getTitle());
+                bundle.putString(Constant.EXTRA_SURVEY_DES, currentSurvey.getDescription());
+                bundle.putInt(Constant.EXTRA_SURVEY_POINT, currentSurvey.getPoint());
+
+                intent.putExtras(bundle);
+
+                Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
+                        viewHolder.btnTakeSurvey, 0, 0,
+                        viewHolder.btnTakeSurvey.getWidth(),
+                        viewHolder.btnTakeSurvey.getHeight())
+                        .toBundle();
+
+                ActivityCompat.startActivity(context, intent, options);
             });
         }
 

@@ -49,4 +49,11 @@ public class ProposedAnswer implements Serializable {
         this.content = content;
     }
 
+    @Override
+    public String toString() {
+        return "ProposedAnswer{" +
+                "proposedAnswerId=" + proposedAnswerId +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

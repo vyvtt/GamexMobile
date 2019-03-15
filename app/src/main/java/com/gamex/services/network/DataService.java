@@ -20,8 +20,10 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 
 public interface DataService {
 
@@ -58,12 +60,20 @@ public interface DataService {
     @FormUrlEncoded
     @POST("/api/user/exhibition")
     @Headers("Content-Type:application/x-www-form-urlencoded")
-    Call<ResponseBody> checkInEvent(
+    Call<ResponseBody> scanCheckInEvent(
             @Header("Authorization") String accessToken,
             @Field("id") String id
     );
 
-    // Scan QR survey
+    // TODO Scan QR survey
+    @GET("/api/surveys")
+    Call<List<Survey>> scanGetSurveys(
+            @Header("Authorization") String accessToken,
+            @QueryMap Map<String, String> params
+//            @Query("exhibitionId") String exId,
+//            @Query("companyId") String companyId
+//            @Path(value = "scan", encoded = true) String scan
+    );
 
     // Main screen exhibition
     @GET("/api/exhibitions")
@@ -80,8 +90,7 @@ public interface DataService {
     );
 
     // Company details
-    // TODO company details api link
-    @GET("TODO COMPANY DETAILS")
+    @GET("/api/company")
     Call<Company> getCompanyDetails(
             @Header("Authorization") String accessToken,
             @Query("id") String id
@@ -96,10 +105,12 @@ public interface DataService {
 
     // Submit survey
     @POST("/api/survey")
+    @Headers("Content-Type:application/json")
     Call<ResponseBody> submitSurvey(
             @Header("Authorization") String accessToken,
             @Body RequestBody answer
-            );
+//            @Body("surveyAnswerModel") String answer
+    );
 
     // Activity history
     @GET("/api/activity")

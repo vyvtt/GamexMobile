@@ -34,5 +34,19 @@ public final class Constant {
     public static final String EXTRA_EX_NAME = "EXTRA_EX_NAME";
     public static final String EXTRA_EX_ID = "EXTRA_EX_ID";
     public static final String EXTRA_EX_IMG = "EXTRA_EX_IMG";
+
     public static final String EXTRA_SCAN_QR_EX_ID = "EXTRA_SCAN_QR_EX_ID";
+    public static final String EXTRA_SCAN_QR_RESULT = "EXTRA_SCAN_QR_RESULT";
+
+    public static final String EXTRA_COMPANY_ID = "EXTRA_COMPANY_ID";
+    public static final String EXTRA_COMPANY_IS_SCAN_SURVEY = "EXTRA_COMPANY_IS_SCAN_SURVEY";
+    public static final String EXTRA_COMPANY_SURVEY = "EXTRA_COMPANY_SURVEY";
+
+    public static final String EXTRA_SURVEY_ID = "EXTRA_SURVEY_ID";
+    public static final String EXTRA_SURVEY_DES = "EXTRA_SURVEY_DES";
+    public static final String EXTRA_SURVEY_TITLE = "EXTRA_SURVEY_TITLE";
+    public static final String EXTRA_SURVEY_POINT = "EXTRA_SURVEY_POINT";
+
+
+
 }

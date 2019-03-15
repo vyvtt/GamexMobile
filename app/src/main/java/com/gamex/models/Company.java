@@ -7,7 +7,7 @@ public class Company {
 
     @SerializedName("companyId")
     @Expose
-    private Integer companyId;
+    private String companyId;
     @SerializedName("name")
     @Expose
     private String name;
@@ -48,7 +48,7 @@ public class Company {
      * @param name
      * @param companyId
      */
-    public Company(Integer companyId, String name, String description, String email, String phone, String address, String logo, String website) {
+    public Company(String companyId, String name, String description, String email, String phone, String address, String logo, String website) {
         super();
         this.companyId = companyId;
         this.name = name;
@@ -60,11 +60,11 @@ public class Company {
         this.website = website;
     }
 
-    public Integer getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 

@@ -13,7 +13,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.gamex.GamexApplication;
-import com.gamex.R;
 import com.gamex.models.Survey;
 import com.gamex.services.network.BaseCallBack;
 import com.gamex.services.network.DataService;
@@ -24,7 +23,10 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -110,17 +112,77 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
 
         Log.i(TAG, "Scan: " + scanResult);
 
-        if (scanResult.contains("?")) {
-            // TODO call api to get survey list
-
+        if (scanResult.contains("exhibitionId")) {
+            // list surveys
+            callApiSurveys(scanResult);
         } else {
             // exhibition
-            callApiCheckin(scanResult);
+            callApiCheckIn(scanResult);
         }
     }
 
-    private void callApiCheckin(String scanResult) {
-        call = dataService.checkInEvent(accessToken, scanResult);
+    private void callApiSurveys(String scanResult) {
+
+        HashMap<String,String> apiParams = new HashMap<>();
+        String[] params = scanResult.split("&");
+        for (String param : params) {
+            String[] temp1 = param.split("=");
+            apiParams.put(temp1[0], temp1[1]);
+        }
+
+        Log.i(TAG, apiParams.toString());
+        System.out.println(apiParams.toString());
+
+        Call<List<Survey>> call = dataService.scanGetSurveys(accessToken, apiParams);
+        call.enqueue(new BaseCallBack<List<Survey>>(this) {
+            @Override
+            public void onSuccess(Call<List<Survey>> call, Response<List<Survey>> response) {
+                Log.i(TAG, response.message());
+
+                try {
+                    if (response.isSuccessful()) {
+
+                        List<Survey> surveys = response.body();
+
+                        if (surveys != null) {
+                            Intent intent = new Intent(ScanQRActivity.this, CompanyDetailActivity.class);
+
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean(Constant.EXTRA_COMPANY_IS_SCAN_SURVEY, true);
+                            bundle.putSerializable(Constant.EXTRA_COMPANY_SURVEY, (Serializable) surveys);
+                            bundle.putString(Constant.EXTRA_SCAN_QR_RESULT, scanResult);
+
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                    } else {
+
+                        String strErr = response.errorBody().string();
+                        JSONObject jsonErr = new JSONObject(strErr);
+                        String mesErr = jsonErr.getString("message");
+
+                        Log.e(TAG, mesErr);
+                        handleFailOnRequest(mesErr, "OK");
+                    }
+
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage(), e.fillInStackTrace());
+                    handleFailOnRequest("Something went wrong", "Please try again later");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Survey>> call, Throwable t) {
+                Log.e(TAG, t.getMessage(), t.fillInStackTrace());
+                handleFailOnRequest("Cannot connect to GamEx server", "Please try again later");
+            }
+        });
+    }
+
+    private void callApiCheckIn(String scanResult) {
+        call = dataService.scanCheckInEvent(accessToken, scanResult);
         call.enqueue(new BaseCallBack<ResponseBody>(this) {
             @Override
             public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {

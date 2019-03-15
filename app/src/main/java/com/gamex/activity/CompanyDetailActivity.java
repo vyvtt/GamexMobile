@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -20,12 +22,12 @@ import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.adapters.SurveyOverviewAdapter;
 import com.gamex.models.Company;
-import com.gamex.models.Exhibition;
 import com.gamex.models.Survey;
-import com.gamex.models.SurveyTest;
 import com.gamex.services.network.BaseCallBack;
+import com.gamex.services.network.CheckInternetTask;
 import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -48,93 +50,196 @@ public class CompanyDetailActivity extends AppCompatActivity {
     Call<Company> call;
     private final String TAG = CompanyDetailActivity.class.getSimpleName();
     private String accessToken;
+    private SweetAlertDialog sweetAlertDialog;
     private String companyId;
 
     private Toolbar toolbar;
 
     // expand survey list
+    private LinearLayout layoutSurvey;
     private RecyclerView rvListSurvey;
     private RelativeLayout btnExpand;
-    private LinearLayout expandableLayout;
+    private LinearLayout layoutSurveyExpand;
     private boolean isExpand = false;
+    private TextView txtSurveyNoti;
 
     // loading
     private ProgressBar progressBar;
     private TextView txtNoInternet, txtLoading;
+    private Button btnRefresh;
+    private LinearLayout layoutMain;
 
     // info
     private Company company;
     private ImageView imgLogo;
     private TextView txtName, txtWebsite, txtAddress, txtPhone, txtEmail, txtDescription;
 
+    // survey
+    private List<Survey> surveys;
+    private boolean isFromScan;
+    private String scanResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         ((GamexApplication) getApplication()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_company_detail);
 
-        accessToken = sharedPreferences.getString("Bearer " + Constant.PREF_ACCESS_TOKEN, "");
+        accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
+//        accessToken = sharedPreferences.getString("Bearer " + Constant.PREF_ACCESS_TOKEN, "");
 
         mappingViewElement();
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+
+            isFromScan = bundle.getBoolean(Constant.EXTRA_COMPANY_IS_SCAN_SURVEY);
+
+            if (isFromScan) {
+                // From Scan
+                surveys = (List<Survey>) bundle.getSerializable(Constant.EXTRA_COMPANY_SURVEY);
+                scanResult = bundle.getString(Constant.EXTRA_SCAN_QR_RESULT);
+                companyId = scanResult.substring(scanResult.indexOf("companyId"));
+                companyId = companyId.replace("companyId=", "");
+
+                // show survey
+                layoutSurvey.setVisibility(View.VISIBLE);
+                txtSurveyNoti.setText(surveys.isEmpty() ? "This company has no survey" : "Total " + surveys.size() + " survey(s) in this exhibition");
+                expandListSurvey();
+                setSurveyListAdapter();
+
+                Log.i(TAG, "set adapter done");
+
+            } else {
+                // From Exhibition Details -> show normal
+                Log.i(TAG, "FROM NORMAL FLOW");
+                companyId = bundle.getString(Constant.EXTRA_COMPANY_ID);
+            }
+
+            Log.i(TAG, "before");
+            callAPI();
+        }
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        expandListSurvey();
-        setSurveyListAdapter();
     }
 
-    private void callAPI() {
-        // TODO company id
-        call = dataService.getCompanyDetails(accessToken, companyId);
-        call.enqueue(new BaseCallBack<Company>(this) {
-            @Override
-            public void onSuccess(Call<Company> call, Response<Company> response) {
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-            }
+        // refresh data when user done activity
+        if (isFromScan) {
 
-            @Override
-            public void onFailure(Call<Company> call, Throwable t) {
+        }
+    }
 
+    private void checkInternet() {
+
+        txtLoading.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        txtNoInternet.setVisibility(View.GONE);
+        btnRefresh.setVisibility(View.GONE);
+        layoutMain.setVisibility(View.GONE);
+
+        new CheckInternetTask(internet -> {
+            if (internet) {
+                callAPI();
+            } else {
+                txtLoading.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                txtNoInternet.setVisibility(View.VISIBLE);
+                btnRefresh.setVisibility(View.VISIBLE);
             }
         });
     }
 
+    private void callAPI() {
+        Log.i(TAG, "in call api");
+
+        // TODO handle api callback
+        Log.i(TAG, accessToken);
+        call = dataService.getCompanyDetails(accessToken, companyId);
+
+        call.enqueue(new BaseCallBack<Company>(this) {
+            @Override
+            public void onSuccess(Call<Company> call, Response<Company> response) {
+                Log.i(TAG, response.message());
+
+                if (response.isSuccessful()) {
+
+                    layoutMain.setVisibility(View.VISIBLE);
+                    company = response.body();
+                    loadDataToView();
+
+                } else {
+                    handleRequestFail(response.message(), "Please try again later");
+                }
+                // hide progress loading view
+                txtLoading.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<Company> call, Throwable t) {
+                handleRequestFail("Cannot connect to GamEx server", "Please try again later");
+                txtLoading.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void handleRequestFail(String content, String confirm) {
+        sweetAlertDialog = new SweetAlertDialog(CompanyDetailActivity.this, SweetAlertDialog.ERROR_TYPE);
+        sweetAlertDialog.setTitleText("Oops ...")
+                .setContentText(content)
+                .setConfirmText(confirm)
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismissWithAnimation();
+                });
+        btnRefresh.setVisibility(View.VISIBLE);
+    }
+
     private void expandListSurvey() {
-        expandableLayout.setVisibility(isExpand ? View.VISIBLE : View.GONE);
+        layoutSurveyExpand.setVisibility(isExpand ? View.VISIBLE : View.GONE);
         btnExpand.setRotation(isExpand ? 180f : 0f);
-        btnExpand.setOnClickListener(v -> onClickButtonExpand(expandableLayout, btnExpand));
+        btnExpand.setOnClickListener(v -> onClickButtonExpand(layoutSurveyExpand, btnExpand));
     }
 
     private void setSurveyListAdapter() {
         // test list survey
         rvListSurvey.setHasFixedSize(true);
         rvListSurvey.setLayoutManager(new LinearLayoutManager(getApplication()));
+//        List<Survey> listSurvey = new ArrayList<>();
+//        listSurvey.add(new Survey(1, "Survey Build successful!", 30, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", true));
+//        listSurvey.add(new Survey(1, "Technology survey?", 100, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", false));
+//        listSurvey.add(new Survey(1, "Survey about your life", 99, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", true));
+//        listSurvey.add(new Survey(1, "I'm dead inside Survey", 22, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", false));
 
-        List<Survey> listSurvey = new ArrayList<>();
-        listSurvey.add(new Survey(1, "Survey Build successful!", 30, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", true));
-        listSurvey.add(new Survey(1, "Technology survey?", 100, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", false));
-        listSurvey.add(new Survey(1, "Survey about your life", 99, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", true));
-        listSurvey.add(new Survey(1, "I'm dead inside Survey", 22, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", false));
-
-        rvListSurvey.setAdapter(new SurveyOverviewAdapter(listSurvey));
+        rvListSurvey.setAdapter(new SurveyOverviewAdapter(surveys));
     }
 
     private void mappingViewElement() {
         toolbar = findViewById(R.id.company_detail_toolbar);
 
         // survey
+        layoutSurvey = findViewById(R.id.company_survey_layout);
         btnExpand = findViewById(R.id.company_survey_btnExpand);
-        expandableLayout = findViewById(R.id.company_survey_layout);
+        layoutSurveyExpand = findViewById(R.id.company_surveys_expand);
         rvListSurvey = findViewById(R.id.company_survey_list);
+        txtSurveyNoti = findViewById(R.id.company_survey_noti);
 
         // loading
         progressBar = findViewById(R.id.company_progress_bar);
         txtLoading = findViewById(R.id.company_txt_loading);
         txtNoInternet = findViewById(R.id.company_txt_no_internet);
+        btnRefresh = findViewById(R.id.company_refresh);
+        layoutMain = findViewById(R.id.company_layout_main);
 
         // info
         txtName = findViewById(R.id.company_name);
@@ -143,6 +248,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
         txtPhone = findViewById(R.id.company_phone);
         txtEmail = findViewById(R.id.company_email);
         txtDescription = findViewById(R.id.company_description);
+        imgLogo = findViewById(R.id.company_img);
     }
 
     private void loadDataToView() {

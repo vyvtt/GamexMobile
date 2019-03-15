@@ -18,6 +18,7 @@ import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.activity.CompanyDetailActivity;
 import com.gamex.models.CompanyInExhibition;
+import com.gamex.utils.Constant;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -51,17 +52,36 @@ public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.
                 .error(R.color.bg_grey)
                 .into(viewHolder.imgLogo);
 
+        String strBooth = "";
+        List<String> booths = listCompany.get(i).getBooths();
+
+        if (booths != null) {
+            for (String booth : booths) {
+                if (booth != null) {
+                    strBooth += booth + " - ";
+                }
+//                strBooth += booth.equals("null") ? "" : strBooth + " - ";
+            }
+        }
+
+        viewHolder.txtBooth.setText(strBooth);
         viewHolder.txtName.setText(listCompany.get(i).getName());
-        // TODO set booth sub-info
 
         viewHolder.row.setOnClickListener(v -> {
             Intent intent = new Intent(context, CompanyDetailActivity.class);
+
             Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                     viewHolder.row, 0, 0,
                     viewHolder.row.getWidth(),
                     viewHolder.row.getHeight())
                     .toBundle();
-            // TODO put companyId + exId to next activity
+
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(Constant.EXTRA_COMPANY_IS_SCAN_SURVEY, false);
+            bundle.putString(Constant.EXTRA_COMPANY_ID, listCompany.get(i).getCompanyId());
+
+            intent.putExtras(bundle);
+
             ActivityCompat.startActivity(context, intent, options);
         });
     }
