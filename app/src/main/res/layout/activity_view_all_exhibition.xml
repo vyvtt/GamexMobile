@@ -14,7 +14,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="top"
             android:theme="@style/ToolBarStyle"
-            app:titleTextColor="@color/txt_white"/>
+            app:titleTextColor="@color/txt_white" />
 
         <ProgressBar
             android:id="@+id/view_all_loading"

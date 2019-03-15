@@ -14,51 +14,66 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp">
 
-        <TextView
-            android:id="@+id/survey_title"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="72dp"
-            android:layout_marginEnd="28dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            android:textColor="@android:color/white"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbarSize="0dp">
 
-        <TextView
-            android:id="@+id/survey_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/survey_title"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="28dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/survey_line"
-            android:layout_below="@+id/survey_description"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginTop="28dp"
-            android:background="@color/lighter_gray"></LinearLayout>
+                <TextView
+                    android:id="@+id/survey_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="72dp"
+                    android:layout_marginEnd="28dp"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    android:textColor="@android:color/white"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/survey_point"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/survey_line"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="28dp"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:text="point here"/>
+                <TextView
+                    android:id="@+id/survey_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/survey_title"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="28dp"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/survey_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/survey_description"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="28dp"
+                    android:background="@color/lighter_gray"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/survey_point"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/survey_line"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="28dp"
+                    android:text="point here"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
 
         <Button
             android:id="@+id/survey_start"

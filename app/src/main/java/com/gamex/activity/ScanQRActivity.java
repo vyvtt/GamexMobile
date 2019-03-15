@@ -130,9 +130,6 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
             apiParams.put(temp1[0], temp1[1]);
         }
 
-        Log.i(TAG, apiParams.toString());
-        System.out.println(apiParams.toString());
-
         Call<List<Survey>> call = dataService.scanGetSurveys(accessToken, apiParams);
         call.enqueue(new BaseCallBack<List<Survey>>(this) {
             @Override
@@ -149,7 +146,7 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
 
                             Bundle bundle = new Bundle();
                             bundle.putBoolean(Constant.EXTRA_COMPANY_IS_SCAN_SURVEY, true);
-                            bundle.putSerializable(Constant.EXTRA_COMPANY_SURVEY, (Serializable) surveys);
+//                            bundle.putSerializable(Constant.EXTRA_COMPANY_SURVEY, (Serializable) surveys);
                             bundle.putString(Constant.EXTRA_SCAN_QR_RESULT, scanResult);
 
                             intent.putExtras(bundle);

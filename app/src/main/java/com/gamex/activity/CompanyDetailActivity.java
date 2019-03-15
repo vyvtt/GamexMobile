@@ -1,6 +1,7 @@
 package com.gamex.activity;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
@@ -30,7 +32,10 @@ import com.gamex.utils.Constant;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -88,7 +93,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_company_detail);
 
         accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
-//        accessToken = sharedPreferences.getString("Bearer " + Constant.PREF_ACCESS_TOKEN, "");
 
         mappingViewElement();
 
@@ -99,43 +103,33 @@ public class CompanyDetailActivity extends AppCompatActivity {
 
             if (isFromScan) {
                 // From Scan
-                surveys = (List<Survey>) bundle.getSerializable(Constant.EXTRA_COMPANY_SURVEY);
                 scanResult = bundle.getString(Constant.EXTRA_SCAN_QR_RESULT);
                 companyId = scanResult.substring(scanResult.indexOf("companyId"));
                 companyId = companyId.replace("companyId=", "");
 
-                // show survey
-                layoutSurvey.setVisibility(View.VISIBLE);
-                txtSurveyNoti.setText(surveys.isEmpty() ? "This company has no survey" : "Total " + surveys.size() + " survey(s) in this exhibition");
-                expandListSurvey();
-                setSurveyListAdapter();
-
-                Log.i(TAG, "set adapter done");
 
             } else {
                 // From Exhibition Details -> show normal
-                Log.i(TAG, "FROM NORMAL FLOW");
                 companyId = bundle.getString(Constant.EXTRA_COMPANY_ID);
             }
 
-            Log.i(TAG, "before");
-            callAPI();
+            callAPICompanyDetails();
         }
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.i(TAG, "resume");
         // refresh data when user done activity
         if (isFromScan) {
-
+            Log.i(TAG, "call api to refresh");
+            callAPIListSurvey();
         }
     }
 
@@ -149,7 +143,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
 
         new CheckInternetTask(internet -> {
             if (internet) {
-                callAPI();
+                callAPICompanyDetails();
             } else {
                 txtLoading.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
@@ -159,13 +153,46 @@ public class CompanyDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void callAPI() {
-        Log.i(TAG, "in call api");
+    private void callAPIListSurvey() {
 
-        // TODO handle api callback
-        Log.i(TAG, accessToken);
+        HashMap<String, String> apiParams = new HashMap<>();
+        String[] params = scanResult.split("&");
+        for (String param : params) {
+            String[] temp1 = param.split("=");
+            apiParams.put(temp1[0], temp1[1]);
+        }
+
+        Call<List<Survey>> call = dataService.scanGetSurveys(accessToken, apiParams);
+        call.enqueue(new BaseCallBack<List<Survey>>(this) {
+            @Override
+            public void onSuccess(Call<List<Survey>> call, Response<List<Survey>> response) {
+                Log.i(TAG, response.message());
+
+                if (response.isSuccessful()) {
+
+                    Log.i(TAG, "Refresh survey list success");
+                    surveys = response.body();
+                    // show survey
+                    layoutSurvey.setVisibility(View.VISIBLE);
+                    txtSurveyNoti.setText(surveys.isEmpty() ? "This company has no survey" : "Total " + surveys.size() + " survey(s) in this exhibition");
+                    expandListSurvey();
+                    setSurveyListAdapter();
+
+                } else {
+                    Log.i(TAG, "Refresh survey list FAIL");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Survey>> call, Throwable t) {
+                Log.i(TAG, "Refresh survey list FAIL");
+            }
+        });
+    }
+
+    private void callAPICompanyDetails() {
+
         call = dataService.getCompanyDetails(accessToken, companyId);
-
         call.enqueue(new BaseCallBack<Company>(this) {
             @Override
             public void onSuccess(Call<Company> call, Response<Company> response) {
@@ -263,6 +290,19 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 .placeholder((R.color.bg_grey))
                 .error(R.color.bg_grey)
                 .into(imgLogo);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.mn_item_bookmark:
+                // TODO bookmark
+                item.setIcon(getDrawable(R.drawable.ic_star_fill));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void onClickButtonExpand(final LinearLayout expandableLayout, final RelativeLayout btnToExpanlayout) {

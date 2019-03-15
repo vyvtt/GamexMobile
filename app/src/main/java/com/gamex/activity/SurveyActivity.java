@@ -153,7 +153,6 @@ public class SurveyActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         if (bundle != null) {
-            Log.i(TAG, "bunble != null");
             surveyId = bundle.getInt(Constant.EXTRA_SURVEY_ID);
             surveyDescription = bundle.getString(Constant.EXTRA_SURVEY_DES);
             surveyPoint = String.valueOf(bundle.getInt(Constant.EXTRA_SURVEY_POINT));
@@ -398,8 +397,6 @@ public class SurveyActivity extends AppCompatActivity {
                 //For the case of check boxes, create a new CheckBox for each option
                 for (ProposedAnswer proposedAnswer : proposedAnswers) {
 
-                    Log.i(TAG, "checkbox: " + proposedAnswer.toString());
-
                     CheckBox checkbox = new CheckBox(this);
                     checkbox.setText(proposedAnswer.getContent());
                     checkbox.setId(proposedAnswer.getProposedAnswerId());
@@ -409,8 +406,16 @@ public class SurveyActivity extends AppCompatActivity {
 
                 //restore saved answers
                 if (question.getUserAnswerButtonId() != null && question.getUserAnswerButtonId().size() > 0) {
-                    for (int index : question.getUserAnswerButtonId()) {
-                        ((CheckBox) optionsLayout.getChildAt(index)).setChecked(true);
+
+                    int total = proposedAnswers.size(); // total checkbox in this layout
+                    List<Integer> previousSelectId = question.getUserAnswerButtonId(); // list is saved before
+
+                    for (int index = 0; index < total; index++) {
+
+                        int curId = ((CheckBox) optionsLayout.getChildAt(index)).getId();
+                        if (previousSelectId.contains(curId)) {
+                            ((CheckBox) optionsLayout.getChildAt(index)).setChecked(true);
+                        }
                     }
                 }
                 optionsView = optionsLayout;
@@ -570,10 +575,10 @@ public class SurveyActivity extends AppCompatActivity {
                                     .setTitleText("Submit successfully")
                                     .setContentText("You gain " + point + " points!")
                                     .setConfirmText("Great")
+                                    .showCancelButton(false)
                                     .setConfirmClickListener(sweetAlertDialog -> {
                                         sweetAlertDialog.dismissWithAnimation();
-                                        // TODO back to list survey
-//                                        SurveyActivity.this.finish();
+                                        SurveyActivity.this.finish();
                                     });
                         }
 

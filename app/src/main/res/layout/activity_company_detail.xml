@@ -17,12 +17,11 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/company_detail_toolbar"
-            style="@style/ToolBarStyle"
+            android:theme="@style/ToolBarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="top"
-            android:background="@drawable/color_gradient_light"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            android:background="@drawable/color_gradient_light">
 
             <TextView
                 style="@android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse"
@@ -32,8 +31,7 @@
                 android:maxLines="1"
                 android:text="Company Details"
                 android:textColor="@color/txt_white"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/txt_size_toolbar" />
         </android.support.v7.widget.Toolbar>
 
         <ProgressBar
