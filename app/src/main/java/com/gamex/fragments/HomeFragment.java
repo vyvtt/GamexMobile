@@ -335,7 +335,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        // Cancel retrofit call when change fragment
+        // Cancel retrofit callGetProfile when change fragment
         if (callOngoing != null) {
             callOngoing.cancel();
         }

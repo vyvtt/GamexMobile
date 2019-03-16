@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/fg_edit_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_corner_radius"
@@ -15,6 +16,7 @@
         android:overScrollMode="ifContentScrolls"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
+        android:visibility="gone"
         >
 
         <LinearLayout
@@ -24,12 +26,13 @@
             android:orientation="vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
             android:padding="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="@drawable/color_gradient_blue"
+                android:background="@drawable/bg_blue"
                 android:orientation="vertical">
 
                 <ImageView
@@ -40,13 +43,16 @@
                     android:layout_marginTop="15dp"
                     />
                 <TextView
-                    android:id="@+id/txtFullName"
+                    android:id="@+id/fg_edit_txtFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Van Vy"
                     android:textSize="20dp"
-                    android:textColor="@color/txt_white"/>
+                    android:textColor="@color/txt_white"
+                    android:background="@drawable/scrim_all"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"/>
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -54,6 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
+                android:layout_marginTop="15dp"
                 android:hint="Firstname"
                 style="@style/MyStyle.InputLayout"
                 android:layout_weight="1"
@@ -88,7 +95,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilUsername"
+                android:id="@+id/fg_edit_tilUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
@@ -105,7 +112,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilEmail"
+                android:id="@+id/fg_edit_tilEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
@@ -123,33 +130,33 @@
                     android:text="thuyvy@gmail.com"/>
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true"
-                android:hint="Phone number"
-                style="@style/MyStyle.InputLayout">
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:id="@+id/tilPhone"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:errorEnabled="true"-->
+                <!--android:hint="Phone number"-->
+                <!--style="@style/MyStyle.InputLayout">-->
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edtPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/MyTheme.EditText"
-                    android:inputType="phone"
-                    android:maxLines="1" />
-            </android.support.design.widget.TextInputLayout>
+                <!--<android.support.design.widget.TextInputEditText-->
+                    <!--android:id="@+id/edtPhone"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:theme="@style/MyTheme.EditText"-->
+                    <!--android:inputType="phone"-->
+                    <!--android:maxLines="1" />-->
+            <!--</android.support.design.widget.TextInputLayout>-->
 
             <Button
                 android:id="@+id/btnUpdateProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/btn_margin_top"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:background="@drawable/effect_ripple"
                 android:text="Apply Changes"
                 android:textColor="@color/txt_white"
-                android:layout_marginHorizontal="30dp"
-                android:enabled="false"/>
+                android:layout_marginHorizontal="30dp" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

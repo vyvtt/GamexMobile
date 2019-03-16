@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,7 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private int primaryColor, secondaryColor, preClickPosition;
     private Toolbar toolbar;
     private Drawer drawerMenu;
+    private AccountHeader accountHeader;
     private boolean isInit = true;
+    private final String TAG = MainActivity.class.getSimpleName();
+
     @Inject
     SharedPreferences sharedPreferences;
 
@@ -54,18 +58,28 @@ public class MainActivity extends AppCompatActivity {
         createDrawer();
     }
 
+    public void updateProfileInDrawer(String fullName) {
+        accountHeader.updateProfile(new ProfileDrawerItem()
+                .withIdentifier(111)
+                .withName(fullName)
+                .withIcon(getResources().getDrawable(R.drawable.ic_default_ava)));
+        Log.i(TAG, "Update profile in drawer ----");
+    }
+
     private void createDrawer() {
         // Create the Drawer header
-        AccountHeader accountHeader = new AccountHeaderBuilder()
+        accountHeader = new AccountHeaderBuilder()
                 .withHeaderBackground(getResources().getDrawable(R.drawable.color_gradient_blue))
                 .withActivity(this)
                 .addProfiles(
                         new ProfileDrawerItem()
+                                .withIdentifier(111)
                                 .withName(sharedPreferences.getString("FULLNAME", ""))
                                 .withIcon(getResources().getDrawable(R.drawable.ic_default_ava))
-                                .withTextColorRes(R.color.txt_white)
-                                .withTextColor(getResources().getColor(R.color.txt_white))
+
                 )
+                .withDividerBelowHeader(true)
+                .withCompactStyle(true)
                 .withSelectionListEnabledForSingleProfile(false)
                 .build();
 

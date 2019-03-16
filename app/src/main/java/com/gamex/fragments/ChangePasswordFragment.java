@@ -27,7 +27,6 @@ import com.gamex.utils.TextInputLayoutValidator;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 

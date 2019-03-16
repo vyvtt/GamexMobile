@@ -236,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        call = dataService.loginAccount(
+        call = dataService.login(
                 "password",
                 tilUsername.getEditText().getText().toString(),
                 tilPassword.getEditText().getText().toString());

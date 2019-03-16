@@ -3,6 +3,7 @@ package com.gamex.services.network;
 import com.gamex.models.Company;
 import com.gamex.models.Exhibition;
 import com.gamex.models.History;
+import com.gamex.models.Profile;
 import com.gamex.models.Survey;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public interface DataService {
     @FormUrlEncoded
     @POST("/token")
     @Headers("Content-Type:application/x-www-form-urlencoded")
-    Call<ResponseBody> loginAccount(
+    Call<ResponseBody> login(
             @Field("grant_type") String grantType,
             @Field("username") String username,
             @Field("password") String password
@@ -65,14 +66,11 @@ public interface DataService {
             @Field("id") String id
     );
 
-    // TODO Scan QR survey
+    // Scan QR survey
     @GET("/api/surveys")
     Call<List<Survey>> scanGetSurveys(
             @Header("Authorization") String accessToken,
             @QueryMap Map<String, String> params
-//            @Query("exhibitionId") String exId,
-//            @Query("companyId") String companyId
-//            @Path(value = "scan", encoded = true) String scan
     );
 
     // Main screen exhibition
@@ -109,7 +107,6 @@ public interface DataService {
     Call<ResponseBody> submitSurvey(
             @Header("Authorization") String accessToken,
             @Body RequestBody answer
-//            @Body("surveyAnswerModel") String answer
     );
 
     // Activity history
@@ -128,6 +125,23 @@ public interface DataService {
             @Field("oldPassword") String oldPass,
             @Field("newPassword") String newPass,
             @Field("confirmPassword") String rePass
+    );
+
+    // Get profile
+    @GET("/api/account")
+    Call<Profile> getProfile(
+            @Header("Authorization") String accessToken
+    );
+
+    // Update Profile
+    @FormUrlEncoded
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @PUT("/api/account")
+    Call<ResponseBody> updateProfile(
+            @Header("Authorization") String accessToken,
+            @Field("firstName") String firstName,
+            @Field("lastName") String lastName,
+            @Field("username") String username
     );
 
 }
