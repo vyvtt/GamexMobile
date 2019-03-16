@@ -165,6 +165,8 @@ public class HomeFragment extends BaseFragment {
         btnAllNear.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, ViewAllExhibitionActivity.class);
             intent.putExtra("VIEW_ALL_TYPE", Constant.API_TYPE_NEAR);
+            intent.putExtra(Constant.API_LAT, lat);
+            intent.putExtra(Constant.API_LNG, lng);
             startActivity(intent);
         });
     }

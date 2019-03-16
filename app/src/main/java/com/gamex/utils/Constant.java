@@ -22,7 +22,9 @@ public final class Constant {
     public static final String API_TYPE_ONGOING = "ongoing";
     public static final String API_TYPE_UPCOMING = "upcoming";
     public static final String API_TYPE_NEAR = "near-you";
-//    public static final String BASE_URL = "http://172.20.10.3/";
+    public static final String API_LAT = "API_LAT";
+    public static final String API_LNG = "API_LNG";
+
 
     // Validate error messages
     public static final String ERR_REQUIRED = "Required";

@@ -46,8 +46,11 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
     private List<Exhibition> exhibitionList;
     private boolean itShouldLoadMore = true;
     private boolean isNoMoreData = false;
+
     private ProgressBar progressBarFirstLoad;
     private TextView txtLoading, txtNoInternet;
+
+    private double lat, lng;
     private String type, accessToken;
     private final String TAG = ViewAllExhibitionActivity.class.getSimpleName() + "----------";
 
@@ -58,17 +61,8 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_all_exhibition);
 
         mappingViewElement();
+        getDataFromIntent();
 
-        type = getIntent().getStringExtra("VIEW_ALL_TYPE");
-        accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
-
-        if (type.equals(Constant.API_TYPE_ONGOING)) {
-            toolbar.setTitle("Ongoing Exhibitions");
-        } else if (type.equals(Constant.API_TYPE_UPCOMING)) {
-            toolbar.setTitle("Upcoming Exhibitions");
-        } else {
-            toolbar.setTitle("Exhibitions Near You");
-        }
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -77,7 +71,6 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
         exhibitionList = new ArrayList<>();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         adapter = new EndlessRvExhibitionAdapter(this, exhibitionList);
         recyclerView.setAdapter(adapter);
 
@@ -111,6 +104,21 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void getDataFromIntent() {
+        type = getIntent().getStringExtra("VIEW_ALL_TYPE");
+        accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
+
+        if (type.equals(Constant.API_TYPE_ONGOING)) {
+            toolbar.setTitle("Ongoing Exhibitions");
+        } else if (type.equals(Constant.API_TYPE_UPCOMING)) {
+            toolbar.setTitle("Upcoming Exhibitions");
+        } else {
+            toolbar.setTitle("Exhibitions Near You");
+            lat = getIntent().getDoubleExtra(Constant.API_LAT, 10.7805666);
+            lng = getIntent().getDoubleExtra(Constant.API_LNG, 106.70075980000001);
+        }
     }
 
 //    private void checkInternetFirstLoad() {
@@ -168,6 +176,11 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
             apiParam.put("skip", 0); // no data yet -> take from 0
         } else {
             apiParam.put("skip", exhibitionList.size() - 1); // minus NULL item above
+        }
+
+        if (type.equals(Constant.API_TYPE_NEAR)) {
+            apiParam.put("lat", lat);
+            apiParam.put("lng", lng);
         }
 
         call = dataService.getExhibitionsList(accessToken, apiParam);

@@ -48,9 +48,6 @@ public class EndlessRvExhibitionAdapter extends RecyclerView.Adapter<EndlessRvEx
     public void onBindViewHolder(@NonNull ItemViewHolder viewHolder, int i) {
 
         if (data.get(i) == null) {
-
-            System.out.println("NULL IN ADAPTER ->>>>>>>>>>>>>>>>>>>>>> ");
-
             viewHolder.item.setVisibility(View.GONE);
             viewHolder.loadingCircle.setVisibility(View.VISIBLE);
 
