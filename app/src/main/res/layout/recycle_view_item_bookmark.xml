@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:id="@+id/item_bookmark_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_corner_radius"
+        android:padding="15dp"
+        android:layout_weight="0.6"
+        >
+
+        <TextView
+            android:id="@+id/item_bookmark_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Name"
+            android:textColor="@color/txt_black"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/item_bookmark_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:text="24/03/2019 - xxx"
+            android:maxLines="2"
+            android:textColor="@color/txt_sub_info" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/item_bookmark_click_remove"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/red_btn_bg_pressed_color"
+        android:layout_weight="0.2"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/fg_bookmark_icon_delete"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_delete"
+            android:layout_marginTop="20dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remove"
+            android:textColor="@color/txt_white"
+            android:textSize="10dp"
+            android:layout_below="@id/fg_bookmark_icon_delete"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/item_bookmark_click_detail"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/color_gradient_light"
+        android:layout_toEndOf="@id/item_reward_item"
+        android:layout_weight="0.2"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/fg_bookmark_icon_detail"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_arrow_right"
+            android:layout_marginTop="20dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Details"
+            android:textColor="@color/txt_white"
+            android:textSize="10dp"
+            android:layout_below="@id/fg_bookmark_icon_detail"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

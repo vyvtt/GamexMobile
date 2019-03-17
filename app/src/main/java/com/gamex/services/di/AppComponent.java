@@ -13,6 +13,7 @@ import com.gamex.activity.ViewAllExhibitionActivity;
 import com.gamex.adapters.EndlessRvExhibitionAdapter;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.adapters.ListCompanyAdapter;
+import com.gamex.fragments.BookmarkExhibitionFragment;
 import com.gamex.fragments.ChangePasswordFragment;
 import com.gamex.fragments.EditProfileFragment;
 import com.gamex.fragments.ExDetailFragment;
@@ -36,6 +37,7 @@ public interface AppComponent {
     void inject(EditProfileFragment fragment);
     void inject(RewardExchangeFragment fragment);
     void inject(RewardHistoryFragment fragment);
+    void inject(BookmarkExhibitionFragment fragment);
 
     void inject(HomeAdapter adapter);
     void inject(ListCompanyAdapter adapter);

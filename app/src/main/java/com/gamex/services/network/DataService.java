@@ -1,5 +1,6 @@
 package com.gamex.services.network;
 
+import com.gamex.models.Bookmark;
 import com.gamex.models.Company;
 import com.gamex.models.Exhibition;
 import com.gamex.models.History;
@@ -209,5 +210,11 @@ public interface DataService {
             @Body RequestBody body
     );
 
+    // List bookmark
+    @GET("/api/bookmarks")
+    Call<List<Bookmark>> getListBookmark(
+            @Header("Authorization") String accessToken,
+            @Query("type") String type
+    );
 
 }
