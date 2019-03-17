@@ -195,7 +195,6 @@ public interface DataService {
 
     // Remove bookmark exhibition
     @Headers("Content-Type:application/json")
-//    @DELETE("/api/bookmark/exhibition")
     @HTTP(method = "DELETE", path = "/api/bookmark/exhibition", hasBody = true)
     Call<ResponseBody> removeBookmarkExhibition(
             @Header("Authorization") String accessToken,
@@ -204,7 +203,7 @@ public interface DataService {
 
     // Remove bookmark exhibition
     @Headers("Content-Type:application/json")
-    @DELETE("/api/bookmark/company")
+    @HTTP(method = "DELETE", path = "/api/bookmark/company", hasBody = true)
     Call<ResponseBody> removeBookmarkCompany(
             @Header("Authorization") String accessToken,
             @Body RequestBody body

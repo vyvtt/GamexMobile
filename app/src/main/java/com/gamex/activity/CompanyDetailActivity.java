@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -32,6 +33,7 @@ import com.gamex.utils.Constant;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -41,6 +43,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -53,6 +57,9 @@ public class CompanyDetailActivity extends AppCompatActivity {
     @Inject
     SharedPreferences sharedPreferences;
     Call<Company> call;
+    Call<ResponseBody> callBookmark;
+    Call<ResponseBody> callRemoveBookmark;
+
     private final String TAG = CompanyDetailActivity.class.getSimpleName();
     private String accessToken;
     private SweetAlertDialog sweetAlertDialog;
@@ -78,6 +85,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
     private Company company;
     private ImageView imgLogo;
     private TextView txtName, txtWebsite, txtAddress, txtPhone, txtEmail, txtDescription;
+    private boolean isFreeToRequest = true;
 
     // survey
     private List<Survey> surveys;
@@ -203,6 +211,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                     layoutMain.setVisibility(View.VISIBLE);
                     company = response.body();
                     loadDataToView();
+                    invalidateOptionsMenu();
 
                 } else {
                     handleRequestFail(response.message(), "Please try again later");
@@ -226,9 +235,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
         sweetAlertDialog.setTitleText("Oops ...")
                 .setContentText(content)
                 .setConfirmText(confirm)
-                .setConfirmClickListener(sweetAlertDialog -> {
-                    sweetAlertDialog.dismissWithAnimation();
-                });
+                .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
         btnRefresh.setVisibility(View.VISIBLE);
     }
 
@@ -239,15 +246,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
     }
 
     private void setSurveyListAdapter() {
-        // test list survey
         rvListSurvey.setHasFixedSize(true);
         rvListSurvey.setLayoutManager(new LinearLayoutManager(getApplication()));
-//        List<Survey> listSurvey = new ArrayList<>();
-//        listSurvey.add(new Survey(1, "Survey Build successful!", 30, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", true));
-//        listSurvey.add(new Survey(1, "Technology survey?", 100, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", false));
-//        listSurvey.add(new Survey(1, "Survey about your life", 99, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", true));
-//        listSurvey.add(new Survey(1, "I'm dead inside Survey", 22, "requirements of national and international conventions, large scale public and trade exhibitions, corporate meetings and specialized events.", false));
-
         rvListSurvey.setAdapter(new SurveyOverviewAdapter(surveys));
     }
 
@@ -293,16 +293,146 @@ public class CompanyDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.mn_item_bookmark);
+        if (company != null) {
+            if (company.getBookmarked()) {
+                item.setIcon(R.drawable.ic_star_fill);
+            } else {
+                item.setIcon(R.drawable.ic_star);
+            }
+            return super.onPrepareOptionsMenu(menu);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.exhibition_detail_bookmark, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
             case R.id.mn_item_bookmark:
-                // TODO bookmark
-                item.setIcon(getDrawable(R.drawable.ic_star_fill));
+                progressBookmark();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void progressBookmark() {
+        if (isFreeToRequest) {
+            if (company.getBookmarked()) {
+                // remove bm
+                Log.i(TAG, "remove");
+                callApiRemoveBookmark();
+            } else {
+                // add bm
+                Log.i(TAG, "add");
+                callApiBookmark();
+            }
+        } else {
+            Log.i(TAG, "Currently process anther call api request");
+        }
+    }
+
+    private void callApiBookmark() {
+        progressBar.setVisibility(View.VISIBLE);
+        txtLoading.setText(Constant.TXT_SAVING_BOOKMARK);
+        txtLoading.setVisibility(View.VISIBLE);
+
+        isFreeToRequest = false;
+        callBookmark = dataService.bookmarkCompany(accessToken, company.getCompanyId());
+        callBookmark.enqueue(new BaseCallBack<ResponseBody>(this) {
+            @Override
+            public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.i(TAG, response.message());
+
+                if (response.isSuccessful()) {
+                    dialogOnBookmark("All Done", "Bookmark Successful", "OK", SweetAlertDialog.SUCCESS_TYPE);
+                    company.setBookmarked(true);
+                    invalidateOptionsMenu();
+                } else {
+                    dialogOnBookmark("Bookmark Failed", response.message(), "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                }
+
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setText(Constant.TXT_LOADING);
+                txtLoading.setVisibility(View.GONE);
+                isFreeToRequest = true;
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                dialogOnBookmark("Bookmark Failed", "Can not connect to GamEx Server", "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setText(Constant.TXT_LOADING);
+                txtLoading.setVisibility(View.GONE);
+                isFreeToRequest = true;
+            }
+        });
+    }
+
+    private void callApiRemoveBookmark() {
+        progressBar.setVisibility(View.VISIBLE);
+        txtLoading.setText(Constant.TXT_REMOVE_BOOKMARK);
+        txtLoading.setVisibility(View.VISIBLE);
+
+        isFreeToRequest = false;
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("id", company.getCompanyId());
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage(), e.fillInStackTrace());
+        }
+
+        RequestBody request = RequestBody.create
+                (okhttp3.MediaType.parse("application/json; charset=utf-8"), json.toString());
+
+        callRemoveBookmark = dataService.removeBookmarkCompany(accessToken, request);
+        callRemoveBookmark.enqueue(new BaseCallBack<ResponseBody>(this) {
+            @Override
+            public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.i(TAG, response.message());
+
+                if (response.isSuccessful()) {
+                    dialogOnBookmark("All Done", "Bookmark removed!", "OK", SweetAlertDialog.SUCCESS_TYPE);
+                    company.setBookmarked(false);
+                    invalidateOptionsMenu();
+                } else {
+                    dialogOnBookmark("Remove Bookmark Failed", response.message(), "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                }
+
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setText(Constant.TXT_LOADING);
+                txtLoading.setVisibility(View.GONE);
+                isFreeToRequest = true;
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                dialogOnBookmark("Remove Bookmark Failed", "Can not connect to GamEx Server", "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setText(Constant.TXT_LOADING);
+                txtLoading.setVisibility(View.GONE);
+                isFreeToRequest = true;
+            }
+        });
+    }
+
+    private void dialogOnBookmark(String title, String content, String confirm, int type) {
+        SweetAlertDialog dialog = new SweetAlertDialog(this, type);
+        dialog.setTitleText(title)
+                .setContentText(content)
+                .setConfirmText(confirm)
+                .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     private void onClickButtonExpand(final LinearLayout expandableLayout, final RelativeLayout btnToExpanlayout) {

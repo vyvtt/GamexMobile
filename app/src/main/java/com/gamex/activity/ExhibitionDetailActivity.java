@@ -235,7 +235,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.mn_item_bookmark:
-                clickToBookmark(item);
+                progressBookmark(item);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -344,7 +344,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         finish();
     }
 
-    public void clickToBookmark(MenuItem item) {
+    public void progressBookmark(MenuItem item) {
         if (isFreeToRequest) {
             if (exhibitionDetails.getBookmarked()) {
                 // remove bm
