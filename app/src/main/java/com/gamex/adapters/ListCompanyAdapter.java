@@ -60,7 +60,6 @@ public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.
                 if (booth != null) {
                     strBooth += booth + " - ";
                 }
-//                strBooth += booth.equals("null") ? "" : strBooth + " - ";
             }
         }
 

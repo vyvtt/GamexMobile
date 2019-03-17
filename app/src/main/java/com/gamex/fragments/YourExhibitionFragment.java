@@ -24,16 +24,13 @@ public class YourExhibitionFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Change toolbar title
         txtToolBarTitle = getActivity().findViewById(R.id.main_toolbar_title);
         txtToolBarTitle.setText("Your Exhibitions");
         // Hide scan QR
         setHasOptionsMenu(true);
-//        //set the back arrow in the toolbar
-//        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        ((MainActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
     }
 
     @Override

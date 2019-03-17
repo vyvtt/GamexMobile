@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.RewardExchangeFragment">
+
+    <ProgressBar
+        android:id="@+id/reward_exchange_loading"
+        style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/txt_white"
+        android:indeterminateTintMode="src_in"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/reward_exchange_txt_no_internet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reward_exchange_loading"
+        android:background="@color/bg_red"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="5dp"
+        android:text="No Internet Connection."
+        android:textColor="@color/txt_white"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/reward_exchange_txt_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reward_exchange_loading"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="5dp"
+        android:text="Loading. Please wait . . . "
+        android:textColor="@color/txt_white"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/reward_exchange_no_reward"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Sorry, no reward available at this moment"
+        android:textColor="@color/txt_white"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reward_exchange_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="80dp"
+        android:overScrollMode="ifContentScrolls"
+        android:layout_marginTop="15dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/color_gradient_light"
+        android:elevation="8dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/fg_reward_point_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_point" />
+
+            <TextView
+                android:id="@+id/reward_exchange_point"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/fg_reward_point_icon"
+                android:text=""
+                android:textColor="@color/txt_white"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

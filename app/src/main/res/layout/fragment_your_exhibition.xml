@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".fragments.YourExhibitionFragment">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/fg_yourEx_tablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="fixed"
-            app:tabTextAppearance="@style/MyTabLayoutStyle"
-            android:elevation="1dp"
-            android:visibility="visible"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/bg_white"
-            app:tabSelectedTextColor="@color/txt_white"
-            app:tabTextColor="@color/txt_not_focus"
-            app:tabIndicatorHeight="4dp"
-            />
+    <android.support.design.widget.TabLayout
+        android:id="@+id/fg_yourEx_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:visibility="visible"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/bg_white"
+        app:tabIndicatorHeight="4dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/txt_white"
+        app:tabTextAppearance="@style/MyTabLayoutStyle"
+        app:tabTextColor="@color/txt_not_focus" />
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/fg_yourEx_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="25dp"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fg_yourEx_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="25dp" />
 
 </LinearLayout>

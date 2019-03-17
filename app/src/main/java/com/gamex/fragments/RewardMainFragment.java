@@ -1,10 +1,10 @@
 package com.gamex.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gamex.R;
+import com.gamex.adapters.RewardTabAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class RewardMainFragment extends BaseFragment {
-    TextView txtToolBarTitle;
+    private TextView txtToolBarTitle;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     public RewardMainFragment() {
         // Required empty public constructor
@@ -26,19 +29,27 @@ public class RewardMainFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Change toolbar title
-        txtToolBarTitle = getActivity().findViewById(R.id.main_toolbar_title);
-        txtToolBarTitle.setText("Reward");
-        // Hide scan QR
+//        txtToolBarTitle = mActivity.findViewById(R.id.main_toolbar_title);
+//        txtToolBarTitle.setText("Reward");
         setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reward_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_reward_main, container, false);
+
+        viewPager = view.findViewById(R.id.fg_reward_viewpager);
+        tabLayout = view.findViewById(R.id.fg_reward_tablayout);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        RewardTabAdapter adapter = new RewardTabAdapter(getChildFragmentManager());
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     // Hide scan QR icon on the top right menu

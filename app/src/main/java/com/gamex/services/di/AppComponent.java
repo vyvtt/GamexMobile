@@ -18,6 +18,7 @@ import com.gamex.fragments.EditProfileFragment;
 import com.gamex.fragments.ExDetailFragment;
 import com.gamex.fragments.HistoryFragment;
 import com.gamex.fragments.HomeFragment;
+import com.gamex.fragments.RewardExchangeFragment;
 
 import javax.inject.Singleton;
 
@@ -32,6 +33,7 @@ public interface AppComponent {
     void inject(HistoryFragment fragment);
     void inject(ExDetailFragment fragment);
     void inject(EditProfileFragment fragment);
+    void inject(RewardExchangeFragment fragment);
 
     void inject(HomeAdapter adapter);
     void inject(ListCompanyAdapter adapter);

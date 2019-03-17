@@ -4,6 +4,8 @@ import com.gamex.models.Company;
 import com.gamex.models.Exhibition;
 import com.gamex.models.History;
 import com.gamex.models.Profile;
+import com.gamex.models.Reward;
+import com.gamex.models.RewardHistory;
 import com.gamex.models.Survey;
 
 import java.util.HashMap;
@@ -142,6 +144,32 @@ public interface DataService {
             @Field("firstName") String firstName,
             @Field("lastName") String lastName,
             @Field("username") String username
+    );
+
+    // Rewards list all
+    @GET("/api/rewards")
+    Call<List<Reward>> getListRewards(
+            @Header("Authorization") String accessToken
+    );
+
+    // Reward Exchange
+    @FormUrlEncoded
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/api/reward")
+    Call<ResponseBody> exchangeReward(
+            @Header("Authorization") String accessToken,
+            @Field("id") int id
+    );
+
+    // Reward history
+    @GET("/api/reward/history")
+    Call<List<RewardHistory>> getRewardHistory(
+            @Header("Authorization") String accessToken
+    );
+
+    @GET("/api/reward/point")
+    Call<ResponseBody> getRewardPoint(
+            @Header("Authorization") String accessToken
     );
 
 }

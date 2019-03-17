@@ -19,9 +19,7 @@ import android.widget.Toast;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
-import com.gamex.adapters.EndlessRvExhibitionAdapter;
 import com.gamex.adapters.EndlessRvHistoryAdapter;
-import com.gamex.models.Exhibition;
 import com.gamex.models.History;
 import com.gamex.services.network.BaseCallBack;
 import com.gamex.services.network.CheckInternetTask;
@@ -244,7 +242,7 @@ public class HistoryFragment extends BaseFragment {
 
         txtLoading = view.findViewById(R.id.history_txt_loading);
         txtNoInternet = view.findViewById(R.id.history_txt_no_internet);
-        progressBarFirstLoad = view.findViewById(R.id.history_loading);
+        progressBarFirstLoad = view.findViewById(R.id.reward_exchange_loading);
 
     }
 

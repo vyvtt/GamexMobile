@@ -178,7 +178,9 @@ public class EditProfileFragment extends BaseFragment {
         if (sweetAlertDialog == null) {
             sweetAlertDialog = new SweetAlertDialog(mActivity, SweetAlertDialog.ERROR_TYPE);
         } else {
-            sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+            if (sweetAlertDialog.getAlerType() != SweetAlertDialog.ERROR_TYPE) {
+                sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+            }
         }
 
         sweetAlertDialog

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
@@ -19,6 +20,7 @@ import com.gamex.fragments.ChangePasswordFragment;
 import com.gamex.fragments.EditProfileFragment;
 import com.gamex.fragments.HistoryFragment;
 import com.gamex.fragments.HomeFragment;
+import com.gamex.fragments.RewardMainFragment;
 import com.gamex.fragments.YourExhibitionFragment;
 import com.gamex.utils.Constant;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -37,6 +39,7 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity {
     private int primaryColor, secondaryColor, preClickPosition;
     private Toolbar toolbar;
+    private TextView txtToolBarTitle;
     private Drawer drawerMenu;
     private AccountHeader accountHeader;
     private boolean isInit = true;
@@ -53,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
         primaryColor = R.color.color_primary;
         secondaryColor = R.color.color_secondary;
+
         toolbar = findViewById(R.id.home_toolbar);
+        txtToolBarTitle = findViewById(R.id.main_toolbar_title);
         setSupportActionBar(toolbar); // for getSupportActionBar in Fragment of this activity
         createDrawer();
     }
@@ -214,21 +219,31 @@ public class MainActivity extends AppCompatActivity {
         switch (itemId) {
             case Constant.ITEM_HOME:
                 fragmentClass = HomeFragment.class;
+                txtToolBarTitle.setText("Home");
                 break;
             case Constant.ITEM_EVENT:
                 fragmentClass = YourExhibitionFragment.class;
+                txtToolBarTitle.setText("Your Exhibition");
                 break;
             case Constant.ITEM_BOOKMARK:
                 fragmentClass = BookmarkFragment.class;
+                txtToolBarTitle.setText("Bookmark");
                 break;
             case Constant.ITEM_EDIT_PROFILE:
                 fragmentClass = EditProfileFragment.class;
+                txtToolBarTitle.setText("Edit Profile");
                 break;
             case Constant.ITEM_CHANGE_PASSWORD:
                 fragmentClass = ChangePasswordFragment.class;
+                txtToolBarTitle.setText("Change Password");
                 break;
             case Constant.ITEM_HISTORY:
                 fragmentClass = HistoryFragment.class;
+                txtToolBarTitle.setText("Activity History");
+                break;
+            case Constant.ITEM_REWARD:
+                fragmentClass = RewardMainFragment.class;
+                txtToolBarTitle.setText("Exchange Reward");
                 break;
             case Constant.ITEM_LOGOUT:
                 fragment = null;
@@ -262,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e.fillInStackTrace());
         }
         drawerMenu.closeDrawer();
         preClickPosition = itemId; //update position

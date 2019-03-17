@@ -16,7 +16,7 @@
         app:titleTextColor="@color/txt_white" />
 
     <ProgressBar
-        android:id="@+id/history_loading"
+        android:id="@+id/reward_exchange_loading"
         style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:id="@+id/history_txt_no_internet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/history_loading"
+        android:layout_below="@id/reward_exchange_loading"
         android:background="@color/bg_red"
         android:gravity="center_vertical|center_horizontal"
         android:padding="5dp"
@@ -42,7 +42,7 @@
         android:id="@+id/history_txt_loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/history_loading"
+        android:layout_below="@id/reward_exchange_loading"
         android:background="@android:color/transparent"
         android:gravity="center_vertical|center_horizontal"
         android:padding="5dp"
