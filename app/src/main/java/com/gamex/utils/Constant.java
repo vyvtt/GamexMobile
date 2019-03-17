@@ -18,13 +18,15 @@ public final class Constant {
 
     // API
     public static final String BASE_URL = "https://gamexwebapi.azurewebsites.net/";
-//    public static final String BASE_URL = "http://192.168.100.59:44319/";
     public static final String API_TYPE_ONGOING = "ongoing";
     public static final String API_TYPE_UPCOMING = "upcoming";
     public static final String API_TYPE_NEAR = "near-you";
     public static final String API_LAT = "API_LAT";
     public static final String API_LNG = "API_LNG";
 
+    public static final String TXT_SAVING_BOOKMARK = "Saving Bookmark ...";
+    public static final String TXT_REMOVE_BOOKMARK = "Removing Bookmark ...";
+    public static final String TXT_LOADING = "Loading, please wait ...";
 
     // Validate error messages
     public static final String ERR_REQUIRED = "Required";

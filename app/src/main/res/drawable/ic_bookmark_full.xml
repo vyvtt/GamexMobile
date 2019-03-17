@@ -1,14 +1,14 @@
 <vector android:height="24dp" android:viewportHeight="191"
     android:viewportWidth="191" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#ffffff" android:fillType="nonZero"
+    <path android:fillColor="#f1c40f" android:fillType="nonZero"
         android:pathData="M135.521,166.612l-38.261,-28.048c-1.049,-0.769 -2.471,-0.769 -3.521,0l-38.261,28.048c-0.921,0.676 -2.133,0.769 -3.148,0.245c-1.003,-0.525 -1.62,-1.585 -1.597,-2.716v-140.266c0,-1.644 1.341,-2.984 2.984,-2.984h83.563c1.644,0 2.984,1.341 2.984,2.984v140.266c0.023,1.131 -0.595,2.192 -1.597,2.716c-1.014,0.525 -2.227,0.431 -3.148,-0.245z"
         android:strokeColor="#00000000" android:strokeLineCap="butt"
         android:strokeLineJoin="miter" android:strokeWidth="1"/>
-    <path android:fillColor="#cccccc" android:fillType="nonZero"
+    <path android:fillColor="#f1c40f" android:fillType="nonZero"
         android:pathData="M135.521,145.721l-34.74,-25.449c-3.148,-2.32 -7.438,-2.32 -10.597,0l-34.705,25.449c-0.921,0.676 -2.133,0.769 -3.148,0.245c-1.003,-0.525 -1.62,-1.585 -1.597,-2.716v20.891c0,1.131 0.63,2.157 1.632,2.67c1.003,0.513 2.203,0.408 3.113,-0.256l38.261,-28.048c1.049,-0.769 2.471,-0.769 3.521,0l38.261,28.048c0.909,0.664 2.11,0.769 3.113,0.256c1.003,-0.513 1.632,-1.539 1.632,-2.67v-20.891c0.023,1.131 -0.595,2.192 -1.597,2.716c-1.014,0.525 -2.227,0.431 -3.148,-0.245z"
         android:strokeColor="#00000000" android:strokeLineCap="butt"
         android:strokeLineJoin="miter" android:strokeWidth="1"/>
-    <path android:fillColor="#cccccc" android:fillType="nonZero"
+    <path android:fillColor="#3498db" android:fillType="nonZero"
         android:pathData="M137.281,20.891h-83.563c-1.644,0 -2.984,1.341 -2.984,2.984v14.922c0,-1.644 1.341,-2.984 2.984,-2.984h83.563c1.644,0 2.984,1.341 2.984,2.984v-14.922c0,-1.644 -1.341,-2.984 -2.984,-2.984z"
         android:strokeColor="#00000000" android:strokeLineCap="butt"
         android:strokeLineJoin="miter" android:strokeWidth="1"/>

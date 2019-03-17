@@ -1,13 +1,11 @@
 package com.gamex.activity;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,20 +22,22 @@ import android.widget.Toast;
 import com.gamex.GamexApplication;
 import com.gamex.R;
 import com.gamex.adapters.EventDetailTabAdapter;
-import com.gamex.models.CompanyInExhibition;
 import com.gamex.models.Exhibition;
 import com.gamex.services.network.BaseCallBack;
 import com.gamex.services.network.CheckInternetTask;
 import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -53,6 +53,10 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     Call<Exhibition> call;
+    Call<ResponseBody> callBookmark;
+    Call<ResponseBody> callRemoveBookmark;
+    private boolean isFreeToRequest = true;
+
     private Exhibition exhibitionDetails;
 
     private final String TAG = ExhibitionDetailActivity.class.getSimpleName();
@@ -78,36 +82,10 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
 
         mappingViewElement();
-
         setOnEvent(toolbar);
-
         getSaveDataFromIntent(); // ex name, img, id from intent -> set to view
 
         checkInternet();
-
-//        List<CompanyInExhibition> listCompany = new ArrayList<>();
-//        listCompany.add(new CompanyInExhibition(123, "ADPEX", "---"));
-//        listCompany.add(new CompanyInExhibition(123, "UBM VIETNAM", "---"));
-//        listCompany.add(new CompanyInExhibition(123, "FSoft", "---"));
-//        listCompany.add(new CompanyInExhibition(123, "Global Expo", "---"));
-//        listCompany.add(new CompanyInExhibition(123, "CECT,BEXCO", "---"));
-//        listCompany.add(new CompanyInExhibition(123, "Automobile Manufacturers’ Association (VAMA) ", "---"));
-//        Exhibition exhibitionTest = new Exhibition(
-//                "id-1",
-//                "TELEFILM 2019 / ICTCOMM 2019",
-//                "- Vietnam International Exhibition On Film And Television Technology.\n" +
-//                        "- The 2nd Vietnam International Exhibition on Products, Services of Telecommuniction, Information Technology & Communication",
-//                "Rm.G3, Ground Floor, Fosco Building, No.6 Phung Khac Khoan, Dakao Ward, District 1, HoChiMinh City, Vietnam",
-//                " June 6th",
-//                "June 8th ",
-//                "--- logo",
-//                listCompany
-//                );
-//        ViewPager viewPager = findViewById(R.id.event_detail_viewpager);
-//        EventDetailTabAdapter adapter = new EventDetailTabAdapter(getSupportFragmentManager(), exhibitionTest);
-//        viewPager.setAdapter(adapter);
-//        TabLayout tabLayout = findViewById(R.id.event_detail_tablayout);
-//        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void checkInternet() {
@@ -140,12 +118,13 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
                 Log.i(TAG, response.toString());
 
                 if (response.isSuccessful()) {
+
                     exhibitionDetails = response.body();
-                    Log.i(TAG, response.toString());
                     addTabAdapter();
+                    invalidateOptionsMenu();
+//                    changeMenuBookmarkIcon();
 
                 } else {
-                    Log.i(TAG, response.toString());
                     Toast.makeText(ExhibitionDetailActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     btnRefresh.setVisibility(View.VISIBLE);
                 }
@@ -188,7 +167,6 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         }
 
         appBarLayout.addOnOffsetChangedListener((AppBarLayout appBarLayout, int verticalOffset) -> invalidateOptionsMenu());
-
         btnRefresh.setOnClickListener(v -> checkInternet());
     }
 
@@ -231,6 +209,20 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.mn_item_bookmark);
+        if (exhibitionDetails != null) {
+            if (exhibitionDetails.getBookmarked()) {
+                item.setIcon(R.drawable.ic_star_fill);
+            } else {
+                item.setIcon(R.drawable.ic_star);
+            }
+            return super.onPrepareOptionsMenu(menu);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.exhibition_detail_bookmark, menu);
         return true;
@@ -243,19 +235,128 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.mn_item_bookmark:
-                processBookmark();
-                item.setIcon(getDrawable(R.drawable.ic_star_fill));
+                clickToBookmark(item);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void processBookmark() {
-        // TODO bookmark
+    private void callApiBookmark() {
+        progressBar.setVisibility(View.VISIBLE);
+        txtLoading.setText(Constant.TXT_SAVING_BOOKMARK);
+        txtLoading.setVisibility(View.VISIBLE);
+
+        isFreeToRequest = false;
+        callBookmark = dataService.bookmarkExhibition(accessToken, exhibitionDetails.getExhibitionId());
+        callBookmark.enqueue(new BaseCallBack<ResponseBody>(this) {
+            @Override
+            public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.i(TAG, response.message());
+
+                if (response.isSuccessful()) {
+                    dialogOnBookmark("All Done", "Bookmark Successful", "OK", SweetAlertDialog.SUCCESS_TYPE);
+                    exhibitionDetails.setBookmarked(true);
+                    invalidateOptionsMenu();
+//                    menuItem.setIcon(R.drawable.ic_star_fill);
+                } else {
+                    dialogOnBookmark("Bookmark Failed", response.message(), "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                }
+
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setText(Constant.TXT_LOADING);
+                txtLoading.setVisibility(View.GONE);
+                isFreeToRequest = true;
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                dialogOnBookmark("Bookmark Failed", "Can not connect to GamEx Server", "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setText(Constant.TXT_LOADING);
+                txtLoading.setVisibility(View.GONE);
+                isFreeToRequest = true;
+            }
+        });
+    }
+
+    private void callApiRemoveBookmark() {
+        progressBar.setVisibility(View.VISIBLE);
+        txtLoading.setText(Constant.TXT_REMOVE_BOOKMARK);
+        txtLoading.setVisibility(View.VISIBLE);
+
+        isFreeToRequest = false;
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("id", exhibitionDetails.getExhibitionId());
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage(), e.fillInStackTrace());
+        }
+
+        RequestBody request = RequestBody.create
+                (okhttp3.MediaType.parse("application/json; charset=utf-8"), json.toString());
+
+        callRemoveBookmark = dataService.removeBookmarkExhibition(accessToken, request);
+        callRemoveBookmark.enqueue(new BaseCallBack<ResponseBody>(this) {
+            @Override
+            public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.i(TAG, response.message());
+
+                if (response.isSuccessful()) {
+                    dialogOnBookmark("All Done", "Bookmark removed!", "OK", SweetAlertDialog.SUCCESS_TYPE);
+                    exhibitionDetails.setBookmarked(false);
+//                    menuItem.setIcon(R.drawable.ic_star);
+                    invalidateOptionsMenu();
+                } else {
+                    dialogOnBookmark("Remove Bookmark Failed", response.message(), "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                }
+
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setText(Constant.TXT_LOADING);
+                txtLoading.setVisibility(View.GONE);
+                isFreeToRequest = true;
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                dialogOnBookmark("Remove Bookmark Failed", "Can not connect to GamEx Server", "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                progressBar.setVisibility(View.GONE);
+                txtLoading.setText(Constant.TXT_LOADING);
+                txtLoading.setVisibility(View.GONE);
+                isFreeToRequest = true;
+            }
+        });
+    }
+
+    private void dialogOnBookmark(String title, String content, String confirm, int type) {
+        SweetAlertDialog dialog = new SweetAlertDialog(this, type);
+        dialog.setTitleText(title)
+                .setContentText(content)
+                .setConfirmText(confirm)
+                .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    public void clickToBookmark(MenuItem item) {
+        if (isFreeToRequest) {
+            if (exhibitionDetails.getBookmarked()) {
+                // remove bm
+                Log.i(TAG, "remove");
+                callApiRemoveBookmark();
+            } else {
+                // add bm
+                Log.i(TAG, "add");
+                callApiBookmark();
+            }
+        } else {
+            Log.i(TAG, "Currently process anther call api request");
+        }
     }
 }

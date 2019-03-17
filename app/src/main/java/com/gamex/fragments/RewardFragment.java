@@ -17,20 +17,17 @@ import com.gamex.adapters.RewardTabAdapter;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RewardMainFragment extends BaseFragment {
-    private TextView txtToolBarTitle;
+public class RewardFragment extends BaseFragment {
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
-    public RewardMainFragment() {
+    public RewardFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        txtToolBarTitle = mActivity.findViewById(R.id.main_toolbar_title);
-//        txtToolBarTitle.setText("Reward");
         setHasOptionsMenu(true);
     }
 

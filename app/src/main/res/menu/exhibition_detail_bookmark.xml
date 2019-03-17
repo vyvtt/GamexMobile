@@ -6,9 +6,7 @@
 
     <item
         android:id="@+id/mn_item_bookmark"
-        android:orderInCategory="300"
         android:title="Bookmark"
         android:icon="@drawable/ic_star"
-        app:showAsAction="ifRoom"
-></item>
+        app:showAsAction="ifRoom" />
 </menu>

@@ -20,7 +20,7 @@ import com.gamex.fragments.ChangePasswordFragment;
 import com.gamex.fragments.EditProfileFragment;
 import com.gamex.fragments.HistoryFragment;
 import com.gamex.fragments.HomeFragment;
-import com.gamex.fragments.RewardMainFragment;
+import com.gamex.fragments.RewardFragment;
 import com.gamex.fragments.YourExhibitionFragment;
 import com.gamex.utils.Constant;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 txtToolBarTitle.setText("Activity History");
                 break;
             case Constant.ITEM_REWARD:
-                fragmentClass = RewardMainFragment.class;
+                fragmentClass = RewardFragment.class;
                 txtToolBarTitle.setText("Exchange Reward");
                 break;
             case Constant.ITEM_LOGOUT:

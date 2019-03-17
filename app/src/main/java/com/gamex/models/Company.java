@@ -29,6 +29,9 @@ public class Company {
     @SerializedName("website")
     @Expose
     private String website;
+    @SerializedName("isBookmarked")
+    @Expose
+    private Boolean isBookmarked;
 
     /**
      * No args constructor for use in serialization
@@ -47,9 +50,9 @@ public class Company {
      * @param description
      * @param name
      * @param companyId
+     * @param isBookmarked
      */
-    public Company(String companyId, String name, String description, String email, String phone, String address, String logo, String website) {
-        super();
+    public Company(String companyId, String name, String description, String email, String phone, String address, String logo, String website, Boolean isBookmarked) {
         this.companyId = companyId;
         this.name = name;
         this.description = description;
@@ -58,7 +61,9 @@ public class Company {
         this.address = address;
         this.logo = logo;
         this.website = website;
+        this.isBookmarked = isBookmarked;
     }
+
 
     public String getCompanyId() {
         return companyId;
@@ -124,4 +129,11 @@ public class Company {
         this.website = website;
     }
 
+    public Boolean getBookmarked() {
+        return isBookmarked;
+    }
+
+    public void setBookmarked(Boolean bookmarked) {
+        isBookmarked = bookmarked;
+    }
 }

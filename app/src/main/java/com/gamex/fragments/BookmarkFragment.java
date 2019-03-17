@@ -3,7 +3,9 @@ package com.gamex.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -11,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gamex.R;
+import com.gamex.adapters.BookmarkTabAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BookmarkFragment extends BaseFragment {
-    TextView txtToolBarTitle;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     public BookmarkFragment() {
         // Required empty public constructor
@@ -25,25 +29,27 @@ public class BookmarkFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Change toolbar title
-        txtToolBarTitle = mActivity.findViewById(R.id.main_toolbar_title);
-        txtToolBarTitle.setText("Bookmark");
         // Hide scan QR
         setHasOptionsMenu(true);
-//        //set the back arrow in the toolbar
-//        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        ((MainActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bookmark, container, false);
+        View view = inflater.inflate(R.layout.fragment_bookmark, container, false);
+        viewPager = view.findViewById(R.id.fg_bookmark_viewpager);
+        tabLayout = view.findViewById(R.id.fg_bookmark_tablayout);
+        return view;
     }
 
-    // Hide scan QR icon on the top right menu
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        BookmarkTabAdapter adapter = new BookmarkTabAdapter(getChildFragmentManager());
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);

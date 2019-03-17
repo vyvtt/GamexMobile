@@ -35,6 +35,9 @@ public class Exhibition implements Serializable {
     @SerializedName("lng")
     @Expose
     private String lng;
+    @SerializedName("isBookmarked")
+    @Expose
+    private Boolean isBookmarked;
     @SerializedName("listCompany")
     @Expose
     private List<CompanyInExhibition> listCompany;
@@ -75,10 +78,10 @@ public class Exhibition implements Serializable {
      * @param endDate
      * @param exhibitionId
      * @param lat
+     * @param isBookmarked
      * @param listCompany
      */
-    public Exhibition(String exhibitionId, String name, String description, String address, String startDate, String endDate, String logo, String lat, String lng, List<CompanyInExhibition> listCompany) {
-        super();
+    public Exhibition(String exhibitionId, String name, String description, String address, String startDate, String endDate, String logo, String lat, String lng, Boolean isBookmarked, List<CompanyInExhibition> listCompany) {
         this.exhibitionId = exhibitionId;
         this.name = name;
         this.description = description;
@@ -88,8 +91,10 @@ public class Exhibition implements Serializable {
         this.logo = logo;
         this.lat = lat;
         this.lng = lng;
+        this.isBookmarked = isBookmarked;
         this.listCompany = listCompany;
     }
+
 
     public String getExhibitionId() {
         return exhibitionId;
@@ -169,6 +174,14 @@ public class Exhibition implements Serializable {
 
     public void setListCompany(List<CompanyInExhibition> listCompany) {
         this.listCompany = listCompany;
+    }
+
+    public Boolean getBookmarked() {
+        return isBookmarked;
+    }
+
+    public void setBookmarked(Boolean bookmarked) {
+        isBookmarked = bookmarked;
     }
 
     @Override

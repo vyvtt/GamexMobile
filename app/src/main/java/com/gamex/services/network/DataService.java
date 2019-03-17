@@ -16,9 +16,11 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -167,9 +169,46 @@ public interface DataService {
             @Header("Authorization") String accessToken
     );
 
+    // Reward point
     @GET("/api/reward/point")
     Call<ResponseBody> getRewardPoint(
             @Header("Authorization") String accessToken
     );
+
+    // Bookmark exhibition
+    @FormUrlEncoded
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/api/bookmark/exhibition")
+    Call<ResponseBody> bookmarkExhibition(
+            @Header("Authorization") String accessToken,
+            @Field("id") String id
+    );
+
+    // Bookmark company
+    @FormUrlEncoded
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/api/bookmark/company")
+    Call<ResponseBody> bookmarkCompany(
+            @Header("Authorization") String accessToken,
+            @Field("id") String id
+    );
+
+    // Remove bookmark exhibition
+    @Headers("Content-Type:application/json")
+//    @DELETE("/api/bookmark/exhibition")
+    @HTTP(method = "DELETE", path = "/api/bookmark/exhibition", hasBody = true)
+    Call<ResponseBody> removeBookmarkExhibition(
+            @Header("Authorization") String accessToken,
+            @Body RequestBody body
+    );
+
+    // Remove bookmark exhibition
+    @Headers("Content-Type:application/json")
+    @DELETE("/api/bookmark/company")
+    Call<ResponseBody> removeBookmarkCompany(
+            @Header("Authorization") String accessToken,
+            @Body RequestBody body
+    );
+
 
 }
