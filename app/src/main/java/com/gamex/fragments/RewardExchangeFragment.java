@@ -128,7 +128,7 @@ public class RewardExchangeFragment extends BaseFragment implements RewardExchan
             @Override
             public void onFailure(Call<List<Reward>> call, Throwable t) {
                 Log.e(TAG, t.getMessage(), t.fillInStackTrace());
-                handleOnFail("Something went wrong", "Try again later");
+                handleOnFail("Can not connect to GamEx Server", "Try again later");
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
             }
@@ -163,7 +163,7 @@ public class RewardExchangeFragment extends BaseFragment implements RewardExchan
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e(TAG, t.getMessage(), t.fillInStackTrace());
-                handleOnFail("Something went wrong", "Try again later");
+                handleOnFail("Can not connect to GamEx Server", "Try again later");
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
             }
@@ -205,7 +205,7 @@ public class RewardExchangeFragment extends BaseFragment implements RewardExchan
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e(TAG, t.getMessage(), t.fillInStackTrace());
-                handleOnFail("Something went wrong. Can not exchange reward right now.", "Try again later");
+                handleOnFail("Can not connect to GamEx Server", "Try again later");
             }
         });
 

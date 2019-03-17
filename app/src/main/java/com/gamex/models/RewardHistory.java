@@ -8,9 +8,12 @@ public class RewardHistory {
     @SerializedName("exchangedDate")
     @Expose
     private String exchangedDate;
-    @SerializedName("rewardContent")
+    @SerializedName("content")
     @Expose
-    private String rewardContent;
+    private String content;
+    @SerializedName("description")
+    @Expose
+    private String description;
 
     /**
      * No args constructor for use in serialization
@@ -21,13 +24,15 @@ public class RewardHistory {
 
     /**
      *
-     * @param rewardContent
+     * @param content
+     * @param description
      * @param exchangedDate
      */
-    public RewardHistory(String exchangedDate, String rewardContent) {
+    public RewardHistory(String exchangedDate, String content, String description) {
         super();
         this.exchangedDate = exchangedDate;
-        this.rewardContent = rewardContent;
+        this.content = content;
+        this.description = description;
     }
 
     public String getExchangedDate() {
@@ -38,12 +43,20 @@ public class RewardHistory {
         this.exchangedDate = exchangedDate;
     }
 
-    public String getRewardContent() {
-        return rewardContent;
+    public String getContent() {
+        return content;
     }
 
-    public void setRewardContent(String rewardContent) {
-        this.rewardContent = rewardContent;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
