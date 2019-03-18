@@ -1,13 +1,16 @@
 package com.gamex.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -74,6 +77,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
                     getCookie(url);
                     getAccessToken(Uri.parse(url).toString());
+
+                    clearCookies(FacebookLoginActivity.this);
                     destroyWebView();
 
                     // GEt user info
@@ -138,6 +143,26 @@ public class FacebookLoginActivity extends AppCompatActivity {
         cookieAspNetExternalCookie = ".AspNet.ExternalCookie="
                 + cookieAspNetExternalCookie
                 + ";Path=/;HttpOnly;Domain=gamexwebapi.azurewebsites.net";
+    }
+
+    public void clearCookies(Context context)
+    {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            Log.i(TAG, "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else
+        {
+            Log.i(TAG, "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
+            cookieSyncMngr.startSync();
+            CookieManager cookieManager=CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+            cookieSyncMngr.stopSync();
+            cookieSyncMngr.sync();
+        }
     }
 
     private void getAccessToken(String tmp) {

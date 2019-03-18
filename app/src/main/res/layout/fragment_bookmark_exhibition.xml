@@ -31,7 +31,7 @@
         android:id="@+id/bookmark_ex_txt_loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bookmark_ex_txt_no_internet"
+        android:layout_below="@id/bookmark_ex_loading"
         android:background="@android:color/transparent"
         android:gravity="center_vertical|center_horizontal"
         android:padding="5dp"

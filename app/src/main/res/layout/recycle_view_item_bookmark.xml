@@ -78,7 +78,7 @@
             android:id="@+id/fg_bookmark_icon_detail"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:src="@drawable/ic_arrow_right"
+            android:src="@drawable/ic_arrow_right_blue"
             android:layout_marginTop="20dp"
             />
 
