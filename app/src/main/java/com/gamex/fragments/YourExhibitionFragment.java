@@ -45,7 +45,7 @@ public class YourExhibitionFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         // Find the view pager that will allow the user to swipe between fragments
-        ViewPager viewPager = (ViewPager) getView().findViewById(R.id.fg_yourEx_viewpager);
+        ViewPager viewPager = getView().findViewById(R.id.fg_yourEx_viewpager);
 
         // Create an adapter that knows which fragment should be shown on each page
         // using getFragmentManager() will work too
@@ -54,7 +54,7 @@ public class YourExhibitionFragment extends BaseFragment {
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = (TabLayout) getView().findViewById(R.id.fg_yourEx_tablayout);
+        TabLayout tabLayout = getView().findViewById(R.id.fg_yourEx_tablayout);
         tabLayout.setupWithViewPager(viewPager);
     }
 

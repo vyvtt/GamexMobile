@@ -1,26 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".fragments.YourExPastFragment"
-    android:scrollbarSize="0dp"
-    android:overScrollMode="ifContentScrolls"
-    android:layout_margin="15dp">
+    tools:context=".fragments.YourExPastFragment">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/your_exhibition_past_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No data"
+        android:textColor="@color/txt_white"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <ProgressBar
+        android:id="@+id/your_exhibition_past_loading"
+        style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="25dp">
+        android:indeterminate="true"
+        android:indeterminateTint="@color/txt_white"
+        android:indeterminateTintMode="src_in"
+        android:visibility="gone" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fg_yourEx_rv_current"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="ifContentScrolls"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/your_exhibition_past_txt_no_internet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/your_exhibition_past_loading"
+        android:background="@color/bg_red"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="5dp"
+        android:text="No Internet Connection."
+        android:textColor="@color/txt_white"
+        android:visibility="gone" />
 
-</android.support.v4.widget.NestedScrollView>
+    <TextView
+        android:id="@+id/your_exhibition_past_txt_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/your_exhibition_past_loading"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="5dp"
+        android:text="Loading. Please wait . . . "
+        android:textColor="@color/txt_white"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/your_exhibition_past_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/your_exhibition_past_loading"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:overScrollMode="ifContentScrolls"
+        android:paddingTop="15dp" />
+
+</RelativeLayout>

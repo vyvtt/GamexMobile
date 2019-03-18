@@ -114,7 +114,7 @@
                     android:layout_toRightOf="@id/company_img"
                     android:gravity="center_vertical"
                     android:padding="3dp"
-                    android:text="VIFA GOOD URBAN 2019 – VIFAG.U. 2019"
+                    android:text=""
                     android:textColor="#262626"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -216,7 +216,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
-                    android:text="www.abc-info.com"
+                    android:text=""
                     android:textColor="@color/txt_black" />
 
                 <LinearLayout
@@ -239,7 +239,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
-                    android:text="No.9 Dinh Le - Hoan Kiem - Ha Noi"
+                    android:text=""
                     android:textColor="@color/txt_black" />
 
                 <LinearLayout
@@ -262,7 +262,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
-                    android:text="123-111-888"
+                    android:text=""
                     android:textColor="@color/txt_black" />
 
                 <LinearLayout
@@ -285,7 +285,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
-                    android:text="abc-info@mail.com"
+                    android:text=""
                     android:textColor="@color/txt_black" />
 
             </LinearLayout>
@@ -314,7 +314,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
-                    android:text="In 2018, for the very first time, RE EE Vietnam is organized along with Electric x Power Vietnam 2018 which will be positioned as a one-stop technology and business marketplace to facilitate the development of energy technologies for industries and commerce, focusing on renewable energy and energy efficiency technologies for Vietnam."
+                    android:text=""
                     android:textColor="@color/txt_black" />
             </LinearLayout>
         </LinearLayout>

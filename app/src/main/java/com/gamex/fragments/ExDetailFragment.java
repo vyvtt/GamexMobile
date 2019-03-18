@@ -46,7 +46,7 @@ public class ExDetailFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("EXHIBITION_SAVED", (Serializable) exhibitionSaved);
+        outState.putSerializable("EXHIBITION_SAVED", exhibitionSaved);
     }
 
     @Override

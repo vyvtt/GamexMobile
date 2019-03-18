@@ -101,7 +101,6 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
     public void handleResult(Result rawResult) {
         zXingScannerView.stopCamera();
 //        setContentView(R.layout.activity_scan_qr);
-        Toast.makeText(this, "Scanned: " + rawResult.getText(), Toast.LENGTH_LONG).show();
 
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.setTitleText("Connecting ...");
@@ -247,6 +246,11 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
     @Override
     public void onResume() {
         super.onResume();
+
+        if (zXingScannerView == null) {
+            initScan();
+        }
+
         zXingScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
         zXingScannerView.startCamera();          // Start camera on resume
     }

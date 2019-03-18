@@ -13,16 +13,16 @@ import com.gamex.models.Bookmark;
 
 import java.util.List;
 
-public class BookmarkExhibitionAdapter extends RecyclerView.Adapter<BookmarkExhibitionAdapter.ViewHolder> {
+public class BookmarkCompanyAdapter extends RecyclerView.Adapter<BookmarkCompanyAdapter.ViewHolder> {
     public List<Bookmark> data;
-    EventListener listener;
+    BookmarkCompanyAdapter.EventListener listener;
 
     public interface EventListener {
         void onClickToRemove(String id, String name, int position);
         void onClickToDetail(String id);
     }
 
-    public BookmarkExhibitionAdapter(List<Bookmark> data, EventListener listener) {
+    public BookmarkCompanyAdapter(List<Bookmark> data, EventListener listener) {
         this.data = data;
         this.listener = listener;
     }
@@ -31,7 +31,7 @@ public class BookmarkExhibitionAdapter extends RecyclerView.Adapter<BookmarkExhi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycle_view_item_bookmark, viewGroup, false);
-        return new BookmarkExhibitionAdapter.ViewHolder(view);
+        return new BookmarkCompanyAdapter.ViewHolder(view);
     }
 
     @Override
@@ -45,15 +45,15 @@ public class BookmarkExhibitionAdapter extends RecyclerView.Adapter<BookmarkExhi
                 .onClickToDetail(data.get(i).getTargetId()));
     }
 
-    @Override
-    public int getItemCount() {
-        return data == null ? 0 : data.size();
-    }
-
     public void remove(int position) {
         data.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, data.size());
+    }
+
+    @Override
+    public int getItemCount() {
+        return data == null ? 0 : data.size();
     }
 
     //    INNER CLASS VIEW HOLDER ---------------------------------------------------------------->

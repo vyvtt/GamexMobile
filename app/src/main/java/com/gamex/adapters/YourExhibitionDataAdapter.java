@@ -16,22 +16,24 @@ import android.widget.TextView;
 
 import com.gamex.activity.ExhibitionDetailActivity;
 import com.gamex.R;
+import com.gamex.models.Exhibition;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibitionDataAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<String> exImg = new ArrayList<>();
-    private ArrayList<String> exName = new ArrayList<>();
-    private ArrayList<String> exDate = new ArrayList<>();
-    private ArrayList<String> exAddr = new ArrayList<>();
+    private List<Exhibition> data;
+    YourExhibitionDataAdapter.EventListener listener;
 
-    public YourExhibitionDataAdapter(Context context, ArrayList<String> exImg, ArrayList<String> exName, ArrayList<String> exDate, ArrayList<String> exAddr) {
+    public interface EventListener {
+        void onClickToDetail(String id);
+    }
+
+    public YourExhibitionDataAdapter(Context context, List<Exhibition> data, EventListener listener) {
         this.context = context;
-        this.exImg = exImg;
-        this.exName = exName;
-        this.exDate = exDate;
-        this.exAddr = exAddr;
+        this.data = data;
+        this.listener = listener;
     }
 
     @NonNull
@@ -45,9 +47,9 @@ public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibiti
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         viewHolder.imgBanner.setImageResource(R.color.bg_grey);
 
-        viewHolder.txtName.setText(exName.get(i));
-        viewHolder.txtDate.setText(exDate.get(i));
-        viewHolder.txtAddr.setText(exAddr.get(i));
+//        viewHolder.txtName.setText(exName.get(i));
+//        viewHolder.txtDate.setText(exDate.get(i));
+//        viewHolder.txtAddr.setText(exAddr.get(i));
 
         viewHolder.item.setOnClickListener(v -> {
             Intent intent = new Intent(context, ExhibitionDetailActivity.class);
@@ -62,7 +64,7 @@ public class YourExhibitionDataAdapter extends RecyclerView.Adapter<YourExhibiti
 
     @Override
     public int getItemCount() {
-        return exName.size();
+        return data.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

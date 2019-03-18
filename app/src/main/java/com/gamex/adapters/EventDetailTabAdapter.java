@@ -34,7 +34,7 @@ public class EventDetailTabAdapter extends FragmentPagerAdapter {
 
         switch (i){
             case 0:
-                bundle.putSerializable("EXHIBITION_DETAILS", (Serializable) exhibitionDetail);
+                bundle.putSerializable("EXHIBITION_DETAILS", exhibitionDetail);
                 ExDetailFragment detailFragment = new ExDetailFragment();
                 detailFragment.setArguments(bundle);
                 Log.i("Adapter", "Set bundle to detail fg");

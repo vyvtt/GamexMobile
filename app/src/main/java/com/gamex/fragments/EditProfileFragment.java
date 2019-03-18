@@ -200,10 +200,7 @@ public class EditProfileFragment extends BaseFragment {
         if (!tilLastName.getEditText().getText().toString().equals(profile.getLastName())) {
             return true;
         }
-        if (!tilUserName.getEditText().getText().toString().equals(profile.getUsername())) {
-            return true;
-        }
-        return false;
+        return !tilUserName.getEditText().getText().toString().equals(profile.getUsername());
     }
 
     private void initValidator() {

@@ -242,6 +242,10 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     }
 
     private void callApiBookmark() {
+
+        Log.i(TAG + "----", exId);
+        Log.i(TAG + "----", exhibitionDetails.getExhibitionId());
+
         progressBar.setVisibility(View.VISIBLE);
         txtLoading.setText(Constant.TXT_SAVING_BOOKMARK);
         txtLoading.setVisibility(View.VISIBLE);
@@ -259,7 +263,11 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
                     invalidateOptionsMenu();
 //                    menuItem.setIcon(R.drawable.ic_star_fill);
                 } else {
-                    dialogOnBookmark("Bookmark Failed", response.message(), "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                    try {
+                        dialogOnBookmark("Bookmark Failed", response.errorBody().string(), "Please try again later", SweetAlertDialog.ERROR_TYPE);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage(), e.fillInStackTrace());
+                    }
                 }
 
                 progressBar.setVisibility(View.GONE);

@@ -14,6 +14,7 @@
         android:background="@drawable/bg_corner_radius"
         android:padding="15dp"
         android:layout_weight="0.6"
+        android:layout_marginRight="5dp"
         >
 
         <TextView
@@ -78,7 +79,7 @@
             android:id="@+id/fg_bookmark_icon_detail"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:src="@drawable/ic_arrow_right_blue"
+            android:src="@drawable/ic_arrow_right"
             android:layout_marginTop="20dp"
             />
 

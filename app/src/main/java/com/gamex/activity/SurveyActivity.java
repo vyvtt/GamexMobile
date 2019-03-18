@@ -412,7 +412,7 @@ public class SurveyActivity extends AppCompatActivity {
 
                     for (int index = 0; index < total; index++) {
 
-                        int curId = ((CheckBox) optionsLayout.getChildAt(index)).getId();
+                        int curId = optionsLayout.getChildAt(index).getId();
                         if (previousSelectId.contains(curId)) {
                             ((CheckBox) optionsLayout.getChildAt(index)).setChecked(true);
                         }

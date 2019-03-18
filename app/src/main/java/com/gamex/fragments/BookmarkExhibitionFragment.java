@@ -160,6 +160,12 @@ public class BookmarkExhibitionFragment extends BaseFragment implements Bookmark
                             .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
                     adapter.remove(position);
 
+                    if (adapter.data.isEmpty()) {
+                        txtNoData.setVisibility(View.VISIBLE);
+                    } else {
+                        txtNoData.setVisibility(View.GONE);
+                    }
+
                 } else {
                     sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     sweetAlertDialog.setTitleText("Remove Bookmark Failed")

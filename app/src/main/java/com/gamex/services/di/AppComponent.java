@@ -10,9 +10,11 @@ import com.gamex.activity.ScanQRActivity;
 import com.gamex.activity.SplashActivity;
 import com.gamex.activity.SurveyActivity;
 import com.gamex.activity.ViewAllExhibitionActivity;
+import com.gamex.adapters.BookmarkCompanyAdapter;
 import com.gamex.adapters.EndlessRvExhibitionAdapter;
 import com.gamex.adapters.HomeAdapter;
 import com.gamex.adapters.ListCompanyAdapter;
+import com.gamex.fragments.BookmarkCompanyFragment;
 import com.gamex.fragments.BookmarkExhibitionFragment;
 import com.gamex.fragments.ChangePasswordFragment;
 import com.gamex.fragments.EditProfileFragment;
@@ -21,6 +23,8 @@ import com.gamex.fragments.HistoryFragment;
 import com.gamex.fragments.HomeFragment;
 import com.gamex.fragments.RewardExchangeFragment;
 import com.gamex.fragments.RewardHistoryFragment;
+import com.gamex.fragments.YourExCurrentFragment;
+import com.gamex.fragments.YourExPastFragment;
 
 import javax.inject.Singleton;
 
@@ -38,6 +42,9 @@ public interface AppComponent {
     void inject(RewardExchangeFragment fragment);
     void inject(RewardHistoryFragment fragment);
     void inject(BookmarkExhibitionFragment fragment);
+    void inject(BookmarkCompanyFragment fragment);
+    void inject(YourExCurrentFragment fragment);
+    void inject(YourExPastFragment fragment);
 
     void inject(HomeAdapter adapter);
     void inject(ListCompanyAdapter adapter);

@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         PrimaryDrawerItem menuItemBookmark = new PrimaryDrawerItem()
                 .withIdentifier(Constant.ITEM_BOOKMARK)
                 .withName("Bookmark")
-                .withIcon(getResources().getDrawable(R.drawable.ic_bookmark))
+                .withIcon(getResources().getDrawable(R.drawable.ic_star))
                 .withSelectedIconColorRes(secondaryColor)
                 .withIconTintingEnabled(true);
         PrimaryDrawerItem menuItemReward = new PrimaryDrawerItem()
