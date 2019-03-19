@@ -18,7 +18,6 @@ import com.gamex.adapters.YourExhibitionTabAdapter;
  * A simple {@link Fragment} subclass.
  */
 public class YourExhibitionFragment extends BaseFragment {
-    TextView txtToolBarTitle;
 
     public YourExhibitionFragment() {
         // Required empty public constructor
@@ -27,9 +26,6 @@ public class YourExhibitionFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        txtToolBarTitle = getActivity().findViewById(R.id.main_toolbar_title);
-        txtToolBarTitle.setText("Your Exhibitions");
-        // Hide scan QR
         setHasOptionsMenu(true);
     }
 
@@ -44,16 +40,10 @@ public class YourExhibitionFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
-        // Find the view pager that will allow the user to swipe between fragments
         ViewPager viewPager = getView().findViewById(R.id.fg_yourEx_viewpager);
-
-        // Create an adapter that knows which fragment should be shown on each page
-        // using getFragmentManager() will work too
         YourExhibitionTabAdapter adapter = new YourExhibitionTabAdapter(getChildFragmentManager());
 
-        // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
-
         TabLayout tabLayout = getView().findViewById(R.id.fg_yourEx_tablayout);
         tabLayout.setupWithViewPager(viewPager);
     }

@@ -5,6 +5,7 @@ import com.gamex.models.Company;
 import com.gamex.models.Exhibition;
 import com.gamex.models.History;
 import com.gamex.models.Profile;
+import com.gamex.models.Rank;
 import com.gamex.models.Reward;
 import com.gamex.models.RewardHistory;
 import com.gamex.models.Survey;
@@ -217,7 +218,11 @@ public interface DataService {
             @Query("type") String type
     );
 
-    // Your Exhibition Current
+    // Leader board
+    @GET("/api/reward/leader-board")
+    Call<Rank> getLeaderBoard(
+            @Header("Authorization") String accessToken
+    );
 
 
 }

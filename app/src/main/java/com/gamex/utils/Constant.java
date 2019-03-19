@@ -5,11 +5,12 @@ public final class Constant {
     public static final int ITEM_HOME = 1;
     public static final int ITEM_EVENT = 2;
     public static final int ITEM_BOOKMARK = 3;
-    public static final int ITEM_REWARD = 4;
-    public static final int ITEM_HISTORY = 5;
-    public static final int ITEM_EDIT_PROFILE = 6;
-    public static final int ITEM_CHANGE_PASSWORD = 7;
-    public static final int ITEM_LOGOUT = 8;
+    public static final int ITEM_LEADERBOARD = 4;
+    public static final int ITEM_REWARD = 5;
+    public static final int ITEM_HISTORY = 6;
+    public static final int ITEM_EDIT_PROFILE = 7;
+    public static final int ITEM_CHANGE_PASSWORD = 8;
+    public static final int ITEM_LOGOUT = 9;
 
     // Shared Preference key
     public static final String PREF_HAS_LOGGED_IN = "HAS_LOGGED_IN";

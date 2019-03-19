@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.LeaderBoardFragment">
+
+    <ImageView
+        android:id="@+id/fg_rank_img"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:src="@drawable/ic_point"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/fg_rank_user_rank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/fg_rank_img"
+        android:textColor="@color/txt_white"
+        android:gravity="center"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/fg_rank_user_point"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fg_rank_user_rank"
+        android:textColor="@color/txt_white"
+        android:gravity="center"
+        android:text="" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fg_rank_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fg_rank_user_point"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:overScrollMode="ifContentScrolls"
+        android:paddingBottom="15dp" />
+
+</RelativeLayout>

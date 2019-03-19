@@ -18,15 +18,12 @@ import android.widget.Toast;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
-import com.gamex.activity.ViewAllExhibitionActivity;
 import com.gamex.adapters.EndlessRvExhibitionAdapter;
-import com.gamex.adapters.YourExhibitionDataAdapter;
 import com.gamex.models.Exhibition;
 import com.gamex.services.network.BaseCallBack;
 import com.gamex.services.network.CheckInternetTask;
 import com.gamex.services.network.DataService;
 import com.gamex.utils.Constant;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,7 +57,7 @@ public class YourExCurrentFragment extends BaseFragment {
 
     private String accessToken;
     private final String TAG = YourExCurrentFragment.class.getSimpleName();
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     public YourExCurrentFragment() {
         // Required empty public constructor
@@ -94,11 +91,11 @@ public class YourExCurrentFragment extends BaseFragment {
         // load 1st time
         new CheckInternetTask(internet -> {
             if (internet) {
-                Log.i(TAG, "Has Internet Connection");
                 txtNoInternet.setVisibility(View.GONE);
+                txtLoading.setVisibility(View.VISIBLE);
+                progressBarFirstLoad.setVisibility(View.VISIBLE);
                 firstLoadData();
             } else {
-                Log.i(TAG, "No Internet Connection");
                 txtNoInternet.setVisibility(View.VISIBLE);
                 txtLoading.setVisibility(View.GONE);
                 progressBarFirstLoad.setVisibility(View.GONE);
@@ -124,9 +121,6 @@ public class YourExCurrentFragment extends BaseFragment {
     }
 
     private void firstLoadData() {
-        txtLoading.setVisibility(View.VISIBLE);
-        progressBarFirstLoad.setVisibility(View.VISIBLE);
-
         if (!isNoMoreData) {
             callAPI();
         }
@@ -229,6 +223,8 @@ public class YourExCurrentFragment extends BaseFragment {
         progressBarFirstLoad = view.findViewById(R.id.your_exhibition_current_loading);
 
         txtNoData = view.findViewById(R.id.your_exhibition_current_no_data);
+
+//        refreshLayout = view.findViewById(R.id.your_exhibition_current_swipeToRefresh);
     }
 
 }

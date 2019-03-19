@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.gamex.GamexApplication;
@@ -20,6 +21,7 @@ import com.gamex.fragments.ChangePasswordFragment;
 import com.gamex.fragments.EditProfileFragment;
 import com.gamex.fragments.HistoryFragment;
 import com.gamex.fragments.HomeFragment;
+import com.gamex.fragments.LeaderBoardFragment;
 import com.gamex.fragments.RewardFragment;
 import com.gamex.fragments.YourExhibitionFragment;
 import com.gamex.utils.Constant;
@@ -37,14 +39,16 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
-    private int primaryColor, secondaryColor, preClickPosition;
+    private int secondaryColor, preClickPosition;
     private Toolbar toolbar;
-    private TextView txtToolBarTitle;
+    private TextView txtToolBarTitle, txtLoading, txtNoInternet;
+    private ProgressBar progressBar;
+
     private Drawer drawerMenu;
     private AccountHeader accountHeader;
     private boolean isInit = true;
-    private final String TAG = MainActivity.class.getSimpleName();
 
+    private final String TAG = MainActivity.class.getSimpleName();
     @Inject
     SharedPreferences sharedPreferences;
 
@@ -54,13 +58,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        primaryColor = R.color.color_primary;
         secondaryColor = R.color.color_secondary;
-
-        toolbar = findViewById(R.id.home_toolbar);
-        txtToolBarTitle = findViewById(R.id.main_toolbar_title);
+        mappingViewElement();
         setSupportActionBar(toolbar); // for getSupportActionBar in Fragment of this activity
         createDrawer();
+    }
+
+    private void mappingViewElement() {
+        toolbar = findViewById(R.id.home_toolbar);
+        txtToolBarTitle = findViewById(R.id.main_toolbar_title);
+        txtLoading = findViewById(R.id.main_txt_loading);
+        txtNoInternet = findViewById(R.id.main_txt_no_internet);
+        progressBar = findViewById(R.id.main_progress_bar);
     }
 
     public void updateProfileInDrawer(String fullName) {
@@ -88,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
                 .withSelectionListEnabledForSingleProfile(false)
                 .build();
 
+        SectionDrawerItem headerExhibition = new SectionDrawerItem()
+                .withName("Exhibition")
+                .withTextColorRes(R.color.txt_hint)
+                .withDivider(false);
         SectionDrawerItem headerActivity = new SectionDrawerItem()
                 .withName("Activity")
                 .withTextColorRes(R.color.txt_hint)
@@ -143,6 +156,12 @@ public class MainActivity extends AppCompatActivity {
                 .withIdentifier(Constant.ITEM_LOGOUT)
                 .withName("Logout")
                 .withIcon(getResources().getDrawable(R.drawable.ic_logout));
+        PrimaryDrawerItem menuItemLeaderBoard = new PrimaryDrawerItem()
+                .withIdentifier(Constant.ITEM_LEADERBOARD)
+                .withName("Leader Board")
+                .withIcon(getResources().getDrawable(R.drawable.ic_trophy))
+                .withSelectedIconColorRes(secondaryColor)
+                .withIconTintingEnabled(true);
 
         //create the drawer and remember the `Drawer` menu object
         drawerMenu = new DrawerBuilder()
@@ -151,10 +170,13 @@ public class MainActivity extends AppCompatActivity {
                 .withAccountHeader(accountHeader)
                 .withDelayOnDrawerClose(200)
                 .addDrawerItems(
-                        headerActivity,
+                        headerExhibition,
                         menuItemHome,
                         menuItemYourEvent,
                         menuItemBookmark,
+                        new DividerDrawerItem(),
+                        headerActivity,
+                        menuItemLeaderBoard,
                         menuItemReward,
                         menuItemHistory,
                         new DividerDrawerItem(),
@@ -245,6 +267,10 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = RewardFragment.class;
                 txtToolBarTitle.setText("Exchange Reward");
                 break;
+            case Constant.ITEM_LEADERBOARD:
+                fragmentClass = LeaderBoardFragment.class;
+                txtToolBarTitle.setText("Leader Board");
+                break;
             case Constant.ITEM_LOGOUT:
                 fragment = null;
                 SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
@@ -279,6 +305,11 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e.fillInStackTrace());
         }
+
+        txtNoInternet.setVisibility(View.GONE);
+        txtLoading.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
+
         drawerMenu.closeDrawer();
         preClickPosition = itemId; //update position
     }

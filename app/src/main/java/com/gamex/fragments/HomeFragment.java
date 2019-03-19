@@ -64,7 +64,7 @@ public class HomeFragment extends BaseFragment {
     private final String TAG = HomeFragment.class.getSimpleName();
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView rvOngoing, rvNear, rvUpcoming;
-    private TextView txtToolBarTitle, txtNoInternet, txtLoading, btnAllOngoing, btnAllUpcoming, btnAllNear;
+    private TextView txtNoInternet, txtLoading, btnAllOngoing, btnAllUpcoming, btnAllNear;
     private ProgressBar progressBar;
     private FragmentActivity mContext;
 
@@ -172,7 +172,6 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void mappingViewElement(View view) {
-        txtToolBarTitle = mContext.findViewById(R.id.main_toolbar_title);
         progressBar = mContext.findViewById(R.id.main_progress_bar);
         txtNoInternet = mContext.findViewById(R.id.main_txt_no_internet);
         txtLoading = mContext.findViewById(R.id.main_txt_loading);
@@ -185,8 +184,6 @@ public class HomeFragment extends BaseFragment {
         btnAllOngoing = view.findViewById(R.id.btn_view_all_ongoing);
         btnAllUpcoming = view.findViewById(R.id.btn_view_all_upcoming);
         btnAllNear = view.findViewById(R.id.btn_view_all_near);
-        //set title
-        txtToolBarTitle.setText("Home");
     }
 
     private void checkInternet() {

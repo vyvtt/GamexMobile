@@ -21,6 +21,7 @@ import com.gamex.fragments.EditProfileFragment;
 import com.gamex.fragments.ExDetailFragment;
 import com.gamex.fragments.HistoryFragment;
 import com.gamex.fragments.HomeFragment;
+import com.gamex.fragments.LeaderBoardFragment;
 import com.gamex.fragments.RewardExchangeFragment;
 import com.gamex.fragments.RewardHistoryFragment;
 import com.gamex.fragments.YourExCurrentFragment;
@@ -45,6 +46,7 @@ public interface AppComponent {
     void inject(BookmarkCompanyFragment fragment);
     void inject(YourExCurrentFragment fragment);
     void inject(YourExPastFragment fragment);
+    void inject(LeaderBoardFragment fragment);
 
     void inject(HomeAdapter adapter);
     void inject(ListCompanyAdapter adapter);
