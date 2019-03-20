@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 .withIcon(getResources().getDrawable(R.drawable.ic_logout));
         PrimaryDrawerItem menuItemLeaderBoard = new PrimaryDrawerItem()
                 .withIdentifier(Constant.ITEM_LEADERBOARD)
-                .withName("Leader Board")
+                .withName("Leaderboard")
                 .withIcon(getResources().getDrawable(R.drawable.ic_trophy))
                 .withSelectedIconColorRes(secondaryColor)
                 .withIconTintingEnabled(true);
@@ -227,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
         if (isInit) {
             isInit = false;
             preClickPosition = itemId;
+            txtToolBarTitle.setText("Home");
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.activity_main_container, new HomeFragment())
@@ -269,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case Constant.ITEM_LEADERBOARD:
                 fragmentClass = LeaderBoardFragment.class;
-                txtToolBarTitle.setText("Leader Board");
+                txtToolBarTitle.setText("Leaderboard");
                 break;
             case Constant.ITEM_LOGOUT:
                 fragment = null;

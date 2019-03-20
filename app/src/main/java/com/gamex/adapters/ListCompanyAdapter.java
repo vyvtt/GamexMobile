@@ -58,12 +58,12 @@ public class ListCompanyAdapter extends RecyclerView.Adapter<ListCompanyAdapter.
         if (booths != null) {
             for (String booth : booths) {
                 if (booth != null) {
-                    strBooth += booth + " - ";
+                    strBooth += booth + " ";
                 }
             }
         }
 
-        viewHolder.txtBooth.setText(strBooth);
+        viewHolder.txtBooth.setText("Booth: " + strBooth);
         viewHolder.txtName.setText(listCompany.get(i).getName());
 
         viewHolder.row.setOnClickListener(v -> {
