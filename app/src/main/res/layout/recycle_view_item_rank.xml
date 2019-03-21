@@ -46,4 +46,18 @@
             android:textColor="@color/txt_white" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_rank_your_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="It's You!"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:background="@drawable/bg_corner_radius_orange"
+        android:textColor="@color/txt_white"
+        android:textSize="12sp"
+        android:visibility="gone"
+        />
 </RelativeLayout>

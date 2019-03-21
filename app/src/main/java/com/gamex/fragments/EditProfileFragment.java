@@ -172,6 +172,7 @@ public class EditProfileFragment extends BaseFragment {
         tilEmail.getEditText().setText(profile.getEmail());
         tilUserName.getEditText().setText(profile.getUsername());
         tilLastName.getEditText().setText(profile.getLastName());
+        txtFullname.setText(profile.getFirstName() + " " + profile.getLastName());
     }
 
     private void handleOnFail(String content, String confirm) {

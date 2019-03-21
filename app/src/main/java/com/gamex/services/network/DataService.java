@@ -219,7 +219,7 @@ public interface DataService {
     );
 
     // Leader board
-    @GET("/api/reward/leader-board")
+    @GET("/api/reward/leaderboards")
     Call<Rank> getLeaderBoard(
             @Header("Authorization") String accessToken
     );

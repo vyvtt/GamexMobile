@@ -333,6 +333,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     @Override
     public void onBackPressed() {
-        finish();
+        finishAffinity();
     }
 }

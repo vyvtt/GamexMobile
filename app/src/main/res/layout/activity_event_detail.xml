@@ -138,7 +138,8 @@
                 android:paddingEnd="10dp"
                 android:foreground="?attr/selectableItemBackground"
                 android:layout_gravity="center"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:textColor="@color/txt_white"/>
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/event_detail_viewpager"

@@ -79,6 +79,7 @@
             android:paddingEnd="10dp"
             android:text="Try Again"
             android:textAllCaps="false"
+            android:textColor="@color/txt_white"
             android:visibility="gone" />
 
         <LinearLayout

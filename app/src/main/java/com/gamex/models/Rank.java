@@ -13,7 +13,7 @@ public class Rank {
     @SerializedName("currentUserRank")
     @Expose
     private Integer currentUserRank;
-    @SerializedName("currentUserPoint")
+    @SerializedName("currentUserTotalPoint")
     @Expose
     private Integer currentUserPoint;
 

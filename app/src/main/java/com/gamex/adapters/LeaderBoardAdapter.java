@@ -20,10 +20,12 @@ import java.util.List;
 public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.ViewHolder> {
     private List<LeaderBoard> data;
     private Context context;
+    private int userRank;
 
-    public LeaderBoardAdapter(Context context, List<LeaderBoard> data) {
+    public LeaderBoardAdapter(Context context, List<LeaderBoard> data, int userRank) {
         this.context = context;
         this.data = data;
+        this.userRank = userRank;
     }
 
     @NonNull
@@ -56,11 +58,9 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
             viewHolder.txtPoint.setTextColor(context.getResources().getColor(R.color.txt_black));
         }
 
-//        if (userRank == 1) {
-//
-//        } else if (userRank == 2) {
-//
-//        }
+        if (userRank == position) {
+            viewHolder.txtItsYou.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -70,7 +70,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
 
     //    INNER CLASS VIEW HOLDER ---------------------------------------------------------------->
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtName, txtRank, txtPoint;
+        TextView txtName, txtRank, txtPoint, txtItsYou;
         ImageView imgIcon;
         RelativeLayout itemLayout;
 
@@ -79,6 +79,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
             txtName = itemView.findViewById(R.id.item_rank_name);
             txtRank = itemView.findViewById(R.id.item_rank_rank);
             txtPoint = itemView.findViewById(R.id.item_rank_point);
+            txtItsYou = itemView.findViewById(R.id.item_rank_your_rank);
             imgIcon = itemView.findViewById(R.id.item_rank_icon);
 
             itemLayout = itemView.findViewById(R.id.item_rank_layout);
