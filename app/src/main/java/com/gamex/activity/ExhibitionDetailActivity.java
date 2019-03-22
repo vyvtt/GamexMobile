@@ -66,7 +66,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbar;
     private AppBarLayout appBarLayout;
-    private Button btnRefresh;
+    private Button btnTryAgain;
 
     private TextView txtExName, txtNoInternet, txtLoading;
     private String exId, exName, exImg;
@@ -96,7 +96,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
                 Log.i(TAG, "Has Internet Connection");
 
                 txtNoInternet.setVisibility(View.GONE);
-                btnRefresh.setVisibility(View.GONE);
+                btnTryAgain.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
                 callAPI();
@@ -104,7 +104,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
             } else {
                 Log.i(TAG, "No Internet Connection");
 
-                btnRefresh.setVisibility(View.VISIBLE);
+                btnTryAgain.setVisibility(View.VISIBLE);
                 txtNoInternet.setVisibility(View.VISIBLE);
                 txtLoading.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
@@ -128,7 +128,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
 
                 } else {
                     Toast.makeText(ExhibitionDetailActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                    btnRefresh.setVisibility(View.VISIBLE);
+                    btnTryAgain.setVisibility(View.VISIBLE);
                 }
 
                 stopLoadingAnimation();
@@ -141,7 +141,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(ExhibitionDetailActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, t.getMessage(), t.fillInStackTrace());
-                    btnRefresh.setVisibility(View.VISIBLE);
+                    btnTryAgain.setVisibility(View.VISIBLE);
                 }
                 stopLoadingAnimation();
             }
@@ -169,7 +169,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         }
 
         appBarLayout.addOnOffsetChangedListener((AppBarLayout appBarLayout, int verticalOffset) -> invalidateOptionsMenu());
-        btnRefresh.setOnClickListener(v -> checkInternet());
+        btnTryAgain.setOnClickListener(v -> checkInternet());
     }
 
     private void getSaveDataFromIntent() {
@@ -207,7 +207,7 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         txtLoading.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
 
-        btnRefresh = findViewById(R.id.event_detail_refresh);
+        btnTryAgain = findViewById(R.id.event_detail_refresh);
     }
 
     @Override

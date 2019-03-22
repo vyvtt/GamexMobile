@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -59,6 +60,7 @@ public class BookmarkExhibitionFragment extends BaseFragment implements Bookmark
     private RecyclerView recyclerView;
     private List<Bookmark> data;
     private BookmarkExhibitionAdapter adapter;
+    private SwipeRefreshLayout refreshLayout;
 
     private ProgressBar progressBar;
     private TextView txtLoading, txtNoInternet, txtNoData;
@@ -80,16 +82,30 @@ public class BookmarkExhibitionFragment extends BaseFragment implements Bookmark
         View view = inflater.inflate(R.layout.fragment_bookmark_exhibition, container, false);
         mappingViewElement(view);
         accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
+
+        refreshLayout.setOnRefreshListener(this::checkInternet);
         return view;
     }
 
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        checkInternet();
+//    }
+
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onResume() {
+        super.onResume();
         checkInternet();
     }
 
     private void checkInternet() {
+
+        if (adapter != null) {
+            Log.i(TAG, "clear all data in checkInternet");
+            adapter.clearAll();
+        }
+
         new CheckInternetTask(internet -> {
             if (internet) {
                 Log.i(TAG, "Has Internet Connection");
@@ -102,6 +118,9 @@ public class BookmarkExhibitionFragment extends BaseFragment implements Bookmark
                 txtNoInternet.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
             }
         });
     }
@@ -123,14 +142,21 @@ public class BookmarkExhibitionFragment extends BaseFragment implements Bookmark
 
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
             }
 
             @Override
             public void onFailure(Call<List<Bookmark>> call, Throwable t) {
                 Log.e(TAG, t.getMessage(), t.fillInStackTrace());
                 handleOnFail("Can not connect to GamEx Server", "Try again later");
+
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
             }
         });
     }
@@ -173,9 +199,7 @@ public class BookmarkExhibitionFragment extends BaseFragment implements Bookmark
                             .setConfirmText("Please try again later")
                             .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
                 }
-                progressBar.setVisibility(View.GONE);
-                txtLoading.setText(Constant.TXT_LOADING);
-                txtLoading.setVisibility(View.GONE);
+                stopLoadingAnimation();
             }
 
             @Override
@@ -187,11 +211,18 @@ public class BookmarkExhibitionFragment extends BaseFragment implements Bookmark
                         .setConfirmText("Please try again later")
                         .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
 
-                progressBar.setVisibility(View.GONE);
-                txtLoading.setText(Constant.TXT_LOADING);
-                txtLoading.setVisibility(View.GONE);
+                stopLoadingAnimation();
             }
         });
+    }
+
+    private void stopLoadingAnimation() {
+        progressBar.setVisibility(View.GONE);
+        txtLoading.setText(Constant.TXT_LOADING);
+        txtLoading.setVisibility(View.GONE);
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     private void setDataAdapter() {
@@ -231,6 +262,7 @@ public class BookmarkExhibitionFragment extends BaseFragment implements Bookmark
         txtLoading = view.findViewById(R.id.bookmark_ex_txt_loading);
         txtNoInternet = view.findViewById(R.id.bookmark_ex_txt_no_internet);
         txtNoData = view.findViewById(R.id.bookmark_ex_no_data);
+        refreshLayout = view.findViewById(R.id.bookmark_ex_layout_refresh);
     }
 
     @Override

@@ -48,13 +48,20 @@
         android:gravity="center"
         android:visibility="gone"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/bookmark_ex_recycle_view"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/bookmark_ex_layout_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:overScrollMode="ifContentScrolls"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bookmark_ex_recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="ifContentScrolls"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

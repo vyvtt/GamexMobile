@@ -1,7 +1,6 @@
 package com.gamex.activity;
 
 import android.animation.ObjectAnimator;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,7 +35,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -78,7 +76,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
     // loading
     private ProgressBar progressBar;
     private TextView txtNoInternet, txtLoading;
-    private Button btnRefresh;
+    private Button btnTryAgain;
     private LinearLayout layoutMain;
 
     // info
@@ -128,7 +126,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        btnRefresh.setOnClickListener(v -> {
+        btnTryAgain.setOnClickListener(v -> {
             checkInternet();
             if (isFromScan) {
                 Log.i(TAG, "call api to refresh survey");
@@ -154,7 +152,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
         txtLoading.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         txtNoInternet.setVisibility(View.GONE);
-        btnRefresh.setVisibility(View.GONE);
+        btnTryAgain.setVisibility(View.GONE);
         layoutMain.setVisibility(View.GONE);
 
         new CheckInternetTask(internet -> {
@@ -164,7 +162,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 txtLoading.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
                 txtNoInternet.setVisibility(View.VISIBLE);
-                btnRefresh.setVisibility(View.VISIBLE);
+                btnTryAgain.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -244,7 +242,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 .setContentText(content)
                 .setConfirmText(confirm)
                 .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
-        btnRefresh.setVisibility(View.VISIBLE);
+        btnTryAgain.setVisibility(View.VISIBLE);
     }
 
     private void expandListSurvey() {
@@ -273,7 +271,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.company_progress_bar);
         txtLoading = findViewById(R.id.company_txt_loading);
         txtNoInternet = findViewById(R.id.company_txt_no_internet);
-        btnRefresh = findViewById(R.id.company_refresh);
+        btnTryAgain = findViewById(R.id.company_refresh);
         layoutMain = findViewById(R.id.company_layout_main);
 
         // info

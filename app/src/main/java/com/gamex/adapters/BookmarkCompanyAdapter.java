@@ -51,6 +51,12 @@ public class BookmarkCompanyAdapter extends RecyclerView.Adapter<BookmarkCompany
         notifyItemRangeChanged(position, data.size());
     }
 
+    public void clearAll() {
+        final int size = data.size();
+        data.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
     @Override
     public int getItemCount() {
         return data == null ? 0 : data.size();

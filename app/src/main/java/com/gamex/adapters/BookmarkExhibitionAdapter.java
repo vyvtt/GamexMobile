@@ -56,6 +56,12 @@ public class BookmarkExhibitionAdapter extends RecyclerView.Adapter<BookmarkExhi
         notifyItemRangeChanged(position, data.size());
     }
 
+    public void clearAll() {
+        final int size = data.size();
+        data.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
     //    INNER CLASS VIEW HOLDER ---------------------------------------------------------------->
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName, txtTime;

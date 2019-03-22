@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -58,6 +59,7 @@ public class BookmarkCompanyFragment extends BaseFragment implements BookmarkCom
     private RecyclerView recyclerView;
     private List<Bookmark> data;
     private BookmarkCompanyAdapter adapter;
+    private SwipeRefreshLayout refreshLayout;
 
     private ProgressBar progressBar;
     private TextView txtLoading, txtNoInternet, txtNoData;
@@ -80,16 +82,31 @@ public class BookmarkCompanyFragment extends BaseFragment implements BookmarkCom
         View view = inflater.inflate(R.layout.fragment_bookmark_company, container, false);
         mappingViewElement(view);
         accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
+
+        refreshLayout.setOnRefreshListener(this::checkInternet);
         return view;
     }
 
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        checkInternet();
+//    }
+
+
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onResume() {
+        super.onResume();
         checkInternet();
     }
 
     private void checkInternet() {
+
+        if (adapter != null) {
+            Log.i(TAG, "clear all data in checkInternet");
+            adapter.clearAll();
+        }
+
         new CheckInternetTask(internet -> {
             if (internet) {
                 Log.i(TAG, "Has Internet Connection");
@@ -102,6 +119,9 @@ public class BookmarkCompanyFragment extends BaseFragment implements BookmarkCom
                 txtNoInternet.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
             }
         });
     }
@@ -123,6 +143,9 @@ public class BookmarkCompanyFragment extends BaseFragment implements BookmarkCom
 
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
             }
 
             @Override
@@ -131,6 +154,9 @@ public class BookmarkCompanyFragment extends BaseFragment implements BookmarkCom
                 handleOnFail("Can not connect to GamEx Server", "Try again later");
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
             }
         });
     }
@@ -263,6 +289,8 @@ public class BookmarkCompanyFragment extends BaseFragment implements BookmarkCom
         txtLoading = view.findViewById(R.id.bookmark_company_txt_loading);
         txtNoInternet = view.findViewById(R.id.bookmark_company_txt_no_internet);
         txtNoData = view.findViewById(R.id.bookmark_company_no_data);
+
+        refreshLayout = view.findViewById(R.id.bookmark_company_layout_refresh);
     }
 
 }
