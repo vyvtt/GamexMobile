@@ -1,6 +1,8 @@
 package com.gamex.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -366,5 +368,19 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
         } else {
             Log.i(TAG, "Currently process anther call api request");
         }
+    }
+
+    public void clickToOpenMap(View view) {
+        String param = exhibitionDetails.getAddress();
+
+        if (exhibitionDetails.getLng() != null && !exhibitionDetails.getLng().isEmpty()
+                && exhibitionDetails.getLat() != null && !exhibitionDetails.getLat().isEmpty()) {
+            param = exhibitionDetails.getLat()  +  "," + exhibitionDetails.getLng();
+        }
+
+        Uri sampleLink = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + param);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, sampleLink);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 }

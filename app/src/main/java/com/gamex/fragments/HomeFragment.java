@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -61,7 +62,7 @@ public class HomeFragment extends BaseFragment {
     private boolean isLoadingOngoing, isLoadingUpcoming, isLoadingNear;
     private HashMap<String, Object> apiParam;
 
-    private final String TAG = HomeFragment.class.getSimpleName();
+    private final String TAG = HomeFragment.class.getSimpleName() + "////";
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView rvOngoing, rvNear, rvUpcoming;
     private TextView txtNoInternet, txtLoading, btnAllOngoing, btnAllUpcoming, btnAllNear;
@@ -71,6 +72,8 @@ public class HomeFragment extends BaseFragment {
     private int ACCESS_FINE_LOCATION_PERMISSION_CODE = 99;
     private double lat = 10.7805666, lng = 106.70075980000001;
     private LocationManager locationManager;
+    private LocationListener locationListener;
+    private boolean isApiNearCalled;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -95,8 +98,12 @@ public class HomeFragment extends BaseFragment {
         apiParam = new HashMap<>();
         accessToken = "Bearer " + sharedPreferences.getString(Constant.PREF_ACCESS_TOKEN, "");
 
+//        checkLocationPermission();
+//        getLocation();
+        Log.i(TAG, "onCreateView");
+
+        isApiNearCalled = false;
         checkLocationPermission();
-        getLocation();
 
         mappingViewElement(view);
         setResponseToEvent();
@@ -111,6 +118,20 @@ public class HomeFragment extends BaseFragment {
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(mContext,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION_PERMISSION_CODE);
+        } else {
+            getLocation();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == ACCESS_FINE_LOCATION_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //PERMISSION_GRANTED
+                getLocation();
+            } else {
+                Toast.makeText(mContext, "Location Permission DENIED, using default location!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -120,11 +141,17 @@ public class HomeFragment extends BaseFragment {
             locationManager = (LocationManager)
                     mContext.getSystemService(Context.LOCATION_SERVICE);
 
-            final LocationListener locationListener = new LocationListener() {
+            locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
                     lng = location.getLongitude();
                     lat = location.getLatitude();
-                    Log.i(TAG, "New location ----------------------------- " + lng + " " + lat);
+                    Log.i(TAG, "New location --- " + lng + " " + lat);
+
+                    if (!isApiNearCalled) {
+                        isApiNearCalled = true;
+                        Log.i(TAG, "call api near in LocationListener");
+                        callAPINear();
+                    }
                 }
 
                 @Override
@@ -146,6 +173,7 @@ public class HomeFragment extends BaseFragment {
 
     private void setResponseToEvent() {
         refreshLayout.setOnRefreshListener(() -> {
+            isApiNearCalled = false;
             getLocation();
             checkInternet();
         });
@@ -193,9 +221,12 @@ public class HomeFragment extends BaseFragment {
                 txtNoInternet.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 txtLoading.setVisibility(View.VISIBLE);
+                Log.i(TAG, "call api ongoing");
                 callAPIOngoing();
+                Log.i(TAG, "call api upcoming");
                 callAPIUpcoming();
-                callAPINear();
+//                Log.i(TAG, "call api near");
+//                callAPINear();
             } else {
                 Log.i(TAG, "No Internet Connection");
                 txtNoInternet.setVisibility(View.VISIBLE);

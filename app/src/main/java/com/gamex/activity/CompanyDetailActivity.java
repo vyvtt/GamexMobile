@@ -114,29 +114,37 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 scanResult = bundle.getString(Constant.EXTRA_SCAN_QR_RESULT);
                 companyId = scanResult.substring(scanResult.indexOf("companyId"));
                 companyId = companyId.replace("companyId=", "");
-
-
             } else {
                 // From Exhibition Details -> show normal
                 companyId = bundle.getString(Constant.EXTRA_COMPANY_ID);
             }
 
-            callAPICompanyDetails();
+//            callAPICompanyDetails();
+            checkInternet();
         }
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        btnRefresh.setOnClickListener(v -> {
+            checkInternet();
+            if (isFromScan) {
+                Log.i(TAG, "call api to refresh survey");
+                callAPIListSurvey();
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "resume");
+
         // refresh data when user done activity
         if (isFromScan) {
-            Log.i(TAG, "call api to refresh");
+            Log.i(TAG, "call api to refresh survey");
             callAPIListSurvey();
         }
     }

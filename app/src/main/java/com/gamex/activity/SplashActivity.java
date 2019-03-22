@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.gamex.GamexApplication;
 import com.gamex.R;
@@ -22,6 +24,9 @@ public class SplashActivity extends AppCompatActivity {
         ((GamexApplication) getApplication()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        TextView txtAppName = findViewById(R.id.txtAppName);
+        txtAppName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.zoom_in));
 
 //        try {
 //            PackageInfo info = getPackageManager().getPackageInfo("com.gamex", PackageManager.GET_SIGNATURES);

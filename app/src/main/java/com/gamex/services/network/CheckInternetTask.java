@@ -22,7 +22,7 @@ public class CheckInternetTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override protected void onPostExecute(Boolean internet) { mConsumer.accept(internet); }
 
-//    // you may separate this or combined to caller class.
+
 //    public interface AsyncResponse {
 //        void processFinish(boolean output);
 //    }

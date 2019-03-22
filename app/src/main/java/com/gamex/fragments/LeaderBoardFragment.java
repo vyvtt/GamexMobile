@@ -142,7 +142,7 @@ public class LeaderBoardFragment extends BaseFragment {
 
     private void setDataAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-        adapter = new LeaderBoardAdapter(mActivity, leaderBoards);
+        adapter = new LeaderBoardAdapter(mActivity, leaderBoards, rank.getCurrentUserRank());
         recyclerView.setAdapter(adapter);
     }
 

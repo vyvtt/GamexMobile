@@ -157,7 +157,9 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="25dp"
                 android:text="Hall A, SECC 799 Nguyen Van Linh, Tan Phu Ward, Dist 7. HoChiMinh City"
-                android:textColor="@color/txt_black"/>
+                android:textColor="@color/txt_link"
+                android:onClick="clickToOpenMap"/>
+
         </LinearLayout>
 
         <LinearLayout
