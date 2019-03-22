@@ -65,6 +65,17 @@
                     android:layout_below="@id/fg_home_tv_ongoing"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"/>
+
+                <TextView
+                    android:id="@+id/fg_home_no_data_ongoing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fg_home_tv_ongoing"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:text="No data"
+                    android:visibility="gone"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -112,6 +123,16 @@
                     android:overScrollMode="ifContentScrolls"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"/>
+
+                <TextView
+                    android:id="@+id/fg_home_no_data_upcoming"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fg_home_tv_upcoming"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:text="No data"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -158,6 +179,16 @@
                     android:layout_below="@id/fg_home_tv_near"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"/>
+
+                <TextView
+                    android:id="@+id/fg_home_no_data_near"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fg_home_tv_near"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:text="No data"
+                    android:visibility="gone"/>
             </RelativeLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

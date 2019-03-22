@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +51,7 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
 
     private ProgressBar progressBarFirstLoad;
     private TextView txtLoading, txtNoInternet;
+    private Button btnTryAgain;
 
     private double lat, lng;
     private String type, accessToken;
@@ -58,6 +61,7 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         ((GamexApplication) getApplication()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_view_all_exhibition);
 
         mappingViewElement();
@@ -79,13 +83,32 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
             if (internet) {
                 Log.i(TAG, "Has Internet Connection");
                 txtNoInternet.setVisibility(View.GONE);
+                btnTryAgain.setVisibility(View.GONE);
                 firstLoadData();
             } else {
                 Log.i(TAG, "No Internet Connection");
                 txtNoInternet.setVisibility(View.VISIBLE);
+                btnTryAgain.setVisibility(View.VISIBLE);
                 txtLoading.setVisibility(View.GONE);
                 progressBarFirstLoad.setVisibility(View.GONE);
             }
+        });
+
+        btnTryAgain.setOnClickListener(v -> {
+            new CheckInternetTask(internet -> {
+                if (internet) {
+                    Log.i(TAG, "Has Internet Connection");
+                    txtNoInternet.setVisibility(View.GONE);
+                    btnTryAgain.setVisibility(View.GONE);
+                    firstLoadData();
+                } else {
+                    Log.i(TAG, "No Internet Connection");
+                    txtNoInternet.setVisibility(View.VISIBLE);
+                    btnTryAgain.setVisibility(View.VISIBLE);
+                    txtLoading.setVisibility(View.GONE);
+                    progressBarFirstLoad.setVisibility(View.GONE);
+                }
+            });
         });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -142,6 +165,7 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
         txtLoading = findViewById(R.id.view_all_txt_loading);
         txtNoInternet = findViewById(R.id.view_all_txt_no_internet);
         progressBarFirstLoad = findViewById(R.id.view_all_loading);
+        btnTryAgain = findViewById(R.id.view_all_btn_try_again);
     }
 
     private void firstLoadData() {
@@ -211,6 +235,10 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
                 } else {
                     Log.i(TAG, response.toString());
                     Toast.makeText(ViewAllExhibitionActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+
+                    if (exhibitionList.isEmpty()) { // load 1st time fail -> show Try Again
+                        btnTryAgain.setVisibility(View.VISIBLE);
+                    }
                 }
                 progressBarFirstLoad.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
@@ -223,6 +251,9 @@ public class ViewAllExhibitionActivity extends AppCompatActivity {
                 if (!exhibitionList.isEmpty()) {
                     exhibitionList.remove(exhibitionList.size() - 1);
                     adapter.notifyDataSetChanged();
+                } else {
+                    // load 1st time fail -> show Try Again
+                    btnTryAgain.setVisibility(View.VISIBLE);
                 }
 
                 if (call.isCanceled()) {

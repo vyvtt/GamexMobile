@@ -65,7 +65,7 @@ public class HomeFragment extends BaseFragment {
     private final String TAG = HomeFragment.class.getSimpleName() + "////";
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView rvOngoing, rvNear, rvUpcoming;
-    private TextView txtNoInternet, txtLoading, btnAllOngoing, btnAllUpcoming, btnAllNear;
+    private TextView txtNoInternet, txtLoading, btnAllOngoing, btnAllUpcoming, btnAllNear, txtNoDataOngoing, txtNoDataUpcoming, txtNoDataNear;
     private ProgressBar progressBar;
     private FragmentActivity mContext;
 
@@ -131,6 +131,7 @@ public class HomeFragment extends BaseFragment {
                 getLocation();
             } else {
                 Toast.makeText(mContext, "Location Permission DENIED, using default location!", Toast.LENGTH_SHORT).show();
+                callAPINear();
             }
         }
     }
@@ -166,8 +167,10 @@ public class HomeFragment extends BaseFragment {
                 public void onProviderDisabled(String provider) {
                 }
             };
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
+            locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener, null);
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+//            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         }
     }
 
@@ -212,6 +215,10 @@ public class HomeFragment extends BaseFragment {
         btnAllOngoing = view.findViewById(R.id.btn_view_all_ongoing);
         btnAllUpcoming = view.findViewById(R.id.btn_view_all_upcoming);
         btnAllNear = view.findViewById(R.id.btn_view_all_near);
+
+        txtNoDataOngoing = view.findViewById(R.id.fg_home_no_data_ongoing);
+        txtNoDataUpcoming = view.findViewById(R.id.fg_home_no_data_upcoming);
+        txtNoDataNear = view.findViewById(R.id.fg_home_no_data_near);
     }
 
     private void checkInternet() {
@@ -243,16 +250,23 @@ public class HomeFragment extends BaseFragment {
         isLoadingOngoing = true;
         callOngoing = dataService.getExhibitionsList(accessToken, apiParam);
         callOngoing.enqueue(new BaseCallBack<List<Exhibition>>(mContext) {
+
             @Override
             public void onSuccess(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
                 isLoadingOngoing = false;
                 if (response.isSuccessful()) {
-                    HomeAdapter adapter = new HomeAdapter(mContext, response.body());
-                    rvOngoing.setAdapter(adapter);
-                    Log.i(TAG, response.toString());
+                    if (response.body().isEmpty()) {
+                        txtNoDataOngoing.setVisibility(View.VISIBLE);
+                    } else {
+                        txtNoDataOngoing.setVisibility(View.GONE);
+                        HomeAdapter adapter = new HomeAdapter(mContext, response.body());
+                        rvOngoing.setAdapter(adapter);
+                    }
                 } else {
-                    Log.i(TAG, response.toString());
+                    txtNoDataOngoing.setVisibility(View.VISIBLE);
+
                 }
+                Log.i(TAG, response.toString());
                 stopLoadingAnimation();
             }
 
@@ -262,6 +276,7 @@ public class HomeFragment extends BaseFragment {
                 if (call.isCanceled()) {
                     Log.i(TAG, "Cancel HTTP request on onFailure()");
                 } else {
+                    txtNoDataOngoing.setVisibility(View.VISIBLE);
                     Toast.makeText(mContext, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, t.getMessage());
                 }
@@ -282,14 +297,18 @@ public class HomeFragment extends BaseFragment {
                 isLoadingUpcoming = false;
                 if (response.isSuccessful()) {
                     Log.i(TAG, response.toString());
-                    List<Exhibition> tmp = response.body();
-                    for (Exhibition exhibition: tmp
-                         ) {
-                        System.out.println(exhibition.toString());
+
+                    if (response.body().isEmpty()) {
+                        txtNoDataOngoing.setVisibility(View.VISIBLE);
+                    } else {
+                        txtNoDataUpcoming.setVisibility(View.GONE);
+
+                        HomeAdapter adapter = new HomeAdapter(mContext, response.body());
+                        rvUpcoming.setAdapter(adapter);
                     }
-                    HomeAdapter adapter = new HomeAdapter(mContext, response.body());
-                    rvUpcoming.setAdapter(adapter);
+
                 } else {
+                    txtNoDataOngoing.setVisibility(View.VISIBLE);
                     Log.i(TAG, response.toString());
                 }
                 stopLoadingAnimation();
@@ -301,6 +320,7 @@ public class HomeFragment extends BaseFragment {
                 if (call.isCanceled()) {
                     Log.i(TAG, "Cancel HTTP request on onFailure()");
                 } else {
+                    txtNoDataOngoing.setVisibility(View.VISIBLE);
                     Toast.makeText(mContext, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, t.getMessage());
                 }
@@ -322,10 +342,18 @@ public class HomeFragment extends BaseFragment {
             public void onSuccess(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
                 isLoadingNear = false;
                 if (response.isSuccessful()) {
-                    HomeAdapter adapter = new HomeAdapter(mContext, response.body());
-                    rvNear.setAdapter(adapter);
+
+                    if (response.body().isEmpty()) {
+                        txtNoDataNear.setVisibility(View.VISIBLE);
+                    } else {
+                        txtNoDataNear.setVisibility(View.GONE);
+                        HomeAdapter adapter = new HomeAdapter(mContext, response.body());
+                        rvNear.setAdapter(adapter);
+                    }
+
                     Log.i(TAG, response.toString());
                 } else {
+                    txtNoDataNear.setVisibility(View.VISIBLE);
                     Log.i(TAG, response.toString());
                 }
                 stopLoadingAnimation();
@@ -337,6 +365,7 @@ public class HomeFragment extends BaseFragment {
                 if (call.isCanceled()) {
                     Log.i(TAG, "Cancel HTTP request on onFailure()");
                 } else {
+                    txtNoDataNear.setVisibility(View.VISIBLE);
                     Toast.makeText(mContext, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, t.getMessage());
                 }
