@@ -239,6 +239,9 @@ public class HomeFragment extends BaseFragment {
                 txtNoInternet.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 txtLoading.setVisibility(View.GONE);
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
             }
         });
     }

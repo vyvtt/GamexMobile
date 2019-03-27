@@ -152,8 +152,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
             Log.i(TAG, "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
-        } else
-        {
+        } else {
             Log.i(TAG, "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
             CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
             cookieSyncMngr.startSync();

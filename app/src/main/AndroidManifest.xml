@@ -22,7 +22,12 @@
         <activity android:name=".activity.FacebookLoginActivity" />
 
         <activity android:name=".activity.CompanyDetailActivity" />
-        <activity android:name=".activity.ExhibitionDetailActivity" />
+        <activity android:name=".activity.ExhibitionDetailActivity" >
+            <intent-filter>
+                <action android:name="openExhibitionDetail" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activity.ScanQRActivity" />
         <activity
             android:name=".activity.RegisterActivity"
@@ -42,6 +47,15 @@
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/MyTheme.CusFullScreenStyle" />
+
+        <service android:name=".services.firebase.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_alert" />
     </application>
 
 </manifest>

@@ -234,7 +234,8 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
+//                finish();
                 return true;
             case R.id.mn_item_bookmark:
                 progressBookmark(item);
@@ -350,8 +351,16 @@ public class ExhibitionDetailActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        if (isTaskRoot()) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else {
+            super.onBackPressed();
+            finish();
+        }
+
+//        super.onBackPressed();
+//        finish();
     }
 
     public void progressBookmark(MenuItem item) {

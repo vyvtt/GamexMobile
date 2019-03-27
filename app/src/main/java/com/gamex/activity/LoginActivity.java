@@ -50,9 +50,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     private Validator validator;
     private final String TAG = LoginActivity.class.getSimpleName() + "------------------------------";
     private SweetAlertDialog progressDialog;
-
-
-
     private Button btnLoginWithFB;
 
     @NotEmpty(message = Constant.ERR_REQUIRED)
@@ -82,6 +79,12 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         });
 
         btnLoginWithFB.setOnClickListener(v -> {
+
+            progressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            progressDialog.setTitleText("Connecting");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             call = dataService.fbGetExternalProvider();
             call.enqueue(new Callback<ResponseBody>() {
                 @Override

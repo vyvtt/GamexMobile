@@ -52,6 +52,6 @@ public final class Constant {
     public static final String EXTRA_SURVEY_TITLE = "EXTRA_SURVEY_TITLE";
     public static final String EXTRA_SURVEY_POINT = "EXTRA_SURVEY_POINT";
 
-
+    public static final String FIREBASE_NOTIFICATION_EXHIBITION_CHANEL = "NEW_EXHIBITION";
 
 }

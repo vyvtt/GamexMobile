@@ -25,6 +25,7 @@ import com.gamex.fragments.LeaderBoardFragment;
 import com.gamex.fragments.RewardFragment;
 import com.gamex.fragments.YourExhibitionFragment;
 import com.gamex.utils.Constant;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         mappingViewElement();
         setSupportActionBar(toolbar); // for getSupportActionBar in Fragment of this activity
         createDrawer();
+        FirebaseMessaging.getInstance().subscribeToTopic(Constant.FIREBASE_NOTIFICATION_EXHIBITION_CHANEL);
     }
 
     private void mappingViewElement() {
@@ -280,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
                         .setContentText("Are you sure?")
                         .setConfirmText("Yes")
                         .setConfirmClickListener(sweetAlertDialog -> {
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(Constant.FIREBASE_NOTIFICATION_EXHIBITION_CHANEL);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.clear();
                             editor.apply();
