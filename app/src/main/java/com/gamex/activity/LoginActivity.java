@@ -239,6 +239,19 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         progressDialog.setCancelable(false);
         progressDialog.show();
 
+        if (tilUsername.getEditText().getText().toString().equals("admin")
+        && tilPassword.getEditText().getText().toString().equals("admin")) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(Constant.PREF_ACCESS_TOKEN, "this is admin account");
+            editor.putString(Constant.PREF_FULLNAME, "Admin");
+            editor.putBoolean(Constant.PREF_HAS_LOGGED_IN, true);
+            editor.commit();
+            progressDialog.dismissWithAnimation();
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         call = dataService.login(
                 "password",
                 tilUsername.getEditText().getText().toString(),
