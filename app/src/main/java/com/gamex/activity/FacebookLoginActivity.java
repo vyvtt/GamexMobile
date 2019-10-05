@@ -66,7 +66,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         this.webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.contains("gamexwebapi.azurewebsites.net/#access_token")) {
+                if (url.contains("gamexcloudwebapi.azurewebsites.net/#access_token")) {
                     Log.i(TAG, "URL Match! Stop web view");
 
                     progressDialog = new
@@ -236,7 +236,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
         editor.putString(Constant.PREF_ACCESS_TOKEN, accessToken);
         editor.putString(Constant.PREF_FULLNAME, fullname);
         editor.putBoolean(Constant.PREF_HAS_LOGGED_IN, true);
-        editor.apply();
+//        editor.apply();
+        editor.commit();
         Intent intent = new Intent(FacebookLoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

@@ -52,6 +52,6 @@ public class YourExhibitionFragment extends BaseFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.mn_item_qr).setVisible(false);
+//        menu.findItem(R.id.mn_item_qr).setVisible(false);
     }
 }

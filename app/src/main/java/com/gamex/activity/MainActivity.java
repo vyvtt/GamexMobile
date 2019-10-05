@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         headerExhibition,
                         menuItemHome,
-                        menuItemYourEvent,
+//                        menuItemYourEvent,
                         menuItemBookmark,
 //                        new DividerDrawerItem(),
 //                        headerActivity,
@@ -182,9 +182,9 @@ public class MainActivity extends AppCompatActivity {
 //                        menuItemReward,
 //                        menuItemHistory,
 //                        new DividerDrawerItem(),
-//                        headerProfile,
-//                        menuEditProfile,
-//                        menuItemChangePassword,
+                        headerProfile,
+                        menuEditProfile,
+                        menuItemChangePassword,
                         new DividerDrawerItem(),
                         menuLogout
                 )
@@ -321,7 +321,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Add QR icon to the right side of Toolbar
-        getMenuInflater().inflate(R.menu.main_menu_qr, menu);
+        // HIDE SCAN QR
+//        getMenuInflater().inflate(R.menu.main_menu_qr, menu);
         return true;
     }
 
